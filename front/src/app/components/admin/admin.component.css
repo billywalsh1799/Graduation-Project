@@ -1,0 +1,19 @@
+table {
+    width: 100%;
+  }
+
+.centered-div{
+  display: flex;
+  justify-content: center; /* Horizontally center the flex items */
+  align-items: center; /* Vertically center the flex items */
+  height: 100vh;
+  background-color: wheat;
+  
+}
+
+.inside-div{
+  max-width: 70%; /* Set a maximum width for the centered div */
+  width: 100%;
+  
+  
+}
