@@ -6,10 +6,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.example.jwttest.exceptionHandling.exceptions.AccountVerificationException;
 import com.example.jwttest.exceptionHandling.exceptions.ErrorResponse;
 import com.example.jwttest.exceptionHandling.exceptions.TokenExpiredException;
+import com.example.jwttest.exceptionHandling.exceptions.UnconfirmedUser;
 import com.example.jwttest.exceptionHandling.exceptions.UsedEmailException;
 import com.example.jwttest.exceptionHandling.exceptions.UserAlreadyExistsException;
+
+import io.jsonwebtoken.JwtException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,8 +39,25 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(UnconfirmedUser.class)
+    public ResponseEntity<ErrorResponse> handleUnconfirmedUserException(UnconfirmedUser ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(new ErrorResponse(ex.getMessage(),401));
+    }
+    @ExceptionHandler(AccountVerificationException.class)
+    public ResponseEntity<ErrorResponse> handleAccountVerificationException(AccountVerificationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ErrorResponse(ex.getMessage(),400));
+    }
+
+
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<ErrorResponse> handleTokenExpiredException(TokenExpiredException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(new ErrorResponse(ex.getMessage(),401));
+    }
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ErrorResponse> handleJwtException(JwtException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                              .body(new ErrorResponse(ex.getMessage(),401));
     }

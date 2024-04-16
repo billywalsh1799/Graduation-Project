@@ -10,10 +10,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-
+import com.example.jwttest.exceptionHandling.exceptions.ErrorResponse;
 import com.example.jwttest.services.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -45,27 +47,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
     
              
-
-       if (authHeader==null || !authHeader.startsWith("Bearer ")){
-            filterChain.doFilter(request, response);
-            return;
-        }
         jwt=authHeader.substring(7);
         System.out.println("token expired before");
         try {
             username=jwtService.extractUsername(jwt);
-        } catch (ExpiredJwtException e) {
+            //Expiredjwtexceptoin
+        } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            //response.getWriter().write("Token expired: " + e.getMessage());
-            response.getWriter().write("JWT expired");
+            //response.getWriter().write(e.getMessage());
+
+            ErrorResponse errorResponse=new ErrorResponse(e.getMessage(),401);
+            // Convert the JSON object to a JSON string
+            String jsonResponse = new ObjectMapper().writeValueAsString(errorResponse);
+            // Set response content type to JSON
+            response.setContentType("application/json");
+            // Write the JSON error response to the response body
+            response.getWriter().write(jsonResponse);
+            //send json error rsponse
             return;
         }
-        //username=jwtService.extractUsername(jwt);
-        System.out.println("token expired after username");
 
-        
-
-        
+        //remove the loadingusername just check the signature db query in refresh method only
         
         if (username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
             UserDetails userDetails=this.userDetailsService.loadUserByUsername(username);
@@ -74,13 +76,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 null,userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-            }  
+            }
+            else{
+                System.out.println("invalid filter");
+            }
            
         }
         
         filterChain.doFilter(request, response);
-    }
-
-    
-    
+    }  
 }

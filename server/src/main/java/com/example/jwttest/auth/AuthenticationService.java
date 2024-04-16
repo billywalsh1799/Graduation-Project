@@ -1,38 +1,27 @@
 package com.example.jwttest.auth;
-
-
-
-
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.jwttest.email.EmailService;
-import com.example.jwttest.email.token.ConfirmationToken;
-import com.example.jwttest.email.token.ConfirmationTokenRepository;
-import com.example.jwttest.email.token.ConfirmationTokenService;
-import com.example.jwttest.exceptionHandling.exceptions.TokenExpiredException;
+import com.example.jwttest.exceptionHandling.exceptions.AccountVerificationException;
 import com.example.jwttest.exceptionHandling.exceptions.UsedEmailException;
 import com.example.jwttest.exceptionHandling.exceptions.UserAlreadyExistsException;
-import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
 import com.example.jwttest.models.User;
 import com.example.jwttest.repo.UserRepository;
 import com.example.jwttest.services.JwtService;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Claims;
 
 import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -42,50 +31,48 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
-    private final ConfirmationTokenService confirmationTokenService;
 
 
-    public void register(RegisterRequest request){
+    public Map<String, String> register(RegisterRequest request){
 
         //handle user already exists in db exception
 
-        User checkUser=userRepo.findByUsername(request.getUsername()).orElse(null);
-        
-        if(checkUser!=null){
+        userRepo.findByUsername(request.getUsername()).ifPresent(user -> {
             throw new UserAlreadyExistsException("User already exists");
-        }
+        });
 
-        User checkEmail=userRepo.findByEmail(request.getEmail()).orElse(null);
-
-        if(checkEmail!=null){
+        userRepo.findByEmail(request.getEmail()).ifPresent(user -> {
             throw new UsedEmailException("Email already in use");
+        });
 
-        }
-
+        //password encoder
         String encodedPassword=passwordEncoder.encode(request.getPassword());
-        User user=User.builder().username(request.getUsername()).firstname(request.getFirstname())
-        .lastname(request.getLastname()).email(request.getEmail()).enabled(true)
-        .password(encodedPassword).role("ROLE_USER").confirmed(false).build();
-        userRepo.save(user);
 
-        //send the confirmation mail
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken=ConfirmationToken.builder().token(token).createdAt(LocalDateTime.now()).
-                                    expiresAt(LocalDateTime.now().plusMinutes(15)).user(user).build();
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
-        //String link = "http://localhost:8080/api/auth/confirm?token=" + token;
+        User user=User.builder().username(request.getUsername()).firstname(request.getFirstname())
+        .lastname(request.getLastname()).email(request.getEmail()).enabled(false)
+        .password(encodedPassword).role("ROLE_USER").build();
+        
+        // Create extra claims with user role
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("firstname", user.getFirstname());
+        extraClaims.put("lastname", user.getLastname());
+
+        //username is the subject
+        extraClaims.put("username",user.getUsername());
+        extraClaims.put("email",user.getEmail());
+        extraClaims.put("password", user.getPassword());
+        extraClaims.put("role", "ROLE_USER");
+        //Generate confirmation tokens
+        String token=jwtService.generateToken(extraClaims,user.getUsername());
+        
         String link = "http://localhost:4200/auth/confirm?token=" + token;
         emailService.send(request.getEmail(), link);
 
-        // Create extra claims with user role
-        //Map<String, Object> extraClaims = new HashMap<>();
-        //extraClaims.put("role", user.getRole());
 
-        //Generate user tokens
-        //String jwtToken=jwtService.generateToken(extraClaims,user);
-        //String refreshToken=jwtService.generateRefreshToken(extraClaims,user);
-        //return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
-
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("message","Registration Successful! A confirmation link has been sent to your email. Please verify your email address to activate your account");
+        return responseData;
+        
     }
 
     public AuthenticationResponse authenticate(AuthenticationRquest request){
@@ -95,21 +82,14 @@ public class AuthenticationService {
        
         // Cast Authentication to User
         User user = (User) authentication.getPrincipal();
-
-        // Authentication successful else globalhandler will send authexception
-        // Proceed with further actions
-
-
-        //Optional<User> userOptional = userRepo.findByUsername(request.getUsername());
-        //User user = userOptional.orElseThrow(() -> new UserNotFoundException("User not found"));
-
+        
         // Create extra claims with user role
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", user.getRole());
 
         //Generate user tokens
-        String jwtToken=jwtService.generateToken(extraClaims,user);
-        String refreshToken=jwtService.generateRefreshToken(extraClaims,user);
+        String jwtToken=jwtService.generateToken(extraClaims,user.getUsername());
+        String refreshToken=jwtService.generateRefreshToken(extraClaims,user.getUsername());
         return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
     }
 
@@ -117,64 +97,65 @@ public class AuthenticationService {
         
         final String refreshToken;
         final String username;
+        final String userRole;
 
         refreshToken=request.getRefreshToken();
 
-        try {
-            username=jwtService.extractUsername(refreshToken); 
-        } catch (ExpiredJwtException e) {
-            throw new TokenExpiredException("Refresh token expired");
-        }
 
-        //UserDetails userDetails=this.userRepo.findByUsername(username).orElseThrow();
-        Optional<User> userOptional = userRepo.findByUsername(username);
-        //invalid token erro
-        User user = userOptional.orElseThrow(() -> new UserNotFoundException("User not found"));
+        //remove the try catch the service throws by itself
+        //use id instead in case of update of username
+        //make db query to get username and permissions
+        
+        //chagne extracting claims one for user one for refresh different keys
+        //username=jwtService.extractUsername(refreshToken); 
+        //extract role from refresh
+        //userRole=jwtService.extractUserRole(refreshToken);
+
+        Claims claims=jwtService.extractRefreshClaims(refreshToken);
+        username=(String)claims.getSubject();
+        userRole=(String)claims.get("role");
+
+
+
 
         // Create extra claims with user role
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("role", user.getRole());
-        
+        extraClaims.put("role", userRole);
 
-        if (jwtService.isTokenValid(refreshToken, user)){
-            String accessToken=jwtService.generateToken(extraClaims,user);
-            AuthenticationResponse authResponse=AuthenticationResponse.builder()
-            .accessToken(accessToken)
-            .refreshToken(refreshToken)
-            .build();
-            return authResponse;
+
+        //the validity is checked during parsing
+       
+        String accessToken=jwtService.generateToken(extraClaims,username);
+        AuthenticationResponse authResponse=AuthenticationResponse.builder()
+        .accessToken(accessToken)
+        .refreshToken(refreshToken)
+        .build();
+        return authResponse;
          
-        }
+        //the parsing will throw the exceptions
+        //when the refresh token is expired the user is logged out
 
-        else{
-            throw new RuntimeException("refresh token is expired please make a new login");
-        }
-
-            
-    
     }
 
-    public void confirmUser(String token){
-        ConfirmationToken confirmationToken = confirmationTokenService
-                .getToken(token)
-                .orElseThrow(() ->
-                        new RuntimeException("token not found"));
-        if (confirmationToken.isUsed()) {
-            throw new RuntimeException("email already confirmed");
-        }
+    public Map<String, String> confirmUser(String token){
+      
 
-        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
-        if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("token expired");
-        }
+        //extract user info from confirmation token save user to db
+        Claims userInfo=jwtService.extractAllClaims(token);
 
-        //update user state to confirmed
-        Long userId=confirmationToken.getUser().getId();
-        User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        user.setConfirmed(true);
+        User user=User.builder().username((String)userInfo.get("username")).firstname((String)userInfo.get("firstname"))
+        .lastname((String)userInfo.get("lastname")).email((String)userInfo.get("email")).enabled(false)
+        .password((String)userInfo.get("password")).role("ROLE_USER").build();
+
+        //check if user is already in db
+        userRepo.findByUsername(user.getUsername()).ifPresent(unconfirmedUser -> {
+            throw new AccountVerificationException("User already verified account");
+        });
+
+        
         userRepo.save(user);
 
-        //generate tokens
+        //generate jwt tokens
 
         System.out.println("confirmation token: "+token);
         // Create extra claims with user role
@@ -182,12 +163,22 @@ public class AuthenticationService {
         extraClaims.put("role", user.getRole());
 
         //Generate user tokens
-        String jwtToken=jwtService.generateToken(extraClaims,user);
-        String refreshToken=jwtService.generateRefreshToken(extraClaims,user);
-        //return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
+        /* String jwtToken=jwtService.generateToken(extraClaims,user.getUsername());
+        String refreshToken=jwtService.generateRefreshToken(extraClaims,user.getUsername());
+        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();*/
+        //tokens generated only after authentication and enabling by admin
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("message", "Email Verification Successful!, your account is currently pending administrative approval.You will receive an email notification once your account has been activated");
+        return responseData;
+    }
 
+    public void isTokenValid(String token){
+        jwtService.validateToken(token);
+        
+    }
 
-
+    public String isTokenRoleValid(String token){
+        return jwtService.validateTokenByRole(token);
     }
     
 }

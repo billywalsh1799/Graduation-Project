@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -12,10 +12,14 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.authService.getToken()) {
-      return true;
-    } else {
-      return this.router.createUrlTree(['/login']);
-    }
+    return this.authService.isTokenValid().pipe(
+      map(() => {
+        return true;
+      }),
+      catchError((error: any) => {
+        console.error('Error occurred while validating token:', error);
+        return of(this.router.createUrlTree(['/login']));
+      })
+    );
   }
 }

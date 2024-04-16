@@ -4,11 +4,10 @@ import { Observable} from 'rxjs';
 import { Router } from '@angular/router';
 
 import { jwtDecode } from "jwt-decode";
+import { AuthResponse, LoginResponse } from './interfaces/shared-interfaces';
 
-interface authResponse{
-  access_token:string,
-  refresh_token:string
-}
+
+
 
 
 
@@ -34,26 +33,29 @@ export class AuthService {
     
   }
 
-  login(credentials: {username:string,password:string}): Observable<authResponse> {
+  login(credentials: {username:string,password:string}): Observable<AuthResponse> {
     
-    return this.http.post<authResponse>(this.AUTH_ENDPOINT+"authenticate", credentials);
+    return this.http.post<AuthResponse>(this.AUTH_ENDPOINT+"authenticate", credentials);
   }
 
-  /* login(credentials: { username: string, password: string }): Observable<any> {
-    return this.http.post<any>(this.AUTH_ENDPOINT + "authenticate", credentials)
-      .pipe(
-        catchError(error => {
-          return throwError(()=>error); // Ensure error is propagated
-        })
-      );
-  } */
-
-  register(userData:any): Observable<authResponse> {
-    return this.http.post<authResponse>(this.AUTH_ENDPOINT+"register", userData);
+  //register now returns string message to alert
+  register(userData:any): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.AUTH_ENDPOINT+"register", userData);
   }
 
-  refreshToken():Observable<authResponse>{
-    return this.http.post<authResponse>(this.AUTH_ENDPOINT+"refresh",{refresh_token:this.getRefreshToken()});
+  isTokenValid():Observable<string>{
+    return this.http.post(this.AUTH_ENDPOINT+"validate-token-role",{token:this.getToken()},{ responseType: 'text' })
+    
+  }
+
+  verifyEmail(token:any):Observable<AuthResponse>{
+    return this.http.get<AuthResponse>(this.AUTH_ENDPOINT+"confirm?token="+token)
+
+  }
+
+
+  refreshToken():Observable<AuthResponse>{
+    return this.http.post<AuthResponse>(this.AUTH_ENDPOINT+"refresh",{refresh_token:this.getRefreshToken()});
 
   }
 
@@ -69,7 +71,7 @@ export class AuthService {
     return localStorage.getItem('refresh_token');
   }
 
-  storeTokens(jwt: authResponse): void {
+  storeTokens(jwt: AuthResponse): void {
     localStorage.setItem('access_token', jwt.access_token);
     localStorage.setItem('refresh_token',jwt.refresh_token);
   }

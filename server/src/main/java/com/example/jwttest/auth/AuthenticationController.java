@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,18 +28,17 @@ public class AuthenticationController {
     private final AuthenticationService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        authService.register(request);
-        return ResponseEntity.ok("User registered successfully");
-    }
-    /* public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
-        
+    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
-    } */
+    }
+
+    @GetMapping("/confirm")
+    public ResponseEntity<Map<String, String>> confirm(@RequestParam("token") String token) {
+        return ResponseEntity.ok(authService.confirmUser(token));
+    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRquest request) {
-
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
@@ -47,11 +47,16 @@ public class AuthenticationController {
         System.out.println("refresh request "+request);
         return ResponseEntity.ok(authService.refreshToken(request));
     }
-    
-    @GetMapping("/confirm")
-    public ResponseEntity<String> confirm(@RequestParam("token") String token) {
-        authService.confirmUser(token);
-        return ResponseEntity.ok("User confirmed successfully");
+
+    @PostMapping("/validate-token")
+    public ResponseEntity<String> validateToken(@RequestParam String token){
+        authService.isTokenValid(token);
+        return ResponseEntity.ok("token is valid");
+    }
+
+    @PostMapping("/validate-token-role")
+    public ResponseEntity<String> validateTokenRole(@RequestBody TokenValidationRequest request){
+        return ResponseEntity.ok(authService.isTokenRoleValid(request.getToken()));
     }
 
     

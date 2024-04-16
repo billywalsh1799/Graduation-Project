@@ -2,7 +2,6 @@ package com.example.jwttest.services;
 
 import java.security.Key;
 import java.util.Date;
-//import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -11,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -20,7 +20,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
     private static final String SECRET_KEY="404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
-    //private static final String SECRET_KEY="3c5f0ddfcc03a6ac2a02b62e6db0501bfa142ff35e4e5b9bf73478f99b43e93e";
+    private static final String REFRESH_KEY="3c5f0ddfcc03a6ac2a02b62e6db0501bfa142ff35e4e5b9bf73478f99b43e93e";
     //private static final String REFRESH_KEY="767ec0bd301691a4cfeb26ec59cf814059965309968ae7fab8e2321b3305d334544c0b920a3d1c14aaa1a34e09e8987e21100622f29276da1fc65f732204654d";
     private final long jwtExpiration=600000;
     private final long refreshExpiration=3600000;
@@ -38,12 +38,12 @@ public class JwtService {
 
     }
 
-    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails){
-        return buildToken(extraClaims, userDetails,jwtExpiration);
+    public String generateToken(Map<String,Object> extraClaims, String username){
+        return buildToken(extraClaims, username,jwtExpiration,SECRET_KEY);
     }
 
-    public String generateRefreshToken(Map<String,Object> extraClaims,UserDetails userDetails){
-        return buildToken(extraClaims, userDetails,refreshExpiration);
+    public String generateRefreshToken(Map<String,Object> extraClaims,String username){
+        return buildToken(extraClaims, username,refreshExpiration,REFRESH_KEY);
     }
     
     /* public String generateToken(UserDetails userDetails) {
@@ -51,11 +51,11 @@ public class JwtService {
     } */
     
 
-    private String buildToken(Map<String,Object> extraClaims,UserDetails userDetails,long expiration){
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername()).setHeaderParam("typ", "JWT")
+    private String buildToken(Map<String,Object> extraClaims,String username,long expiration,String SECRET){
+        return Jwts.builder().setClaims(extraClaims).setSubject(username).setHeaderParam("typ", "JWT")
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis()+expiration))
-        .signWith(getSignInKey(),SignatureAlgorithm.HS256)
+        .signWith(getSignInKey(SECRET),SignatureAlgorithm.HS256)
         .compact();
     }
 
@@ -76,6 +76,33 @@ public class JwtService {
         return isUsernameValid && isTokenExpired && areRolesMatching;
     }
 
+
+    public boolean isRefreshTokenValid(String token) throws JwtException{
+        //pasrsing will throw any kind of exception
+        Jwts.parserBuilder()
+                    .setSigningKey(getSignInKey(REFRESH_KEY))
+                    .build()
+                    .parseClaimsJws(token).getBody();
+        return true;
+        
+    }
+
+    public void validateToken(String token) throws JwtException{
+        //pasrsing will throw any kind of exception
+        Jwts.parserBuilder()
+                    .setSigningKey(getSignInKey(SECRET_KEY))
+                    .build()
+                    .parseClaimsJws(token).getBody();
+    }
+
+    //role comparison in service or front
+    public String validateTokenByRole(String token) throws JwtException{
+
+        String userRole=extractUserRole(token);
+        return userRole;
+
+    }
+
     private Date extractExpiration(String token){
         return extractClaim(token, Claims::getExpiration);
     }
@@ -84,14 +111,23 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    private Claims extractAllClaims(String token){
+    public Claims extractAllClaims(String access_token){
         return Jwts.parserBuilder()
-                    .setSigningKey(getSignInKey())
-                    .build()
-                    .parseClaimsJws(token).getBody();
+                .setSigningKey(getSignInKey(SECRET_KEY))
+                .build()
+                .parseClaimsJws(access_token).getBody();
     }
-    private Key getSignInKey() {
-        byte[] keyBytes=Decoders.BASE64.decode(SECRET_KEY);
+
+    public Claims extractRefreshClaims(String refresh_token){
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignInKey(REFRESH_KEY))
+                .build()
+                .parseClaimsJws(refresh_token).getBody();
+    }
+
+
+    private Key getSignInKey(String SECRET) {
+        byte[] keyBytes=Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

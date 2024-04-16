@@ -94,8 +94,9 @@
                 Please confirm your password
               </mat-error>
             </mat-form-field>
-            <button mat-raised-button color="primary" class="login-button" type="submit">
-              Sign Up
+            <button mat-raised-button color="primary" class="login-button" type="submit" [disabled]="loading">
+              <span *ngIf="!loading">Sign Up</span>
+              <mat-spinner *ngIf="loading" diameter="20" color="accent"></mat-spinner> <!-- Add spinner -->
             </button>
           </form>
         </mat-tab>

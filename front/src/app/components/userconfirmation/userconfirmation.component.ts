@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute} from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-userconfirmation',
@@ -8,14 +10,32 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserconfirmationComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) { }
+
+  constructor(private route: ActivatedRoute, private authService: AuthService,private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     
     const token = this.route.snapshot.queryParamMap.get('token');
-    console.log("token",token)
-    // Now you can use this.token to perform confirmation logic
-    // For example, you could send an HTTP request to your Spring Boot backend to confirm the user's email address
+    console.log("token", token)
+    this.authService.verifyEmail(token).subscribe({
+      next: (response:any) => {
+        // Handle success response
+        console.log(response);
+        // Uncomment the following lines if you want to use the response data
+        this.snackBar.open(response.message, 'Close', {
+          duration: 5000,
+          verticalPosition: 'top'
+        });
+      },
+      error: err => {
+        console.log(err);
+        let errorMessage=err.error.message;
+        this.snackBar.open(errorMessage, 'Close', {
+          duration: 5000,
+          verticalPosition: 'top'
+        });
+        // Handle error
+      }
+    }); // Added closing parenthesis
   }
-
 }

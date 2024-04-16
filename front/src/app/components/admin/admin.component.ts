@@ -12,7 +12,7 @@ import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements AfterViewInit {
- 
+
   userList:any=[]
   displayedColumns: string[] = ['id','firstname','lastname','username', 'email', 'role', 'status','action'];
   dataSource = new MatTableDataSource<any>(this.userList);

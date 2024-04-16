@@ -2,6 +2,8 @@ table {
     width: 100%;
   }
 
+
+
 .centered-div{
   display: flex;
   justify-content: center; /* Horizontally center the flex items */
@@ -10,6 +12,9 @@ table {
   background-color: wheat;
   
 }
+
+
+
 
 .inside-div{
   max-width: 70%; /* Set a maximum width for the centered div */

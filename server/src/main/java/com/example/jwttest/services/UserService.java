@@ -29,14 +29,14 @@ public class UserService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public User saveUser(User user){
-        return userRepo.save(user);
-    }
-    
     public Optional<User> getUser(String username){
         return userRepo.findByUsername(username);
     }
 
+    public User saveUser(User user){
+        return userRepo.save(user);
+    }
+    
     public List<User> getAll(){
         return userRepo.findAll();
     }

@@ -20,19 +20,7 @@ public class SecurityConfiguration {
     
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final  AuthenticationProvider authenticationProvider;
-   /*  @Bean
-    public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(authorizeRequests ->
-                authorizeRequests
-                    .requestMatchers("/admin/**").hasRole("ADMIN") // Restrict access to admin endpoints to users with the role "ADMIN"
-                    .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
-    } */
+   
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{

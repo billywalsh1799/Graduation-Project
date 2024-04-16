@@ -15,10 +15,11 @@ export class RegisterComponent {
   signUpForm: FormGroup;
 
   registered:boolean=false
+  loading: boolean = false;
 
   //errorMessage: string="";
 
-  constructor(private formBuilder: FormBuilder,private authService: AuthService,private router: Router) {
+  constructor(private formBuilder: FormBuilder,private authService: AuthService,private router: Router,private snackBar: MatSnackBar) {
     // Initialize sign in form
     this.signInForm = this.formBuilder.group({
       username: [null, [Validators.required]],
@@ -96,57 +97,33 @@ export class RegisterComponent {
     console.log(credentials)
     if (this.signInForm.valid){
 
+
        //clear form after successful submission
       //this.signInForm.reset({});
 
       console.log("valid form",credentials)
-       /* this.authService.login(credentials).subscribe(
-        res=>{
-          console.log("response",res)
-        },
-        err=>{
-          console.log("register component error",err)
-        }
-      ) */
-
       this.authService.login(credentials).subscribe({
         next: response => {
           // Handle success response
-          //console.log('Login successful:', response);
           const {access_token,refresh_token}=response
           this.authService.storeTokens({ access_token: access_token, refresh_token: refresh_token });
-          //console.log(this.authService.getToken())
           // Redirect user to the desired route
           this.router.navigate(['/home']);
         },
         error: err => {
           // Handle error forwarded by the interceptor
+
           let errorMessage=err.error.message;
-          if(errorMessage=="User not found"){
-            //this.setCustomLoginError(errorMessage,"username")
-            this.setCustomFormError(this.signInForm,"username",errorMessage)
-          }
-          else if(errorMessage=="Wrong Password"){
-            //this.setCustomLoginError(errorMessage,"password")
+          console.log(errorMessage)
+          if(errorMessage=="Bad credentials"){
             this.setCustomFormError(this.signInForm,"password",errorMessage)
+          }
+          else{
+            this.setCustomFormError(this.signInForm,"username",errorMessage)
           }
         }
       });
        
-      /* this.authService.login(credentials).subscribe(
-        res => {
-         
-          console.log(res)
-          this.authService.storeTokens({ access_token: res.access_token, refresh_token: res.refresh_token });
-          console.log(this.authService.getToken())
-          // Redirect user to the desired route
-          this.router.navigate(['/home']);
-          
-        },
-        error => {
-          
-        }
-      ); */
     }
 
     else{
@@ -158,6 +135,7 @@ export class RegisterComponent {
   signUp() {
     if (this.signUpForm.valid) {
       // Implement registration logic here
+      this.loading = true; // Enable loading spinner
       
       const {firstname,lastname,username,email,password}=this.signUpForm.value
       const userInfo={firstname,lastname,username,email,password}
@@ -166,14 +144,15 @@ export class RegisterComponent {
         next: response => {
           // Handle success response
           console.log('Registration successful:', response);
-          alert("Registration done cofirm email")
-          //const {access_token,refresh_token}=response
-          //this.authService.storeTokens({ access_token: access_token, refresh_token: refresh_token });
-          //this.router.navigate(['/home']);
+          this.snackBar.open(response.message, 'Close', {
+            duration: 5000,
+            verticalPosition: 'top'
+          });
+          this.loading = false;
         },
         error: err => {
+          this.loading = false;
           let errorMessage=err.error.message;
-          
           if(errorMessage=="User already exists"){
             console.log(errorMessage)
             this.setCustomFormError(this.signUpForm,"username",errorMessage)
