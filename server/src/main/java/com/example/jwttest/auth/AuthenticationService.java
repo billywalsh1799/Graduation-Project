@@ -16,6 +16,7 @@ import com.example.jwttest.repo.UserRepository;
 import com.example.jwttest.services.JwtService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 
 import org.springframework.security.core.Authentication;
 
@@ -75,57 +76,54 @@ public class AuthenticationService {
         
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRquest request){
+    public AuthenticationResponse authenticate(AuthenticationRequest request){
 
         Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
        
         // Cast Authentication to User
         User user = (User) authentication.getPrincipal();
+        System.err.println("user principal: "+user);
         
         // Create extra claims with user role
         Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("firstname", user.getFirstname());
+        extraClaims.put("lastname", user.getLastname());
+        extraClaims.put("username", user.getUsername());
         extraClaims.put("role", user.getRole());
 
         //Generate user tokens
-        String jwtToken=jwtService.generateToken(extraClaims,user.getUsername());
-        String refreshToken=jwtService.generateRefreshToken(extraClaims,user.getUsername());
+        String jwtToken=jwtService.generateToken(extraClaims,user.getEmail());
+        String refreshToken=jwtService.generateRefreshToken(extraClaims,user.getEmail());
         return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
     }
 
     public AuthenticationResponse refreshToken(RefreshRequest request)  {
         
         final String refreshToken;
-        final String username;
+        final String email;
         final String userRole;
 
         refreshToken=request.getRefreshToken();
-
-
-        //remove the try catch the service throws by itself
-        //use id instead in case of update of username
-        //make db query to get username and permissions
-        
-        //chagne extracting claims one for user one for refresh different keys
-        //username=jwtService.extractUsername(refreshToken); 
-        //extract role from refresh
-        //userRole=jwtService.extractUserRole(refreshToken);
-
         Claims claims=jwtService.extractRefreshClaims(refreshToken);
-        username=(String)claims.getSubject();
+        email=(String)claims.getSubject();
         userRole=(String)claims.get("role");
 
+        //make db query in case an update happened 
 
-
+        User user=userRepo.findByEmail(email).orElseThrow(()->new JwtException("Invalid JWT"));
 
         // Create extra claims with user role
         Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("firstname", user.getFirstname());
+        extraClaims.put("lastname", user.getLastname());
+        extraClaims.put("username", user.getUsername());
         extraClaims.put("role", userRole);
 
 
         //the validity is checked during parsing
        
-        String accessToken=jwtService.generateToken(extraClaims,username);
+        String accessToken=jwtService.generateToken(extraClaims,email);
         AuthenticationResponse authResponse=AuthenticationResponse.builder()
         .accessToken(accessToken)
         .refreshToken(refreshToken)
@@ -138,8 +136,7 @@ public class AuthenticationService {
     }
 
     public Map<String, String> confirmUser(String token){
-      
-
+        
         //extract user info from confirmation token save user to db
         Claims userInfo=jwtService.extractAllClaims(token);
 
@@ -154,18 +151,6 @@ public class AuthenticationService {
 
         
         userRepo.save(user);
-
-        //generate jwt tokens
-
-        System.out.println("confirmation token: "+token);
-        // Create extra claims with user role
-        Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("role", user.getRole());
-
-        //Generate user tokens
-        /* String jwtToken=jwtService.generateToken(extraClaims,user.getUsername());
-        String refreshToken=jwtService.generateRefreshToken(extraClaims,user.getUsername());
-        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();*/
         //tokens generated only after authentication and enabling by admin
         Map<String, String> responseData = new HashMap<>();
         responseData.put("message", "Email Verification Successful!, your account is currently pending administrative approval.You will receive an email notification once your account has been activated");

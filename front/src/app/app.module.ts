@@ -29,6 +29,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserconfirmationComponent } from './components/userconfirmation/userconfirmation.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { UserprofileComponent } from './components/userprofile/userprofile.component';
+import {MatGridListModule} from '@angular/material/grid-list'; 
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     AdminComponent,
     UnauthorizedComponent,
     UpdatepopupComponent,
-    UserconfirmationComponent
+    UserconfirmationComponent,
+    UserprofileComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     HttpClientModule,
     MatCardModule,MatTabsModule,MatInputModule,MatButtonModule,MatIconModule,MatSnackBarModule, BrowserAnimationsModule,
-    MatTableModule,MatPaginatorModule,MatSortModule,MatDialogModule,MatSelectModule,MatCheckboxModule,MatProgressSpinnerModule
+    MatTableModule,MatPaginatorModule,MatSortModule,MatDialogModule,MatSelectModule,MatCheckboxModule,MatProgressSpinnerModule,
+    MatGridListModule
     
   ],
   providers: [AuthGuard,{ provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi: true}],

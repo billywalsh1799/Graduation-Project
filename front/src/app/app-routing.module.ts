@@ -7,6 +7,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { AdminGuard } from './guard/admin.guard';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserconfirmationComponent } from './components/userconfirmation/userconfirmation.component';
+import { UserprofileComponent } from './components/userprofile/userprofile.component';
 
 /* const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'login', component: RegisterComponent },
   {path:'auth/confirm',component:UserconfirmationComponent},
   {path:'unauthorized',component:UnauthorizedComponent},
+  {path:'profile',component:UserprofileComponent},
   { path: '**', redirectTo: '/home' }
 ];
 

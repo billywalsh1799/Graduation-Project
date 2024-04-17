@@ -5,8 +5,8 @@
         <mat-tab label="Sign In">
           <form class="login-form" [formGroup]="signInForm" (ngSubmit)="signIn()" #form1="ngForm">
             <mat-form-field>
-              <input matInput placeholder="Username"  formControlName="username">
-              <mat-icon matSuffix>username</mat-icon>
+              <input matInput placeholder="Email"  formControlName="username">
+              <!-- <mat-icon matSuffix>username</mat-icon> -->
               <mat-error *ngIf="form1.submitted && signInForm.get('username')?.hasError('required')">
                 Username is required
               </mat-error>

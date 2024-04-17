@@ -5,16 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-
-import com.example.jwttest.email.token.ConfirmationToken;
-import com.example.jwttest.email.token.ConfirmationTokenRepository;
-import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
 import com.example.jwttest.models.User;
 import com.example.jwttest.models.UserDto;
 import com.example.jwttest.repo.UserRepository;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 
 
@@ -23,11 +16,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepo;
-    private final ConfirmationTokenRepository tokenRepo;
-    
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     public Optional<User> getUser(String username){
         return userRepo.findByUsername(username);
@@ -41,9 +29,6 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    /* public List<User> getUsers(){
-        return userRepo.findAll();
-    } */
     public List<UserDto> getUsers() {
         List<User> users = userRepo.findAll();
         return users.stream()
@@ -53,18 +38,6 @@ public class UserService {
     }
 
    /*  public void enableUser(Long userId) {
-        Optional<User> optionalUser = userRepo.findById(userId);
-        if (optionalUser.isPresent()) {
-            System.out.println("user: "+optionalUser);
-            User user = optionalUser.get();
-            user.setEnabled(false);
-            userRepo.save(user);
-        } else {
-            throw new UserNotFoundException("User not found with ID: " + userId);
-        }
-
-    } */
-    public void enableUser(Long userId) {
         User user =userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("user with id: "+userId+"not found"));                          
         user.setEnabled(true);
         userRepo.save(user);
@@ -73,7 +46,7 @@ public class UserService {
         User user =userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("user with id: "+userId+"not found"));                          
         user.setEnabled(false);
         userRepo.save(user);
-    }
+    } */
 
 
 
@@ -114,16 +87,8 @@ public class UserService {
 
 
     public void deleteUserId(Long id) {
-        //userRepo.deleteById(id);
-        Optional<User> userOptional = userRepo.findById(id);
-        userOptional.ifPresent(user -> {
-            // Find associated confirmation tokens
-            List<ConfirmationToken> confirmationTokens = tokenRepo.findByUser(user);
-            // Delete associated confirmation tokens
-            confirmationTokens.forEach(tokenRepo::delete);
-            // Delete the user
-            userRepo.delete(user);
-        }); // Add closing parenthesis here
+        userRepo.deleteById(id);
+       
     }
     
         /* public void deleteUser(String username) {

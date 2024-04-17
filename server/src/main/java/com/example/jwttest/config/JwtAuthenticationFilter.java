@@ -13,8 +13,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.example.jwttest.exceptionHandling.exceptions.ErrorResponse;
 import com.example.jwttest.services.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
