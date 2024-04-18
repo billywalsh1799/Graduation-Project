@@ -5,6 +5,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+
+import com.example.jwttest.exceptionHandling.exceptions.UserAlreadyExistsException;
+import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
+import com.example.jwttest.models.ProfileUpdateRequest;
 import com.example.jwttest.models.User;
 import com.example.jwttest.models.UserDto;
 import com.example.jwttest.repo.UserRepository;
@@ -61,6 +65,23 @@ public class UserService {
                            updatedUser.getLastname(),updatedUser.getUsername(),updatedUser.getEmail(),
                            updatedUser.getRole(),updatedUser.isEnabled());
        
+    }
+
+    public UserDto updateUserProfile(ProfileUpdateRequest request){
+
+        //check username existance if username not empty string
+        User user=userRepo.findByEmail(request.getEmail()).orElseThrow(()->new UserNotFoundException("User not found"));
+        if(user.getUsername()!=request.getUsername()){
+            //there has been a change in username check if it is used
+            userRepo.findByUsername(request.getUsername()).ifPresent(existingUser -> {
+                throw new UserAlreadyExistsException("Username is already in use");
+            });
+
+            //make the update
+        }
+
+        return new UserDto(null, null, null, null, null, null, false);
+
     }
 
     /* public void deleteUser(String username){

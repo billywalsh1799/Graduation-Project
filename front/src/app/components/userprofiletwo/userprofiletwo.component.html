@@ -1,0 +1,57 @@
+<div class="user-profile centered">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>User Profile</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+            <form [formGroup]="userInfoForm" (ngSubmit)="updateProfile()">
+                <div class="user-profile-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>First name</mat-label>
+                        <input matInput type="text" formControlName="firstname">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput  formControlName="lastname">
+                    </mat-form-field>
+                </div>
+                <div class="user-profile-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Username</mat-label>
+                        <input matInput  formControlName="username">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email address</mat-label>
+                        <input matInput type="text"  [value]="email" readonly="true">
+                    </mat-form-field>
+                </div>
+                <div class="user-profile-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Role</mat-label>
+                        <input matInput  [value]="role" readonly="true">
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" type="submit">Update Profile</button>
+                </div>
+            </form>
+        <button mat-raised-button color="primary" (click)="toggleChangePassword()">Change password</button>
+        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+            <div class="user-profile-column" *ngIf="changePassword">
+                <mat-form-field appearance="outline">
+                    <mat-label>Current password</mat-label>
+                    <input matInput   formControlName="currentPassword">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>New password</mat-label>
+                    <input matInput   formControlName="newPassword">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Confirm new password</mat-label>
+                    <input matInput   formControlName="confirmNewPassword">
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="submit">Update password</button>
+            </div>
+        </form>
+
+      </mat-card-content>
+    </mat-card>
+</div>

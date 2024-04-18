@@ -47,9 +47,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity<String> validateToken(@RequestParam String token){
-        authService.isTokenValid(token);
-        return ResponseEntity.ok("token is valid");
+    public ResponseEntity<Map<String, Object>> validateToken(@RequestBody Map<String, String> token){
+        return ResponseEntity.ok(authService.isTokenValid(token.get("token")));
     }
 
     @PostMapping("/validate-token-role")

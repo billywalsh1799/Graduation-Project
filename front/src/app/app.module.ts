@@ -30,7 +30,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserconfirmationComponent } from './components/userconfirmation/userconfirmation.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
-import {MatGridListModule} from '@angular/material/grid-list'; 
+import {MatGridListModule} from '@angular/material/grid-list';
+import { UserprofiletwoComponent } from './components/userprofiletwo/userprofiletwo.component'; 
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     UnauthorizedComponent,
     UpdatepopupComponent,
     UserconfirmationComponent,
-    UserprofileComponent
+    UserprofileComponent,
+    UserprofiletwoComponent
   ],
   imports: [
     BrowserModule,

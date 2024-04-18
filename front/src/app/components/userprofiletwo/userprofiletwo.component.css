@@ -1,0 +1,58 @@
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: burlywood;
+}
+
+mat-card {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    height: 80%;
+    box-sizing: border-box;
+}
+
+.user-profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    button {
+        width: 160px;
+        height: 40px;
+        position: relative;
+        top:-10px;
+        background-color: hsl(148,70%,31%);
+    }
+}
+
+mat-form-field {
+    width: 45%; /* Adjust as needed */
+}
+
+mat-card-header{
+    /* Center align the content horizontally */
+  /*  justify-content: center;
+   
+   text-align: center; */
+   margin-bottom: 5%;
+}
+
+
+mat-card-content {
+    text-align: center;
+}
+
+.user-profile-column{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    button {
+        width: 160px;
+        height: 40px;
+        background-color: hsl(148,70%,31%);
+        
+    }
+}

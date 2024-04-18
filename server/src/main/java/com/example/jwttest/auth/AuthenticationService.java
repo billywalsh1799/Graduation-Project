@@ -157,8 +157,8 @@ public class AuthenticationService {
         return responseData;
     }
 
-    public void isTokenValid(String token){
-        jwtService.validateToken(token);
+    public Map<String, Object> isTokenValid(String token){
+        return jwtService.validateToken(token);
         
     }
 

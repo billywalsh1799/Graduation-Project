@@ -2,6 +2,7 @@ package com.example.jwttest.services;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -87,12 +88,16 @@ public class JwtService {
         
     }
 
-    public void validateToken(String token) throws JwtException{
+    public Map<String, Object> validateToken(String token) throws JwtException{
         //pasrsing will throw any kind of exception
-        Jwts.parserBuilder()
+        //retrun decoded token payload for front uses
+        Map<String, Object> claims=Jwts.parserBuilder()
                     .setSigningKey(getSignInKey(SECRET_KEY))
                     .build()
                     .parseClaimsJws(token).getBody();
+        System.out.println(claims);
+        return claims;
+
     }
 
     //role comparison in service or front
