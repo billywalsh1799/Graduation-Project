@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-userprofiletwo',
@@ -14,7 +15,7 @@ export class UserprofiletwoComponent {
   email:string="smoalla1799@gmail.com"
   role:string="user"
 
-  constructor(private formBuilder: FormBuilder){
+  constructor(private formBuilder: FormBuilder ,private authService:AuthService){
 
     //decode jwt and assign userinfo to formfields dont forget email and role
     this.userInfoForm = this.formBuilder.group({
@@ -55,4 +56,10 @@ export class UserprofiletwoComponent {
     this.changePassword=!this.changePassword
   }
 
+  decodeToken(){
+    console.log(this.authService.DecodeToken())
+  }
+
 }
+
+

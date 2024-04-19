@@ -11,6 +11,7 @@ import com.example.jwttest.email.EmailService;
 import com.example.jwttest.exceptionHandling.exceptions.AccountVerificationException;
 import com.example.jwttest.exceptionHandling.exceptions.UsedEmailException;
 import com.example.jwttest.exceptionHandling.exceptions.UserAlreadyExistsException;
+import com.example.jwttest.models.SecurityUser;
 import com.example.jwttest.models.User;
 import com.example.jwttest.repo.UserRepository;
 import com.example.jwttest.services.JwtService;
@@ -82,9 +83,10 @@ public class AuthenticationService {
         new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
        
         // Cast Authentication to User
-        User user = (User) authentication.getPrincipal();
-        System.err.println("user principal: "+user);
+        SecurityUser securityUser =  (SecurityUser)authentication.getPrincipal();
+        //System.err.println("user principal: "+user.getUser());
         
+        User user=securityUser.getUser();
         // Create extra claims with user role
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("firstname", user.getFirstname());

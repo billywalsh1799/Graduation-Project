@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 
 @Entity @Data @Builder @NoArgsConstructor @AllArgsConstructor @Table(name="USERS")
 
-public class User implements UserDetails  {
+public class User  {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstname;
@@ -32,26 +32,17 @@ public class User implements UserDetails  {
     
     @Column(nullable = false, columnDefinition = "boolean default true") // Add default value
     private boolean enabled;
+
+    public User(String firstname, String lastname, String username, String email, String password, String role, boolean enabled) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.enabled = enabled;
+    }
    
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
-    }
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-    @Override
-    public boolean isAccountNonLocked() {
-       return true;
-    }
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
+    
     
 }

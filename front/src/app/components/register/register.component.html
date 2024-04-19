@@ -5,13 +5,13 @@
         <mat-tab label="Sign In">
           <form class="login-form" [formGroup]="signInForm" (ngSubmit)="signIn()" #form1="ngForm">
             <mat-form-field>
-              <input matInput placeholder="Email"  formControlName="username">
+              <input matInput placeholder="Email"  formControlName="email">
               <!-- <mat-icon matSuffix>username</mat-icon> -->
-              <mat-error *ngIf="form1.submitted && signInForm.get('username')?.hasError('required')">
-                Username is required
+              <mat-error *ngIf="form1.submitted && signInForm.get('email')?.hasError('required')">
+                Email is required
               </mat-error>
-              <mat-error *ngIf="form1.submitted && signInForm.get('username')?.hasError('customError')">
-                {{ signInForm.get('username')?.getError('customError') }}
+              <mat-error *ngIf="form1.submitted && signInForm.get('email')?.hasError('customError')">
+                {{ signInForm.get('email')?.getError('customError') }}
               </mat-error>             
             </mat-form-field>
             <mat-form-field>

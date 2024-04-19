@@ -3,6 +3,7 @@ package com.example.jwttest.config;
 import java.io.IOException;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.http.UserDetailsServiceFactoryBean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.jwttest.exceptionHandling.exceptions.ErrorResponse;
+import com.example.jwttest.services.JpaUserDetailsService;
 import com.example.jwttest.services.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
@@ -26,7 +28,9 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    //private final UserDetailsService userDetailsService;
+    private final JpaUserDetailsService jpaUserDetailsService;
+    
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,@NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
@@ -68,7 +72,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //remove the loadingusername just check the signature db query in refresh method only
         
         if (username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-            UserDetails userDetails=this.userDetailsService.loadUserByUsername(username);
+
+            //UserDetails userDetails=this.userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails=this.jpaUserDetailsService.loadUserByUsername(username);
+            
             if (jwtService.isTokenValid(jwt, userDetails)){
                 UsernamePasswordAuthenticationToken authToken=new UsernamePasswordAuthenticationToken(userDetails,
                 null,userDetails.getAuthorities());

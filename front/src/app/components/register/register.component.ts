@@ -22,13 +22,13 @@ export class RegisterComponent {
   constructor(private formBuilder: FormBuilder,private authService: AuthService,private router: Router,private snackBar: MatSnackBar) {
     // Initialize sign in form
     this.signInForm = this.formBuilder.group({
-      username: [null, [Validators.required]],
+      email: [null, [Validators.required]],
       password: [null, [Validators.required]]
     });
 
     // Subscribe to value changes of the username control
-    this.signInForm.get('username')?.valueChanges.subscribe(() => {
-      this.clearFormError(this.signInForm,"username"); // Clear custom error when value changes
+    this.signInForm.get('email')?.valueChanges.subscribe(() => {
+      this.clearFormError(this.signInForm,"email"); // Clear custom error when value changes
     });
 
     this.signInForm.get('password')?.valueChanges.subscribe(() => {

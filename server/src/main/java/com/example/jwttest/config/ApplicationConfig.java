@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
 import com.example.jwttest.repo.UserRepository;
+import com.example.jwttest.services.JpaUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,18 +22,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository repository;
-    @Bean
+    //private final UserRepository repository;
+
+    private final JpaUserDetailsService jpaUserDetailsService;
+    /* @Bean
     public UserDetailsService userDetailsService(){
             return username ->repository.findByEmail(username)
             .orElseThrow(() -> new UserNotFoundException("User not found"));   
         }
-
+ */
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider=new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        //authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(jpaUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
 
