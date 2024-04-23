@@ -29,9 +29,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserconfirmationComponent } from './components/userconfirmation/userconfirmation.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { UserprofileComponent } from './components/userprofile/userprofile.component';
 import {MatGridListModule} from '@angular/material/grid-list';
-import { UserprofiletwoComponent } from './components/userprofiletwo/userprofiletwo.component'; 
+import { UserprofileComponent } from './components/userprofile/userprofile.component';
+import { PasswordresetpopupComponent } from './components/passwordresetpopup/passwordresetpopup.component'; 
 
 @NgModule({
   declarations: [
@@ -43,7 +43,7 @@ import { UserprofiletwoComponent } from './components/userprofiletwo/userprofile
     UpdatepopupComponent,
     UserconfirmationComponent,
     UserprofileComponent,
-    UserprofiletwoComponent
+    PasswordresetpopupComponent
   ],
   imports: [
     BrowserModule,

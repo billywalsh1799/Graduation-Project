@@ -1,36 +1,43 @@
-<div mat-dialog-title>
-  <h1>Employee Form</h1>
+<div class="user-profile centered">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>User Profile</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+            <form [formGroup]="userInfoForm" (ngSubmit)="updateProfile()">
+                <div class="user-profile-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>First name</mat-label>
+                        <input matInput type="text" formControlName="firstname">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput  formControlName="lastname">
+                    </mat-form-field>
+                </div>
+                <div class="user-profile-row">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Username</mat-label>
+                        <input matInput  formControlName="username">
+                        <!-- <mat-error >
+                            username used error
+                        </mat-error>  -->
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="readonly-field" >
+                        <mat-label class="readonly-field">Email address</mat-label>
+                        <input matInput readonly="true" class="readonly-field" formControlName="email">
+                    </mat-form-field>
+                </div>
+                <div class="user-profile-row">
+                    <mat-form-field appearance="outline" class="readonly-field" >
+                        <mat-label class="readonly-field">Role</mat-label>
+                        <input matInput class="readonly-field" readonly="true" formControlName="role">
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" type="submit">Update Profile</button>
+                </div>
+            </form>
+            
+        <button mat-raised-button color="primary" (click)="changePassword()">Change password</button>
+      </mat-card-content>
+    </mat-card>
 </div>
-<form>
-  <div mat-dialog-content class="content">
-      <div class="row">
-          <mat-form-field appearance="outline">
-              <mat-label>First name</mat-label>
-              <input matInput type="text" placeholder="Ex. Technical" value="saif">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-              <mat-label>Last Name</mat-label>
-              <input matInput placeholder="Ex. Babaji">
-          </mat-form-field>
-      </div>
-      <div class="row">
-          <mat-form-field appearance="outline">
-              <mat-label>Email</mat-label>
-              <input matInput type="email" placeholder="Ex. test@gmail.com" readonly="true" value="smoalla1799@gmail.com">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-              <mat-label>Username</mat-label>
-              <input matInput type="email" placeholder="Ex. sam1799">
-          </mat-form-field>
-      </div>
-      <div class="row">
-          <mat-form-field appearance="outline">
-              <mat-label>Role</mat-label>
-              <input matInput placeholder="ROLE_USER" value="User" readonly="true">
-          </mat-form-field>
-      </div>
-  </div>
-  <div mat-dialog-actions class="action">
-      <button mat-raised-button color="primary" type="submit">Update</button>
-  </div>
-</form>

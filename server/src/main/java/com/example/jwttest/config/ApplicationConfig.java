@@ -7,13 +7,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
-import com.example.jwttest.repo.UserRepository;
 import com.example.jwttest.services.JpaUserDetailsService;
 
 import lombok.RequiredArgsConstructor;

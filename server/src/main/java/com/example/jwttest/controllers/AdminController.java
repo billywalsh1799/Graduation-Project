@@ -1,4 +1,4 @@
-package com.example.jwttest.auth;
+package com.example.jwttest.controllers;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.example.jwttest.auth.UpdateUserRequest;
 import com.example.jwttest.models.UserDto;
 import com.example.jwttest.services.UserService;
 

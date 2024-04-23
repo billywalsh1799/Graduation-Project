@@ -21,3 +21,16 @@ export interface UpdateUser{
     role:string,
     enabled:boolean
 }
+
+export interface ProfileUpdateRequest{
+    email:string,
+    username:string,
+    firstname:string,
+    lastname:string
+}
+
+export interface PasswordResetRequest{
+    email:string,
+    currentPassword:string,
+    newPassword:string
+}

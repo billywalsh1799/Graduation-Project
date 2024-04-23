@@ -1,26 +1,69 @@
-.content {
-  padding-top: 10px;
-  width: 60%;
- /*  background-color: blueviolet; */
-
-  
-}
-.row {
-  display: flex;
-  gap: 10px;
-
-  mat-form-field {
-    width: 40%;
-    
-  }
-
-  
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: burlywood;
 }
 
-.action {
-  padding: 0px 25px 20px;
-  button {
-    flex: 1;
-  }
+mat-card {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    height: 50%;
+    box-sizing: border-box;
 }
 
+.user-profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    button {
+        width: 160px;
+        height: 40px;
+        position: relative;
+        top:-10px;
+        background-color: hsl(148,70%,31%);
+    }
+}
+
+mat-form-field {
+    width: 45%; /* Adjust as needed */
+}
+
+mat-card-header{
+    /* Center align the content horizontally */
+  /*  justify-content: center;
+   
+   text-align: center; */
+   margin-bottom: 5%;
+}
+
+
+mat-card-content {
+    text-align: center;
+}
+
+.user-profile-column{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    button {
+        width: 160px;
+        height: 40px;
+        background-color: hsl(148,70%,31%);
+        
+    }
+}
+
+mat-label{
+    color: blue;
+}
+
+.readonly-field {
+    /* background-color: #f4f4f4; */ /* Example background color */
+    color: #555; /* Example text color */
+    border: none; /* Remove border */
+    cursor: not-allowed; /* Change cursor to not-allowed */
+}

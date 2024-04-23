@@ -1,12 +1,15 @@
-package com.example.jwttest.auth;
+package com.example.jwttest.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
-
+import com.example.jwttest.auth.AuthenticationRequest;
+import com.example.jwttest.auth.AuthenticationResponse;
+import com.example.jwttest.auth.AuthenticationService;
+import com.example.jwttest.auth.RefreshRequest;
+import com.example.jwttest.auth.RegisterRequest;
+import com.example.jwttest.auth.TokenValidationRequest;
 
 import lombok.RequiredArgsConstructor;
 import java.util.Map;

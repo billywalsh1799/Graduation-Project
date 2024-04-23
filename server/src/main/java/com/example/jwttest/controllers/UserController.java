@@ -2,23 +2,26 @@ package com.example.jwttest.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jwttest.models.User;
+import com.example.jwttest.models.PasswordResetRequest;
+import com.example.jwttest.models.ProfileUpdateRequest;
+import com.example.jwttest.models.UserDto;
 import com.example.jwttest.services.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
+import java.util.Map;
 
-//import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -32,31 +35,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/user/{email}")
+    public ResponseEntity<UserDto> getUser(@PathVariable String email) {
+        return new ResponseEntity<>(userService.getUser(email),HttpStatus.OK);
+    }
+    
 
-    @GetMapping("/user")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    @PostMapping("/user/update-profile")
+    public ResponseEntity<UserDto> updateUserProfile(@RequestBody ProfileUpdateRequest request) {
+        return new ResponseEntity<>(userService.updateUserProfile(request),HttpStatus.CREATED);
     }
-    @GetMapping("/test")
-    public String getMethodName() {
-        return "hello from users";
-    }
-    
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers(){
-        //return ResponseEntity.ok().body(userService.getUsers());
-        return new ResponseEntity<>(userService.getAll(),HttpStatus.OK);
+
+    @PostMapping("/user/rest-password")
+    public ResponseEntity<Map<String, String>> resetUserPassword(@RequestBody PasswordResetRequest request) {
+        return new ResponseEntity<>(userService.resetUserPassword(request),HttpStatus.CREATED);
     }
     
-    @PostMapping("/user/save")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
-        return new ResponseEntity<>(userService.saveUser(user),HttpStatus.CREATED);
-    }
-    
-    @PostMapping("path")
-    public String postMethodName(@RequestBody String entity) {
-        return entity;
-    }
-    
+   
     
 }

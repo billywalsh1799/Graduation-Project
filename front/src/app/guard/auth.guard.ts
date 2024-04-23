@@ -14,6 +14,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.authService.isTokenValid().pipe(
       map(() => {
+        console.log("jwt validation")
         return true;
       }),
       catchError((error: any) => {
