@@ -31,6 +31,13 @@
               Sign In
             </button>
           </form>
+          <div class="login-links">
+            <!-- <p>New User? <a routerLink="/forgot-password">Register here</a>.</p>
+            <p>Forgot your password? <a routerLink="/forgot-password">Reset it here</a>.</p> -->
+            <a routerLink="/forgot-password">Forget Password ?</a>
+            <a routerLink="/register">Create Account</a>
+            
+          </div>
         </mat-tab>
         <mat-tab label="Sign Up">
           <form class="login-form"  [formGroup]="signUpForm"  (ngSubmit)="signUp()"  #form2="ngForm">

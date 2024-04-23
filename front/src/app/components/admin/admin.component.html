@@ -1,9 +1,33 @@
 <!-- <p>admin works!</p> -->
+
 <div class="centered-div">
   <div class="mat-elevation-z8 inside-div">
+    <div class="search-filters">
+      <mat-form-field appearance="fill">
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Search...">
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <mat-select (selectionChange)="applyStatusFilter($event)">
+          <mat-option value="">All</mat-option>
+          <mat-option value="Active">Active</mat-option>
+          <mat-option value="Inactive">Inactive</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>Role</mat-label>
+        <mat-select (selectionChange)="applyRoleFilter($event)">
+          <mat-option value="">All</mat-option>
+          <mat-option value="ROLE_USER">User</mat-option>
+          <mat-option value="ROLE_ADMIN">Admin</mat-option>
+          <!-- Options for roles here -->
+        </mat-select>
+      </mat-form-field>
+    </div>
     <table mat-table matSort [dataSource]="dataSource">
-
-
       <!-- Id Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell mat-sort-header *matHeaderCellDef> Id </th>

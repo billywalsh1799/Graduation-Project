@@ -29,6 +29,7 @@ export class UpdatepopupComponent  {
   UpdateUser() {
     //console.log("user updated succcessfully",this.updateForm.value)
     //console.log(this.data)
+    //check if values not changed
     const {role,isactive}=this.updateForm.value
     const updatedUserData={role,enabled:isactive}
     this.dialogref.close(updatedUserData);

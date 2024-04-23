@@ -100,4 +100,42 @@ export class AdminComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
+  // Apply filter for search
+applyFilter(event: any) {
+  const filterValue=event.target.value
+  this.dataSource.filter = filterValue.trim().toLowerCase();
 }
+
+// Apply filter for status
+applyStatusFilter(event: any) {
+  console.log('Status Filter Event:', event);
+  const status = event.value;
+  console.log('Selected Status:', status);
+  this.dataSource.filterPredicate = (data: any, filter: string) => {
+    return (status === 'Active' && data.enabled) || (status === 'Inactive' && !data.enabled);
+  };
+  this.dataSource.filter = status.trim().toLowerCase();
+}
+
+// Apply filter for role
+applyRoleFilter(event: any) {
+  const role = event.value;
+  this.dataSource.filterPredicate = (data: any, filter: string) => {
+    return data.role.toLowerCase().includes(filter);
+  };
+  this.dataSource.filter = role.trim().toLowerCase();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+}
+

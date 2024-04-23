@@ -22,3 +22,15 @@ table {
   
   
 }
+
+
+.search-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 20px; */
+}
+
+.search-filters mat-form-field {
+  width: calc(30% - 10px);
+}

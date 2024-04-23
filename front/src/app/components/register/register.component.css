@@ -9,15 +9,20 @@
     background-color: wheat;
     background-position: center;
    /*  background-repeat: no-repeat; */
-    background-size: cover;
+/*     background-size: cover; */
     overflow: hidden;
   }
   
   mat-card {
-    width: 22%;
+    width: 20%;
+    max-height: 80%;
     margin: 10% auto;
     border-radius: 8px;
     text-align: center;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    
     
     /* background-color: aquamarine; */
 
@@ -46,4 +51,10 @@
   }
   
   
-  
+  .login-links{
+    display: flex;
+   /*  justify-content: space-between; */
+   background-color: #303F9F;
+   width: 50%;
+   
+  }

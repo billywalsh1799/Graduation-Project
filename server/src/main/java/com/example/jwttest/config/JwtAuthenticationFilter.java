@@ -12,7 +12,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.example.jwttest.exceptionHandling.exceptions.ErrorResponse;
 import com.example.jwttest.services.JpaUserDetailsService;
 import com.example.jwttest.services.JwtService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
@@ -56,14 +55,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             //response.getWriter().write(e.getMessage());
 
-            ErrorResponse errorResponse=new ErrorResponse(e.getMessage(),401);
+            //ErrorResponse errorResponse=new ErrorResponse(e.getMessage(),401);
             // Convert the JSON object to a JSON string
-            String jsonResponse = new ObjectMapper().writeValueAsString(errorResponse);
+            //String jsonResponse = new ObjectMapper().writeValueAsString(errorResponse);
             // Set response content type to JSON
-            response.setContentType("application/json");
+            //response.setContentType("application/json");
             // Write the JSON error response to the response body
-            response.getWriter().write(jsonResponse);
+            //response.getWriter().write(jsonResponse);
             //send json error rsponse
+            ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 401);
+            String jsonResponse = "{\"message\":\"" + errorResponse.getMessage() + "\",\"status\":" + errorResponse.getStatus() + "}";
+            
+            response.setContentType("application/json");
+            response.getWriter().write(jsonResponse);
             return;
         }
 

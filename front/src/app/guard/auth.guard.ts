@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
       }),
       catchError((error: any) => {
         console.error('Error occurred while validating token:', error);
+        //return of(true)
         return of(this.router.createUrlTree(['/login']));
       })
     );
