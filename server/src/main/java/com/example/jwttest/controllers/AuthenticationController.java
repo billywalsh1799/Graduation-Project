@@ -50,14 +50,29 @@ public class AuthenticationController {
     }
 
     @PostMapping("/validate-token")
-    public ResponseEntity<Map<String, Object>> validateToken(@RequestBody Map<String, String> token){
-        return ResponseEntity.ok(authService.isTokenValid(token.get("token")));
+    public ResponseEntity<Map<String, Object>> validateToken(@RequestBody Map<String, String> request){
+        return ResponseEntity.ok(authService.isTokenValid(request.get("token")));
     }
 
     @PostMapping("/validate-token-role")
     public ResponseEntity<String> validateTokenRole(@RequestBody TokenValidationRequest request){
         return ResponseEntity.ok(authService.isTokenRoleValid(request.getToken()));
     }
+
+
+    @PostMapping("/forget-password")
+    public ResponseEntity<Map<String, String>> forgetPassword(@RequestBody Map<String, String> request){
+        return ResponseEntity.ok(authService.forgetPassword(request.get("email")));
+    }
+
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, String>> resetPassword(@RequestBody Map<String, String> request
+    ,@RequestParam("token") String token){
+        return ResponseEntity.ok(authService.resetPassword(token,request.get("newPassword")));
+    }
+
+
 
     
 

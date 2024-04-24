@@ -8,6 +8,9 @@ import { AdminGuard } from './guard/admin.guard';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { UserconfirmationComponent } from './components/userconfirmation/userconfirmation.component';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
+import { LoginComponent } from './components/login/login.component';
+import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
+import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
 
 /* const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -19,8 +22,11 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   {path:'profile',component:UserprofileComponent},
   {path:'admin',component:AdminComponent,canActivate:[AdminGuard]},
-  { path: 'login', component: RegisterComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
   {path:'auth/confirm',component:UserconfirmationComponent},
+  {path:'forget-password',component:ForgetpasswordComponent},
+  {path:'auth/reset-password',component:ResetpasswordComponent},
   {path:'unauthorized',component:UnauthorizedComponent},
   { path: '**', redirectTo: '/home' }
 ];

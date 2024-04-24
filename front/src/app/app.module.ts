@@ -31,7 +31,10 @@ import { UserconfirmationComponent } from './components/userconfirmation/usercon
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
-import { PasswordresetpopupComponent } from './components/passwordresetpopup/passwordresetpopup.component'; 
+import { PasswordresetpopupComponent } from './components/passwordresetpopup/passwordresetpopup.component';
+import { LoginComponent } from './components/login/login.component';
+import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
+import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component'; 
 
 @NgModule({
   declarations: [
@@ -43,7 +46,10 @@ import { PasswordresetpopupComponent } from './components/passwordresetpopup/pas
     UpdatepopupComponent,
     UserconfirmationComponent,
     UserprofileComponent,
-    PasswordresetpopupComponent
+    PasswordresetpopupComponent,
+    LoginComponent,
+    ForgetpasswordComponent,
+    ResetpasswordComponent
   ],
   imports: [
     BrowserModule,

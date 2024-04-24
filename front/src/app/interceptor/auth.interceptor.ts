@@ -35,11 +35,11 @@ export class AuthInterceptor implements HttpInterceptor {
         //console.log("refresh variable",!this.refresh)
         //console.log("error",err.error)
 
-        console.log("err interceptor",err)
-        const errorResponse=JSON.parse(err.error)
-        let msg:string=errorResponse.message
+        //console.log("err interceptor",err)
+        /* const errorResponse=JSON.parse(err.error)
+        let msg=errorResponse.message */
         
-        if (err.status === 401 && msg.startsWith("JWT expired") && !this.refresh) {
+        if (err.status === 501   && !this.refresh) {
           this.refresh = true;
           console.log("error inside")
           return this.authService.refreshToken().pipe(

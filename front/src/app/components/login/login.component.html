@@ -1,0 +1,42 @@
+<div class="login-page">
+    <mat-card class="mat-elevation-z12">
+        <mat-card-header>
+            <mat-card-title>Login</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()" #form1="ngForm">
+                <mat-form-field>
+                  <input matInput placeholder="Email"  formControlName="email">
+                  <!-- <mat-icon matSuffix>username</mat-icon> -->
+                  <mat-error *ngIf="form1.submitted && loginForm.get('email')?.hasError('required')">
+                    Email is required
+                  </mat-error>
+                  <mat-error *ngIf="form1.submitted && loginForm.get('email')?.hasError('customError')">
+                    {{ loginForm.get('email')?.getError('customError') }}
+                  </mat-error>             
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'"  formControlName="password">
+                  <!-- <mat-icon matSuffix>lock</mat-icon> -->
+                  <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="form1.submitted && loginForm.get('password')?.hasError('required')">
+                    Password is required
+                  </mat-error> 
+                  <mat-error *ngIf="form1.submitted && loginForm.get('password')?.hasError('customError')">
+                    {{ loginForm.get('password')?.getError('customError') }}
+                  </mat-error>   
+                </mat-form-field>
+                <button mat-raised-button color="primary" class="login-button" type="submit">
+                  Sign In
+                </button>
+              </form>
+              <div class="login-links">
+                <a routerLink="/forget-password">Forget Password ?</a>
+                <a routerLink="/register">Create Account</a>
+              </div>
+        </mat-card-content>
+    </mat-card>
+  </div>
+  

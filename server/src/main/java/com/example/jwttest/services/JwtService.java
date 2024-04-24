@@ -2,6 +2,7 @@ package com.example.jwttest.services;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -46,9 +47,9 @@ public class JwtService {
         return buildToken(extraClaims, username,refreshExpiration,REFRESH_KEY);
     }
     
-    /* public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
-    } */
+    public String generateToken(String subject) {
+        return generateToken(new HashMap<>(), subject);
+    }
     
 
     private String buildToken(Map<String,Object> extraClaims,String username,long expiration,String SECRET){

@@ -53,6 +53,14 @@ export class AuthService {
 
   }
 
+  forgetPassword(email:string){
+    return this.http.post(this.AUTH_ENDPOINT+"forget-password",{email})
+  }
+
+  resetPassword(token:any,request:any){
+    return this.http.post(this.AUTH_ENDPOINT+"reset-password?token="+token,request)
+  }
+
 
   refreshToken():Observable<AuthResponse>{
     return this.http.post<AuthResponse>(this.AUTH_ENDPOINT+"refresh",{refresh_token:this.getRefreshToken()});
@@ -75,6 +83,8 @@ export class AuthService {
     localStorage.setItem('access_token', jwt.access_token);
     localStorage.setItem('refresh_token',jwt.refresh_token);
   }
+
+  
 
 
 

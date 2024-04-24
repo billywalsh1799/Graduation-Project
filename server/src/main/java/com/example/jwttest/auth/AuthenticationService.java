@@ -11,6 +11,7 @@ import com.example.jwttest.email.EmailService;
 import com.example.jwttest.exceptionHandling.exceptions.AccountVerificationException;
 import com.example.jwttest.exceptionHandling.exceptions.UsedEmailException;
 import com.example.jwttest.exceptionHandling.exceptions.UserAlreadyExistsException;
+import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
 import com.example.jwttest.models.SecurityUser;
 import com.example.jwttest.models.User;
 import com.example.jwttest.repo.UserRepository;
@@ -167,5 +168,35 @@ public class AuthenticationService {
     public String isTokenRoleValid(String token){
         return jwtService.validateTokenByRole(token);
     }
+
+    public Map<String, String> forgetPassword(String email) {
+        //check user existance from email
+        userRepo.findByEmail(email).orElseThrow(()->new UserNotFoundException("User not found"));
+        //send reset link with jwt
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("message","reset link sent successfully");
+        //Generate confirmation tokens
+        String token=jwtService.generateToken(email);
+        String link = "http://localhost:4200/auth/reset-password?token="+token;
+        emailService.send(email, link);
+        return responseData;
+    }
+
+    public Map<String, String> resetPassword(String token,String password){
+        String email=jwtService.extractUsername(token);
+        userRepo.findByEmail(email).ifPresentOrElse(existingUser -> {
+                    existingUser.setPassword(passwordEncoder.encode(password));
+                    userRepo.save(existingUser);
+                }, 
+                () -> {
+                    throw new UserNotFoundException("User not found");
+                });
+        
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("message","password was reset successfully");
+        return responseData;
+    }
+
+
     
 }
