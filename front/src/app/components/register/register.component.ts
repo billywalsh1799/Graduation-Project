@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { clearFormError, setCustomFormError, validatePasswordConfirmation } from 'src/app/services/methods/formUtils';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,6 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent {
 
-  signInForm: FormGroup;
   signUpForm: FormGroup;
 
   registered:boolean=false
@@ -20,21 +20,7 @@ export class RegisterComponent {
   //errorMessage: string="";
 
   constructor(private formBuilder: FormBuilder,private authService: AuthService,private router: Router,private snackBar: MatSnackBar) {
-    // Initialize sign in form
-    this.signInForm = this.formBuilder.group({
-      email: [null, [Validators.required]],
-      password: [null, [Validators.required]]
-    });
-
-    // Subscribe to value changes of the username control
-    this.signInForm.get('email')?.valueChanges.subscribe(() => {
-      this.clearFormError(this.signInForm,"email"); // Clear custom error when value changes
-    });
-
-    this.signInForm.get('password')?.valueChanges.subscribe(() => {
-      this.clearFormError(this.signInForm,'password'); // Clear custom error when value changes
-    });
-
+   
     // Initialize sign up form
     this.signUpForm = this.formBuilder.group({
       firstname:[null, Validators.required],
@@ -47,88 +33,19 @@ export class RegisterComponent {
 
 
     this.signUpForm.get('username')?.valueChanges.subscribe(() => {
-      this.clearFormError(this.signUpForm,"username"); // Clear custom error when value changes
+      clearFormError(this.signUpForm,"username"); // Clear custom error when value changes
     });
     this.signUpForm.get('email')?.valueChanges.subscribe(() => {
-      this.clearFormError(this.signUpForm,"email"); // Clear custom error when value changes
+      clearFormError(this.signUpForm,"email"); // Clear custom error when value changes
     });
 
     // Subscribe to value changes of password and confirmPassword controls
     this.signUpForm.get('password')?.valueChanges.subscribe(() => {
-      this.validatePasswordConfirmation();
+      validatePasswordConfirmation(this.signUpForm,"password","confirmPassword");
     });
     this.signUpForm.get('confirmPassword')?.valueChanges.subscribe(() => {
-      this.validatePasswordConfirmation();
+      validatePasswordConfirmation(this.signUpForm,"password","confirmPassword");
     });
-  }
-
-  hide:boolean = true;
-
-  private validatePasswordConfirmation() {
-    const passwordControl = this.signUpForm.get('password');
-    const confirmPasswordControl = this.signUpForm.get('confirmPassword');
-
-    // Check if password and confirmPassword fields match
-    const passwordsMatch = passwordControl?.value === confirmPasswordControl?.value;
-
-    // Set custom error on confirmPassword control if passwords don't match
-    if (!passwordsMatch) {
-      confirmPasswordControl?.setErrors({ 'passwordMismatch': true });
-    } else {
-      confirmPasswordControl?.setErrors(null); // Clear custom error if passwords match
-    }
-  }
-
-  setCustomFormError(form:FormGroup,field:string,message:string) {
-    const formControl = form.get(field);
-    formControl?.setErrors({ customError: message }); // Set custom error for username
-  }
-  clearFormError(form:FormGroup,field:string) {
-    const formControl = form.get(field);
-    if (formControl?.errors?.['customError']) {
-      formControl.setErrors(null); // Clear custom error
-    }
-  }
- 
-  
-  // Method to handle sign in form submission
-  signIn() {
-    const credentials=this.signInForm.value
-    console.log(credentials)
-    if (this.signInForm.valid){
-
-
-       //clear form after successful submission
-      //this.signInForm.reset({});
-
-      console.log("valid form",credentials)
-      this.authService.login(credentials).subscribe({
-        next: response => {
-          // Handle success response
-          const {access_token,refresh_token}=response
-          this.authService.storeTokens({ access_token: access_token, refresh_token: refresh_token });
-          // Redirect user to the desired route
-          this.router.navigate(['/home']);
-        },
-        error: err => {
-          // Handle error forwarded by the interceptor
-
-          let errorMessage=err.error.message;
-          console.log(errorMessage)
-          if(errorMessage=="Bad credentials"){
-            this.setCustomFormError(this.signInForm,"password",errorMessage)
-          }
-          else{
-            this.setCustomFormError(this.signInForm,"username",errorMessage)
-          }
-        }
-      });
-       
-    }
-
-    else{
-      console.log("invalid form",credentials)
-    } 
   }
 
   // Method to handle sign up form submission
@@ -155,11 +72,11 @@ export class RegisterComponent {
           let errorMessage=err.error.message;
           if(errorMessage=="User already exists"){
             console.log(errorMessage)
-            this.setCustomFormError(this.signUpForm,"username",errorMessage)
+            setCustomFormError(this.signUpForm,"username",errorMessage)
           }
           else if(errorMessage=="Email already in use"){
             console.log(errorMessage)
-            this.setCustomFormError(this.signUpForm,"email",errorMessage)
+            setCustomFormError(this.signUpForm,"email",errorMessage)
           }
         }
       }); 

@@ -34,7 +34,12 @@ import { UserprofileComponent } from './components/userprofile/userprofile.compo
 import { PasswordresetpopupComponent } from './components/passwordresetpopup/passwordresetpopup.component';
 import { LoginComponent } from './components/login/login.component';
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
-import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component'; 
+import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
+import { FileUploadComponent } from './components/file-upload/file-upload.component'; 
+import {MatChipsModule} from '@angular/material/chips';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';  
+
+
 
 @NgModule({
   declarations: [
@@ -49,7 +54,8 @@ import { ResetpasswordComponent } from './components/resetpassword/resetpassword
     PasswordresetpopupComponent,
     LoginComponent,
     ForgetpasswordComponent,
-    ResetpasswordComponent
+    ResetpasswordComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +65,7 @@ import { ResetpasswordComponent } from './components/resetpassword/resetpassword
     HttpClientModule,
     MatCardModule,MatTabsModule,MatInputModule,MatButtonModule,MatIconModule,MatSnackBarModule, BrowserAnimationsModule,
     MatTableModule,MatPaginatorModule,MatSortModule,MatDialogModule,MatSelectModule,MatCheckboxModule,MatProgressSpinnerModule,
-    MatGridListModule
+    MatGridListModule,MatChipsModule,MatAutocompleteModule
     
   ],
   providers: [AuthGuard,{ provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi: true}],

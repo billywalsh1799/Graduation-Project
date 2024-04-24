@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { clearFormError, setCustomFormError } from 'src/app/services/methods/formUtils';
 
 @Component({
   selector: 'app-login',
@@ -23,25 +24,14 @@ export class LoginComponent {
 
     // Subscribe to value changes of the username control
     this.loginForm.get('email')?.valueChanges.subscribe(() => {
-      this.clearFormError(this.loginForm,"email"); // Clear custom error when value changes
+      clearFormError(this.loginForm,"email"); // Clear custom error when value changes
     });
 
     this.loginForm.get('password')?.valueChanges.subscribe(() => {
-      this.clearFormError(this.loginForm,'password'); // Clear custom error when value changes
+       clearFormError(this.loginForm,'password'); // Clear custom error when value changes
     });
   }
   
-  setCustomFormError(form:FormGroup,field:string,message:string) {
-    const formControl = form.get(field);
-    formControl?.setErrors({ customError: message }); // Set custom error for username
-  }
-  clearFormError(form:FormGroup,field:string) {
-    const formControl = form.get(field);
-    if (formControl?.errors?.['customError']) {
-      formControl.setErrors(null); // Clear custom error
-    }
-  }
-
   // Method to handle sign in form submission
   login() {
     const credentials=this.loginForm.value
@@ -64,10 +54,10 @@ export class LoginComponent {
           let errorMessage=err.error.message;
           console.log(errorMessage)
           if(errorMessage=="Bad credentials"){
-            this.setCustomFormError(this.loginForm,"password",errorMessage)
+            setCustomFormError(this.loginForm,"password",errorMessage)
           }
           else{
-            this.setCustomFormError(this.loginForm,"email",errorMessage)
+           setCustomFormError(this.loginForm,"email",errorMessage)
           }
         }
       });

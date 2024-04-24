@@ -20,7 +20,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let token = this.authService.getToken();
-    //console.log("intercepted request_url:",request.url)
     if (token && !request.url.includes('/refresh')) {
       request = request.clone({
         setHeaders: {
@@ -31,21 +30,13 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        //console.log("error",err.status,err)
-        //console.log("refresh variable",!this.refresh)
-        //console.log("error",err.error)
-
-        //console.log("err interceptor",err)
-        /* const errorResponse=JSON.parse(err.error)
-        let msg=errorResponse.message */
-        
-        if (err.status === 501   && !this.refresh) {
+        if (err.status === 401 && err.error=="JWT expired" && !this.refresh) {
           this.refresh = true;
-          console.log("error inside")
+          //console.log("error inside")
           return this.authService.refreshToken().pipe(
             switchMap((res: any) => {
               let newToken = res.access_token;
-              console.log("test response",res)
+              //console.log("test response",res)
               this.authService.setToken(newToken);
               this.refresh = false;
               request = request.clone({

@@ -28,7 +28,7 @@
      /* max-width: 100px; */
       /* display: block;  */
       margin: auto; 
-      flex-grow: 1; /* Allow the form fields to grow and shrink dynamically */
+      /* flex-grow: 1;  *//* Allow the form fields to grow and shrink dynamically */
      
    }
    mat-card-content {
@@ -63,3 +63,4 @@
     width: 100%; /* Allow form to take full width */
     max-width: 300px; /* Limit form width to prevent it from growing too wide */
   }
+

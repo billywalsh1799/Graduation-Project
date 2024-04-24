@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.jwttest.exceptionHandling.exceptions.ErrorResponse;
+
 import com.example.jwttest.services.JpaUserDetailsService;
 import com.example.jwttest.services.JwtService;
 import io.jsonwebtoken.JwtException;
@@ -53,7 +53,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //Expiredjwtexceptoin
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            //response.getWriter().write(e.getMessage());
+            response.getWriter().write("JWT expired");
+
+            //switch case on exception
 
             //ErrorResponse errorResponse=new ErrorResponse(e.getMessage(),401);
             // Convert the JSON object to a JSON string
@@ -63,11 +65,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Write the JSON error response to the response body
             //response.getWriter().write(jsonResponse);
             //send json error rsponse
-            ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 401);
-            String jsonResponse = "{\"message\":\"" + errorResponse.getMessage() + "\",\"status\":" + errorResponse.getStatus() + "}";
+            //ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 401);
+            //String jsonResponse = "{\"message\":\"" + errorResponse.getMessage() + "\",\"status\":" + errorResponse.getStatus() + "}";
             
-            response.setContentType("application/json");
-            response.getWriter().write(jsonResponse);
+            //response.setContentType("application/json");
+            //response.getWriter().write(jsonResponse);
             return;
         }
 

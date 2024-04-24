@@ -11,6 +11,7 @@ import { UserprofileComponent } from './components/userprofile/userprofile.compo
 import { LoginComponent } from './components/login/login.component';
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
 import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
 
 /* const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path:'auth/confirm',component:UserconfirmationComponent},
   {path:'forget-password',component:ForgetpasswordComponent},
   {path:'auth/reset-password',component:ResetpasswordComponent},
+  {path:'file-upload',component:FileUploadComponent},
   {path:'unauthorized',component:UnauthorizedComponent},
   { path: '**', redirectTo: '/home' }
 ];
