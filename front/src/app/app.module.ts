@@ -29,17 +29,14 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserconfirmationComponent } from './components/userconfirmation/userconfirmation.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatGridListModule} from '@angular/material/grid-list';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
 import { PasswordresetpopupComponent } from './components/passwordresetpopup/passwordresetpopup.component';
-import { LoginComponent } from './components/login/login.component';
-import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
-import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
-import { FileUploadComponent } from './components/file-upload/file-upload.component'; 
+import { FileuploadComponent } from './components/fileupload/fileupload.component'; 
 import {MatChipsModule} from '@angular/material/chips';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';  
-
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { LoginComponent } from './components/login/login.component';
+import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
+import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
 
 @NgModule({
   declarations: [
@@ -52,10 +49,10 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     UserconfirmationComponent,
     UserprofileComponent,
     PasswordresetpopupComponent,
+    FileuploadComponent,
     LoginComponent,
-    ForgetpasswordComponent,
     ResetpasswordComponent,
-    FileUploadComponent
+    ForgetpasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +62,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     HttpClientModule,
     MatCardModule,MatTabsModule,MatInputModule,MatButtonModule,MatIconModule,MatSnackBarModule, BrowserAnimationsModule,
     MatTableModule,MatPaginatorModule,MatSortModule,MatDialogModule,MatSelectModule,MatCheckboxModule,MatProgressSpinnerModule,
-    MatGridListModule,MatChipsModule,MatAutocompleteModule
+    MatChipsModule,MatAutocompleteModule
     
   ],
   providers: [AuthGuard,{ provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi: true}],

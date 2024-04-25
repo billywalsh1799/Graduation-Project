@@ -1,66 +1,65 @@
 .login-page {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     height: 100vh;
-     background-color: wheat;
-   }
-   
-   mat-card {
-     /* width: 30%; */
-     max-height: 80%;
-     margin: 10% auto;
-     border-radius: 8px;
-     padding: 20px;   
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     
-   }
- 
-   mat-card-title{
-     color: #303F9F;
-     /* margin-top:20px; */
-   }
- 
-   mat-form-field {
-     width: 100%;
-     /* max-width: 100px; */
-      /* display: block;  */
-      margin: auto; 
-      /* flex-grow: 1;  *//* Allow the form fields to grow and shrink dynamically */
-     
-   }
-   mat-card-content {
-     margin-top: 20px;
-   }
-   
-   .login-button {
-     margin-top: 20px;
-     width: 100%;
-     margin: 20px auto;
-   }
-   
-   
-   .login-links{
-     display: flex;
-     justify-content: space-between;
-     width: 80%;
-    /* background-color: #303F9F; */
-   /*  width: 100%; */
-    /* width: 0%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: wheat;
+  }
+  
+  mat-card {
+    /* width: 30%; */
+    max-height: 80%;
+    margin: 10% auto;
+    border-radius: 8px;
+    padding: 20px;   
+    display: flex;
+    justify-content: center;
+    align-items: center;
     
-   }
-
-   mat-card-content {
-    width: 100%; /* Allow content to take full width */
-    display: flex; /* Ensure children flexibly size themselves */
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Center children horizontally */
   }
 
-   .login-form {
-    width: 100%; /* Allow form to take full width */
-    max-width: 300px; /* Limit form width to prevent it from growing too wide */
+  mat-card-title{
+    color: #303F9F;
+    /* margin-top:20px; */
   }
 
+  mat-form-field {
+    width: 100%;
+    /* max-width: 100px; */
+     /* display: block;  */
+     margin: auto; 
+     /* flex-grow: 1;  *//* Allow the form fields to grow and shrink dynamically */
+    
+  }
+  mat-card-content {
+    margin-top: 20px;
+  }
+  
+  .login-button {
+    margin-top: 20px;
+    width: 100%;
+    margin: 20px auto;
+  }
+  
+  
+  .login-links{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+   /* background-color: #303F9F; */
+  /*  width: 100%; */
+   /* width: 0%; */
+   
+  }
+
+  mat-card-content {
+   width: 100%; /* Allow content to take full width */
+   display: flex; /* Ensure children flexibly size themselves */
+   flex-direction: column; /* Stack children vertically */
+   align-items: center; /* Center children horizontally */
+ }
+
+  .login-form {
+   width: 100%; /* Allow form to take full width */
+   max-width: 300px; /* Limit form width to prevent it from growing too wide */
+ }

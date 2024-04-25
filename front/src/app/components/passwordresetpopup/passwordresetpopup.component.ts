@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PasswordResetRequest } from 'src/app/services/interfaces/shared-interfaces';
-import { setCustomFormError, validatePasswordConfirmation } from 'src/app/services/methods/formUtils';
 import { UserService } from 'src/app/services/user.service';
 
 
@@ -27,14 +26,17 @@ export class PasswordresetpopupComponent {
     });
      // Subscribe to value changes of password and confirmPassword controls
      this.passwordForm.get('currentPassword')?.valueChanges.subscribe(() => {
-      validatePasswordConfirmation(this.passwordForm,"newPassword","confirmNewPassword");
+      this.validatePasswordConfirmation();
     });
     this.passwordForm.get('confirmNewPassword')?.valueChanges.subscribe(() => {
-      validatePasswordConfirmation(this.passwordForm,"newPassword","confirmNewPassword");
+      this.validatePasswordConfirmation();
     });
   }
 
- 
+ setCustomFormError(form:FormGroup,field:string,message:string) {
+    const formControl = form.get(field);
+    formControl?.setErrors({ customError: message }); // Set custom error for username
+  }
   clearFormError(form:FormGroup,field:string) {
     const formControl = form.get(field);
     if (formControl?.errors?.['customError']) {
@@ -42,7 +44,21 @@ export class PasswordresetpopupComponent {
     }
   }
 
- 
+  private validatePasswordConfirmation() {
+    const passwordControl = this.passwordForm.get('newPassword');
+    const confirmPasswordControl = this.passwordForm.get('confirmNewPassword');
+
+    // Check if password and confirmPassword fields match
+    const passwordsMatch = passwordControl?.value === confirmPasswordControl?.value;
+
+    // Set custom error on confirmPassword control if passwords don't match
+    if (!passwordsMatch) {
+      confirmPasswordControl?.setErrors({ 'passwordMismatch': true });
+    } else {
+      confirmPasswordControl?.setErrors(null); // Clear custom error if passwords match
+    }
+  }
+  
 
 
   resetPassword(){
@@ -61,7 +77,7 @@ export class PasswordresetpopupComponent {
           //set custom error
           let errorMessage=err.error.message;
          
-          setCustomFormError(this.passwordForm,"currentPassword",errorMessage)
+          this.setCustomFormError(this.passwordForm,"currentPassword",errorMessage)
          
         }
       })

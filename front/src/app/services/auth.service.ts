@@ -6,11 +6,6 @@ import { Router } from '@angular/router';
 import { jwtDecode } from "jwt-decode";
 import { AuthResponse, LoginResponse } from './interfaces/shared-interfaces';
 
-
-
-
-
-
 @Injectable({
   providedIn: 'root'
 })

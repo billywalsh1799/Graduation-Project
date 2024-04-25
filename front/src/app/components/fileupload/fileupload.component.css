@@ -1,4 +1,4 @@
-.forget-password-page {
+.file-upload-page {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,7 +24,7 @@
   }
 
   mat-form-field {
-    width: 100%;
+    width: 400px;
     /* max-width: 100px; */
      /* display: block;  */
      margin: auto; 
@@ -38,8 +38,14 @@
   
 
   mat-card-content {
-   width: 100%; /* Allow content to take full width */
+  /*  width: 100%; */ /* Allow content to take full width */
    display: flex; /* Ensure children flexibly size themselves */
    flex-direction: column; /* Stack children vertically */
+   justify-content: center;
    align-items: center; /* Center children horizontally */
+   width: 600px;
  }
+
+ /* .example-chip-list {
+    width: 100%;
+  } */
