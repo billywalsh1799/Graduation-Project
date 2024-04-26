@@ -1,7 +1,6 @@
 package com.example.jwttest.models;
 
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 
 import lombok.AllArgsConstructor;
@@ -35,12 +35,17 @@ public class Document {
                inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> reviewers;
 
+    @ManyToOne
+    @JoinColumn(name = "creator_id") // Assuming the foreign key column name in the document table
+    private User creator;
 
-    public Document(String fileName,byte[] fileData,List<User> reviewers){
+
+    public Document(String fileName,byte[] fileData,List<User> reviewers,User creator){
 
         this.fileName=fileName;
         this.fileData=fileData;
         this.reviewers=reviewers;
+        this.creator=creator;
     }
 
 

@@ -5,6 +5,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable, map, startWith } from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { UserService } from 'src/app/services/user.service';
+import { DocumentService } from 'src/app/services/document.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-fileupload',
@@ -16,10 +18,11 @@ export class FileuploadComponent {
   filteredReviewers: Observable<string[]>;
   reviewers: string[] = [];
   allReviewers: string[] = [];
+  selectedFile: File | null = null;
 
   @ViewChild('reviewerInput') reviewerInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,private documentService:DocumentService,private authService:AuthService) {
     this.loadAllReviewers();
     this.filteredReviewers = this.reviewerCtrl.valueChanges.pipe(
       startWith(null),
@@ -79,6 +82,50 @@ export class FileuploadComponent {
         console.log("error loading reviewers", err);
       }
     })
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0];
+  }
+
+  createDocument(): void {
+    if (!this.selectedFile) {
+      // Handle file not selected error
+      return;
+    }
+    
+    //extract from jwt subject
+    //const creatorEmail = 'smoalla1799@gmail.com'; // Replace with actual creator's email
+    const creatorEmail =this.getCreator(); // Replace with actual creator's email
+  
+    // Create FormData object
+    //copy this in the service to reduce code 
+    console.log("file",this.selectedFile)
+    const formData: FormData = new FormData();
+    formData.append('file', this.selectedFile);
+    formData.append('creatorEmail', creatorEmail);
+    this.reviewers.forEach(email => formData.append('reviewerEmails', email));
+  
+    // Call DocumentService to create document
+    this.documentService.createDocument(formData).subscribe({
+      next: res => {
+        console.log('Document created successfully:', res);
+        // Reset form or navigate to another page
+      },
+      error: err => {
+        console.error('Error creating document:', err);
+        // Handle error
+      }
+    });
+  }
+
+  getCreator(){
+    let sub=this.authService.getSubject()
+    if(sub)
+      return sub
+    else
+      return ""
+
   }
 
   

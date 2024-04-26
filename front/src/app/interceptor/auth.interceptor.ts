@@ -24,8 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (token && !request.url.includes('/refresh')) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`
         }
       });
     }
@@ -50,8 +49,7 @@ export class AuthInterceptor implements HttpInterceptor {
               this.refresh = false;
               request = request.clone({
                 setHeaders: {
-                  Authorization: `Bearer ${newToken}`,
-                  'Content-Type': 'application/json'
+                  Authorization: `Bearer ${newToken}`
                 }
               });
               return next.handle(request);

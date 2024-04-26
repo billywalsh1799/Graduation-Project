@@ -28,6 +28,11 @@ export class AuthService {
     
   }
 
+  getSubject(){
+    const decodedHeader=jwtDecode(this.getToken())
+    return decodedHeader.sub
+  }
+
   login(credentials: {username:string,password:string}): Observable<AuthResponse> {
     
     return this.http.post<AuthResponse>(this.AUTH_ENDPOINT+"authenticate", credentials);

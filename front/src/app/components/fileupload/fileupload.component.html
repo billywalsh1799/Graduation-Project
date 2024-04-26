@@ -5,6 +5,7 @@
       </mat-card-header>
       <mat-card-content>
           <form>
+            <input type="file" (change)="onFileSelected($event)">
               <mat-form-field class="example-chip-list" appearance="fill">
                 <mat-label>Reviewers</mat-label>
                 <mat-chip-grid #chipGrid aria-label="Reviewer selection">
@@ -24,8 +25,8 @@
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
+              <button mat-button color="primary" (click)="createDocument()">Create Document</button>
             </form>
- 
       </mat-card-content>
   </mat-card>
 </div>

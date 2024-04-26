@@ -20,7 +20,7 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final UserRepository userRepository;
 
-    public Document createDocument(MultipartFile file, List<String> reviewerEmails)  {
+    public Document createDocument(MultipartFile file, List<String> reviewerEmails,String creatorEmail)  {
         Document document = new Document();
         document.setFileName(file.getOriginalFilename());
         try {
@@ -32,6 +32,8 @@ public class DocumentService {
         }
         List<User> reviewers = userRepository.findAllByEmailIn(reviewerEmails);
         document.setReviewers(reviewers);
+        User creator=userRepository.findByEmail(creatorEmail).orElseThrow();
+        document.setCreator(creator);
         return documentRepository.save(document);
     }
 

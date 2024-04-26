@@ -38,12 +38,11 @@
   
 
   mat-card-content {
-  /*  width: 100%; */ /* Allow content to take full width */
-   display: flex; /* Ensure children flexibly size themselves */
-   flex-direction: column; /* Stack children vertically */
+   display: flex; 
+   flex-direction: column; 
    justify-content: center;
-   align-items: center; /* Center children horizontally */
-   width: 600px;
+   align-items: center; 
+   width: 500px;
  }
 
  /* .example-chip-list {
