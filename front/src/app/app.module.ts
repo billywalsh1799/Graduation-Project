@@ -37,6 +37,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { LoginComponent } from './components/login/login.component';
 import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,7 @@ import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassw
     HttpClientModule,
     MatCardModule,MatTabsModule,MatInputModule,MatButtonModule,MatIconModule,MatSnackBarModule, BrowserAnimationsModule,
     MatTableModule,MatPaginatorModule,MatSortModule,MatDialogModule,MatSelectModule,MatCheckboxModule,MatProgressSpinnerModule,
-    MatChipsModule,MatAutocompleteModule
+    MatChipsModule,MatAutocompleteModule,MatDividerModule
     
   ],
   providers: [AuthGuard,{ provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi: true}],

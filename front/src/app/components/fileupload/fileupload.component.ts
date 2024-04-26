@@ -91,23 +91,25 @@ export class FileuploadComponent {
   createDocument(): void {
     if (!this.selectedFile) {
       // Handle file not selected error
+      //from error mat
       return;
     }
     
     //extract from jwt subject
     //const creatorEmail = 'smoalla1799@gmail.com'; // Replace with actual creator's email
-    const creatorEmail =this.getCreator(); // Replace with actual creator's email
+     // Replace with actual creator's email
   
     // Create FormData object
     //copy this in the service to reduce code 
-    console.log("file",this.selectedFile)
-    const formData: FormData = new FormData();
-    formData.append('file', this.selectedFile);
-    formData.append('creatorEmail', creatorEmail);
-    this.reviewers.forEach(email => formData.append('reviewerEmails', email));
-  
+    //console.log("file",this.selectedFile)
+
+    //const formData: FormData = new FormData();
+    //formData.append('file', this.selectedFile);
+    //formData.append('creatorEmail', creatorEmail);
+    //this.reviewers.forEach(email => formData.append('reviewerEmails', email));
     // Call DocumentService to create document
-    this.documentService.createDocument(formData).subscribe({
+    const creatorEmail =this.getCreator();
+    this.documentService.createDocument(this.selectedFile,this.reviewers,creatorEmail).subscribe({
       next: res => {
         console.log('Document created successfully:', res);
         // Reset form or navigate to another page
@@ -126,6 +128,10 @@ export class FileuploadComponent {
     else
       return ""
 
+  }
+
+  clearFile(): void {
+    this.selectedFile = null;
   }
 
   

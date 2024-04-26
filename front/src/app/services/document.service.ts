@@ -12,8 +12,16 @@ export class DocumentService {
   constructor(private http:HttpClient) { }
 
   
-  createDocument(formData: FormData): Observable<any> {
+  /* createDocument(formData: FormData): Observable<any> {
    
+    return this.http.post<any>(`${this.DOCUMENT_ENDPOINT}/create`, formData);
+  } */
+  createDocument(file: File, reviewerEmails: string[], creatorEmail: string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('creatorEmail', creatorEmail);
+    reviewerEmails.forEach(email => formData.append('reviewerEmails', email));
+
     return this.http.post<any>(`${this.DOCUMENT_ENDPOINT}/create`, formData);
   }
 

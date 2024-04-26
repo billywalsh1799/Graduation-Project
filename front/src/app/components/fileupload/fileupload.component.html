@@ -5,7 +5,14 @@
       </mat-card-header>
       <mat-card-content>
           <form>
-            <input type="file" (change)="onFileSelected($event)">
+            <!-- File input -->
+        <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none;">
+        <button mat-button color="primary" (click)="fileInput.click()">Select File</button>
+        <mat-chip *ngIf="selectedFile" removable (removed)="clearFile()">
+          {{ selectedFile.name }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <!-- <mat-divider></mat-divider> -->
               <mat-form-field class="example-chip-list" appearance="fill">
                 <mat-label>Reviewers</mat-label>
                 <mat-chip-grid #chipGrid aria-label="Reviewer selection">
