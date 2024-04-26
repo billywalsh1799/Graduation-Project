@@ -17,8 +17,10 @@ table {
 
 
 .inside-div{
-  max-width: 70%; /* Set a maximum width for the centered div */
+  max-width: 70%;
+   /* Set a maximum width for the centered div */
   width: 100%;
+  
   
   
 }

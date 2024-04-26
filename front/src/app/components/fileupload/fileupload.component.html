@@ -1,45 +1,31 @@
-<!-- <div class="file-upload-page">
-    <mat-card class="mat-elevation-z12">
-        <mat-card-header>
-            <mat-card-title>Forget Password</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <p>Please enter your email address a link will be sent for password reset</p>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-raised-button color="primary" type="submit" >Submit</button>
-        </mat-card-actions>
-    </mat-card>
-</div> -->
 <div class="file-upload-page">
-    <mat-card class="mat-elevation-z12">
-        <mat-card-header>
-            <mat-card-title>Add Reviewers</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <form>
-                <mat-form-field class="example-chip-list" appearance="fill">
-                  <mat-label>Reviewers</mat-label>
-                  <mat-chip-grid #chipGrid aria-label="Fruit selection">
-                    <mat-chip-row *ngFor="let fruit of fruits" (removed)="remove(fruit)">
-                      {{fruit}}
-                      <button matChipRemove [attr.aria-label]="'remove ' + fruit">
-                        <mat-icon>cancel</mat-icon>
-                      </button>
-                    </mat-chip-row>
-                  </mat-chip-grid>
-                  <input placeholder="New Reviewer..." #fruitInput [formControl]="fruitCtrl"
-                    [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    />
-                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                    <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-                      {{fruit}}
-                    </mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </form>
-   
-        </mat-card-content>
-    </mat-card>
+  <mat-card class="mat-elevation-z12">
+      <mat-card-header>
+          <mat-card-title>Add Reviewers</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+          <form>
+              <mat-form-field class="example-chip-list" appearance="fill">
+                <mat-label>Reviewers</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Reviewer selection">
+                  <mat-chip-row *ngFor="let reviewer of reviewers" (removed)="remove(reviewer)">
+                    {{reviewer}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + reviewer">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+                <input placeholder="New Reviewer..." #reviewerInput [formControl]="reviewerCtrl"
+                  [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                  />
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                  <mat-option *ngFor="let reviewer of filteredReviewers | async" [value]="reviewer">
+                    {{reviewer}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+ 
+      </mat-card-content>
+  </mat-card>
 </div>

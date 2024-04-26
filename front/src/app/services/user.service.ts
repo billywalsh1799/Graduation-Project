@@ -32,6 +32,12 @@ export class UserService {
     return this.http.post<any>(this.USER_ENDPOINT+"rest-password",request);
 
   }
+
+
+  getReviewers(){
+    return this.http.get<any>(this.USER_ENDPOINT+"reviewers");
+
+  }
   
 
 

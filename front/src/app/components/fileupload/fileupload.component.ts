@@ -4,6 +4,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable, map, startWith } from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-fileupload',
@@ -11,67 +12,75 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
   styleUrls: ['./fileupload.component.css']
 })
 export class FileuploadComponent {
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl('');
-  filteredFruits: Observable<string[]>;
-  fruits: string[] = [];
-  allFruits: string[] = ['smoalla1799@gmail.com', 
-  'hankmoody1799@gmail.com', 'harveyspecter1799@gmail.com', 'sam1799', 'slash1799', 'harveyspecter1799@gmail.com', 'harveyspecter1799@gmail.com', 'harveyspecter1799@gmail.com'];
+  reviewerCtrl = new FormControl('');
+  filteredReviewers: Observable<string[]>;
+  reviewers: string[] = [];
+  allReviewers: string[] = [];
 
-  @ViewChild('fruitInput') fruitInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('reviewerInput') reviewerInput!: ElementRef<HTMLInputElement>;
 
-  constructor() {
-    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+  constructor(private userService: UserService) {
+    this.loadAllReviewers();
+    this.filteredReviewers = this.reviewerCtrl.valueChanges.pipe(
       startWith(null),
-      map((fruit: string | null) => (fruit ? this._filter(fruit) : this.allFruits.slice())),
+      map((reviewer: string | null) => (reviewer ? this._filter(reviewer) : this.allReviewers.slice())),
     );
   }
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    // Add our fruit
+    // Add our reviewer
     if (value) {
-      this.fruits.push(value);
+      this.reviewers.push(value);
     }
 
     // Clear the input value
     event.chipInput!.clear();
 
-    this.fruitCtrl.setValue(null);
+    this.reviewerCtrl.setValue(null);
   }
 
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
+  remove(reviewer: string): void {
+    const index = this.reviewers.indexOf(reviewer);
 
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.reviewers.splice(index, 1);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    const selectedFruit = event.option.viewValue;
+    const selectedReviewer = event.option.viewValue;
   
-    // Check if the selected fruit is already in the list
-    if (!this.fruits.includes(selectedFruit)) {
-      this.fruits.push(selectedFruit);
-      this.fruitInput.nativeElement.value = '';
-      this.fruitCtrl.setValue(null);
+    // Check if the selected reviewer is already in the list
+    if (!this.reviewers.includes(selectedReviewer)) {
+      this.reviewers.push(selectedReviewer);
+      this.reviewerInput.nativeElement.value = '';
+      this.reviewerCtrl.setValue(null);
     } else {
-      this.fruitInput.nativeElement.value = '';
-      this.fruitCtrl.setValue(null);
+      this.reviewerInput.nativeElement.value = '';
+      this.reviewerCtrl.setValue(null);
     }
   }
- /*  selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
-  } */
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
+    return this.allReviewers.filter(reviewer => reviewer.toLowerCase().includes(filterValue));
   }
+
+  loadAllReviewers() {
+    this.userService.getReviewers().subscribe({
+      next: res => {
+        console.log(res);
+        this.allReviewers = res.reviewers;
+      },
+      error: err => {
+        console.log("error loading reviewers", err);
+      }
+    })
+  }
+
+  
 
 }

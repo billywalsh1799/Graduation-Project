@@ -9,6 +9,7 @@ import com.example.jwttest.services.UserService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -48,6 +49,12 @@ public class UserController {
     @PostMapping("/user/rest-password")
     public ResponseEntity<Map<String, String>> resetUserPassword(@RequestBody PasswordResetRequest request) {
         return new ResponseEntity<>(userService.resetUserPassword(request),HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/user/reviewers")
+    public ResponseEntity<Map<String, List<String>>> getReviewers() {
+        return new ResponseEntity<>(userService.getReviewers(),HttpStatus.OK);
     }
     
    

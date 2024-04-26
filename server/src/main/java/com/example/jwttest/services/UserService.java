@@ -149,6 +149,22 @@ public class UserService {
         userRepo.deleteById(id);
        
     }
+
+    public Map<String, List<String>> getReviewers() {
+
+        List<User> users = userRepo.findAll();
+        List<String> reviewers= users.stream()
+                                    .map(user ->user.getEmail())
+                                    .collect(Collectors.toList());
+
+        Map<String, List<String>> responseData = new HashMap<>();
+        responseData.put("reviewers", reviewers);
+        return responseData;
+ 
+}
+
+       
+
     
         /* public void deleteUser(String username) {
         try {
