@@ -6,13 +6,13 @@
       <mat-card-content>
           <form>
             <!-- File input -->
-        <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none;">
-        <button mat-button color="primary" (click)="fileInput.click()">Select File</button>
-        <mat-chip *ngIf="selectedFile" removable (removed)="clearFile()">
-          {{ selectedFile.name }}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <!-- <mat-divider></mat-divider> -->
+          <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none;">
+          <button mat-button color="primary" (click)="fileInput.click()">Select File</button>
+          <mat-chip *ngIf="selectedFile" removable (removed)="clearFile()">
+            {{ selectedFile.name }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        <mat-divider></mat-divider>
               <mat-form-field class="example-chip-list" appearance="fill">
                 <mat-label>Reviewers</mat-label>
                 <mat-chip-grid #chipGrid aria-label="Reviewer selection">
@@ -32,6 +32,7 @@
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
+              <mat-divider></mat-divider>
               <button mat-button color="primary" (click)="createDocument()">Create Document</button>
             </form>
       </mat-card-content>

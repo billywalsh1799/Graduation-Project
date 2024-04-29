@@ -4,7 +4,7 @@
       <mat-card-title>Register</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form class="login-form"  [formGroup]="signUpForm"  (ngSubmit)="signUp()"  #form2="ngForm">
+      <form  [formGroup]="signUpForm"  (ngSubmit)="signUp()"  #form2="ngForm">
         <mat-form-field>
           <input matInput placeholder="First Name" required formControlName="firstname">
           <mat-icon matSuffix>perm_identity</mat-icon>
@@ -65,7 +65,7 @@
             Please confirm your password
           </mat-error>
         </mat-form-field>
-        <button mat-raised-button color="primary" class="login-button" type="submit" [disabled]="loading">
+        <button mat-raised-button color="primary" class="register-button" type="submit" [disabled]="loading">
           <span *ngIf="!loading">Sign Up</span>
           <mat-spinner *ngIf="loading" diameter="20" color="accent"></mat-spinner> <!-- Add spinner -->
         </button>

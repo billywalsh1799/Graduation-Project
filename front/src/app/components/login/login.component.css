@@ -8,7 +8,7 @@
   
   mat-card {
     /* width: 30%; */
-    max-height: 80%;
+    /* max-height: 80%; */
     margin: 10% auto;
     border-radius: 8px;
     padding: 20px;   
@@ -27,7 +27,7 @@
     width: 100%;
     /* max-width: 100px; */
      /* display: block;  */
-     margin: auto; 
+     /* margin: auto;  */
      /* flex-grow: 1;  *//* Allow the form fields to grow and shrink dynamically */
     
   }
@@ -45,7 +45,7 @@
   .login-links{
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    /* width: 80%; */
    /* background-color: #303F9F; */
   /*  width: 100%; */
    /* width: 0%; */
@@ -53,13 +53,14 @@
   }
 
   mat-card-content {
-   width: 100%; /* Allow content to take full width */
-   display: flex; /* Ensure children flexibly size themselves */
-   flex-direction: column; /* Stack children vertically */
-   align-items: center; /* Center children horizontally */
+   /* width: 100%; */ /* Allow content to take full width */
+   /* display: flex; */ /* Ensure children flexibly size themselves */
+   /* flex-direction: column; */ /* Stack children vertically */
+  /*  align-items: center; */ /* Center children horizontally */
+  max-width: 300px;
  }
 
-  .login-form {
-   width: 100%; /* Allow form to take full width */
-   max-width: 300px; /* Limit form width to prevent it from growing too wide */
- }
+  /* .login-form {
+   width: 100%; 
+   max-width: 300px; 
+ } */

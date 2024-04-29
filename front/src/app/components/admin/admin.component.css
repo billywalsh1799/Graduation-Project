@@ -1,10 +1,15 @@
 table {
-    width: 100%;
-  }
+ /*  width: 500px; */
+  /* display: flex;
+  width: 100%; 
+  flex-direction: column; 
+  align-items: center;  */
+  /* background-color: blueviolet; */
+}
 
 
 
-.centered-div{
+.admin-page{
   display: flex;
   justify-content: center; /* Horizontally center the flex items */
   align-items: center; /* Vertically center the flex items */
@@ -14,16 +19,27 @@ table {
 }
 
 
+th{
+ /*  width: 100px; */
+ 
+}
+td{
+ /*  display: flex;
+  flex-direction: row;  */
+  /* background-color: aqua; */
+  /* background-color: blueviolet; */
+ /*  align-items: center;
+  justify-content: center; */
+ /*  width: 20%; */
+}
 
-
-.inside-div{
+/* .inside-div{
   max-width: 70%;
-   /* Set a maximum width for the centered div */
   width: 100%;
   
   
   
-}
+} */
 
 
 .search-filters {
@@ -33,6 +49,23 @@ table {
   /* margin-bottom: 20px; */
 }
 
-.search-filters mat-form-field {
+/* .search-filters mat-form-field {
   width: calc(30% - 10px);
+} */
+
+mat-card {
+  /* width: 30%; */
+  /* max-height: 80%; */
+ /*  margin: 10% auto; */
+  border-radius: 8px;
+  padding: 20px;   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* background-color: blueviolet; */
+  
 }
+
+
+

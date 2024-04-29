@@ -33,6 +33,15 @@ export class AuthService {
     return decodedHeader.sub
   }
 
+  isTokenExpired(){
+    //const decodedHeader=jwtDecode(this.getToken())
+    const expiryTime=this.DecodeToken().exp*1000
+    const currentTime= new Date().getTime();
+    return expiryTime < currentTime;
+  }
+
+  
+
   login(credentials: {username:string,password:string}): Observable<AuthResponse> {
     
     return this.http.post<AuthResponse>(this.AUTH_ENDPOINT+"authenticate", credentials);

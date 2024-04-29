@@ -12,6 +12,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
 import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
 import { FileuploadComponent } from './components/fileupload/fileupload.component';
+import { PdfviewertestComponent } from './components/pdfviewertest/pdfviewertest.component';
 
 
 /* const routes: Routes = [
@@ -21,15 +22,16 @@ import { FileuploadComponent } from './components/fileupload/fileupload.componen
 ]; */
 const routes: Routes = [
 
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  { path: 'home', component: HomeComponent},
   {path:'profile',component:UserprofileComponent},
-  {path:'admin',component:AdminComponent,canActivate:[AdminGuard]},
+  {path:'admin',component:AdminComponent},
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   {path:'auth/confirm',component:UserconfirmationComponent},
   {path:'forget-password',component:ForgetpasswordComponent},
   {path:'auth/reset-password',component:ResetpasswordComponent},
   {path:'file-upload',component:FileuploadComponent},
+  {path:'pdf-viewer',component:PdfviewertestComponent},
   {path:'unauthorized',component:UnauthorizedComponent},
   { path: '**', redirectTo: '/home' }
 ];

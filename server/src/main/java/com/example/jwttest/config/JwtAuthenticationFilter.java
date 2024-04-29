@@ -2,6 +2,7 @@ package com.example.jwttest.config;
 
 import java.io.IOException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +10,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-
+import com.example.jwttest.exceptionHandling.exceptions.ErrorResponse;
 import com.example.jwttest.services.JpaUserDetailsService;
 import com.example.jwttest.services.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.jsonwebtoken.JwtException;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
@@ -52,8 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             username=jwtService.extractUsername(jwt);
             //Expiredjwtexceptoin
         } catch (JwtException e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("JWT expired");
+            //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            //response.getWriter().write("JWT expired");
 
             //switch case on exception
 
@@ -70,6 +73,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             
             //response.setContentType("application/json");
             //response.getWriter().write(jsonResponse);
+
+            //make an if on messages or isintace
+
+            ObjectMapper mapper = new ObjectMapper();
+            ErrorResponse exceptionDto = new ErrorResponse(e.getMessage(),401);
+            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            httpServletResponse.setContentType("application/json");
+            httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+            httpServletResponse.getWriter().write(mapper.writeValueAsString(exceptionDto));
             return;
         }
 

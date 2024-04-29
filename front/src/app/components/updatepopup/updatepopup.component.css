@@ -3,6 +3,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    
+   /*  width: 300px; */
+    /* height: 100%; */
+    /* background-color: blue; */
   }
   
+.update-actions{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* gap: 50px; */
+
+
+  }

@@ -14,6 +14,7 @@ import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
 export class AdminComponent implements AfterViewInit {
 
   userList:any=[]
+  activeFilters:any={status:"",role:"",search:""}
   displayedColumns: string[] = ['id','firstname','lastname','username', 'email', 'role', 'status','action'];
   dataSource = new MatTableDataSource<any>(this.userList);
 
@@ -33,7 +34,7 @@ export class AdminComponent implements AfterViewInit {
     const popup = this.dialog.open(UpdatepopupComponent, {
       enterAnimationDuration: enteranimation,
       exitAnimationDuration: exitanimation,
-      width: '30%',
+      width: '400px',
       data:userInfo
        
     });
@@ -66,7 +67,6 @@ export class AdminComponent implements AfterViewInit {
 
     });
   }
-
   loadUsers(){
     this.adminService.getUsers().subscribe({
       next:res=>{
@@ -101,29 +101,46 @@ export class AdminComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
   // Apply filter for search
-applyFilter(event: any) {
-  const filterValue=event.target.value
-  this.dataSource.filter = filterValue.trim().toLowerCase();
-}
+applySearchFilter(event: any) {
+    let searchValue = event.target.value.trim().toLowerCase();
+    this.activeFilters.search = searchValue;
+    this.applyFilters();
+  }
 
-// Apply filter for status
 applyStatusFilter(event: any) {
-  console.log('Status Filter Event:', event);
-  const status = event.value;
-  console.log('Selected Status:', status);
-  this.dataSource.filterPredicate = (data: any, filter: string) => {
-    return (status === 'Active' && data.enabled) || (status === 'Inactive' && !data.enabled);
-  };
-  this.dataSource.filter = status.trim().toLowerCase();
+  let status = event.value;
+  this.activeFilters.status = status;
+  this.applyFilters();
 }
 
-// Apply filter for role
 applyRoleFilter(event: any) {
-  const role = event.value;
-  this.dataSource.filterPredicate = (data: any, filter: string) => {
-    return data.role.toLowerCase().includes(filter);
-  };
-  this.dataSource.filter = role.trim().toLowerCase();
+  let role = event.value;
+  this.activeFilters.role = role;
+  this.applyFilters();
+}
+
+applyFilters() {
+
+  // Filter the userList array based on the active filters
+  let filteredData = this.userList.filter((user:any) => {
+    // Check if the user matches the status filter
+    const statusMatch = !this.activeFilters.status || 
+                        user.enabled === (this.activeFilters.status === "Active");
+    // Check if the user matches the role filter
+    const roleMatch = !this.activeFilters.role || user.role === this.activeFilters.role;
+
+    // Check if any of the user's properties contain the search filter value
+    const searchMatch = !this.activeFilters.search ||
+                        user.firstname.toLowerCase().includes(this.activeFilters.search) ||
+                        user.lastname.toLowerCase().includes(this.activeFilters.search) ||
+                        user.username.toLowerCase().includes(this.activeFilters.search) ||
+                        user.email.toLowerCase().includes(this.activeFilters.search);
+
+    // Return true if the user matches all filters
+    return statusMatch && roleMatch && searchMatch;
+  });
+  // Update the data source with the filtered data
+  this.dataSource.data = filteredData;
 }
 
 

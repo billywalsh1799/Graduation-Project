@@ -12,16 +12,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.isTokenValid().pipe(
-      map(() => {
-        console.log("jwt validation")
-        return true;
-      }),
-      catchError((error: any) => {
-        console.error('Error occurred while validating token:', error);
-        //return of(true)
-        return of(this.router.createUrlTree(['/login']));
-      })
-    );
+      // Check if the token is expired
+      return true;
   }
 }

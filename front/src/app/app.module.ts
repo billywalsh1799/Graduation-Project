@@ -39,6 +39,7 @@ import { ResetpasswordComponent } from './components/resetpassword/resetpassword
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
 import {MatDividerModule} from '@angular/material/divider';
 
+
 @NgModule({
   declarations: [
     AppComponent,

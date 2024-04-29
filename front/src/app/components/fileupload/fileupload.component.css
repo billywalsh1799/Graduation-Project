@@ -8,13 +8,15 @@
   
   mat-card {
     /* width: 30%; */
-    max-height: 80%;
-    margin: 10% auto;
+    /* max-height: 80%; */
+    /* margin: 10% auto; */
     border-radius: 8px;
-    padding: 20px;   
+    /* padding: 20px;    */
     display: flex;
-    justify-content: center;
     align-items: center;
+    gap:50px;
+    width: 600px;
+    height: 500px;
     
   }
 
@@ -24,25 +26,23 @@
   }
 
   mat-form-field {
-    width: 400px;
+    width: 500px;
     /* max-width: 100px; */
      /* display: block;  */
-     margin: auto; 
+    /*  margin: auto;  */
     /*  flex-grow: 1; */ /* Allow the form fields to grow and shrink dynamically */
     
   }
-  mat-card-content {
-    margin-top: 20px;
-  }
+ 
   
   
 
   mat-card-content {
-   display: flex; 
+   /* display: flex; 
    flex-direction: column; 
    justify-content: center;
-   align-items: center; 
-   width: 400px;
+   align-items: center;  */
+   
  }
 
  /* .example-chip-list {
