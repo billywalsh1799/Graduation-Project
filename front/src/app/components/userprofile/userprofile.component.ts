@@ -96,7 +96,7 @@ export class UserprofileComponent implements OnInit {
     const popup = this.dialog.open(PasswordresetpopupComponent, {
       enterAnimationDuration: enteranimation,
       exitAnimationDuration: exitanimation,
-      width: '20%',
+      width: '400px%',
       data:userInfo
     });
     

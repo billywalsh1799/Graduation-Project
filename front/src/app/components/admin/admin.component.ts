@@ -14,6 +14,7 @@ import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
 export class AdminComponent implements AfterViewInit {
 
   userList:any=[]
+  rolesList:any=[]
   activeFilters:any={status:"",role:"",search:""}
   displayedColumns: string[] = ['id','firstname','lastname','username', 'email', 'role', 'status','action'];
   dataSource = new MatTableDataSource<any>(this.userList);
@@ -23,8 +24,10 @@ export class AdminComponent implements AfterViewInit {
 
   constructor(private adminService:AdminService,private dialog:MatDialog){
     this.loadUsers()
+    this.loadRoles()
 
   }
+  
 
   updateuser(userInfo: any) {
     this.OpenDialog('200ms', '200ms', userInfo);
@@ -41,30 +44,21 @@ export class AdminComponent implements AfterViewInit {
     popup.afterClosed().subscribe(updatedUserData => {
       //console.log("done updated now update view",updatedUserData)
       console.log("use data",updatedUserData)
-      this.adminService.updateUser(userInfo.id,updatedUserData).subscribe({
-        next:res=>{
-          if (updatedUserData) {
-            console.log("response",res)   
-            const index = this.userList.findIndex((user:any) => user.id === userInfo.id);
-            if (index !== -1) {
-              // Update the enabled and role fields in the user object
-              //this.userList[index].enabled = updatedUserData.enabled;
-              //this.userList[index].role = updatedUserData.role;
-              this.userList[index]= res
-            
-              this.dataSource.data = this.userList;
-              //this.dataSource.data = [...this.userList]; 
-            }
+      if (updatedUserData){
+        this.adminService.updateUser(userInfo.id,updatedUserData).subscribe({
+          next:res=>{
+              console.log("response",res)   
+              const index = this.userList.findIndex((user:any) => user.id === userInfo.id);
+              if (index !== -1) {
+                this.userList[index]= res
+                this.dataSource.data = this.userList;
+              }
           }
-
-        }
-
-        ,error:err=>{
-          console.log("error updating users",err)
-        }
-      })
-      
-
+          ,error:err=>{
+            console.log("error updating users",err)
+          }
+        })
+      }
     });
   }
   loadUsers(){
@@ -80,6 +74,21 @@ export class AdminComponent implements AfterViewInit {
       }
 
     })
+  }
+
+  loadRoles() {
+    this.adminService.getRoles().subscribe({
+      next:res=>{
+        this.rolesList=res.roles
+      },
+      error:err=>{
+        console.log("error loading roles",err)
+      }
+    })
+  }
+
+  displayRoles(){
+    console.log(this.rolesList)
   }
 
   deleteUser(userId: Number) {

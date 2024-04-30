@@ -1,3 +1,19 @@
-<!-- <h1>app</h1> -->
-<router-outlet></router-outlet>
+<mat-toolbar color="primary">
+    <div class="toolbar-buttons">
+      <button mat-button routerLink="/home">Home</button>
+      <button mat-button routerLink="/profile">Profile</button>
+      <button mat-button routerLink="/admin">Admin</button>
+    </div>
+    <div class="user-circle">
+        <button mat-mini-fab [matMenuTriggerFor]="menu" color="warn">
+            s <!-- Replace with your user icon -->
+        </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/profile">Profile</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+  <router-outlet></router-outlet>
+  
 

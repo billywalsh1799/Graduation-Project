@@ -32,6 +32,10 @@ export class AdminService {
     return this.http.put<any>(this.ADMIN_ENDPOINT+"user/userid/"+userId+"/update",updateRequest)
 
   }
+
+  getRoles(){
+    return this.http.get<any>(this.ADMIN_ENDPOINT+"user/roles")
+  }
   
 
 }

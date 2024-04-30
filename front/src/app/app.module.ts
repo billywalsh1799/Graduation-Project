@@ -38,6 +38,10 @@ import { LoginComponent } from './components/login/login.component';
 import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -64,7 +68,7 @@ import {MatDividerModule} from '@angular/material/divider';
     HttpClientModule,
     MatCardModule,MatTabsModule,MatInputModule,MatButtonModule,MatIconModule,MatSnackBarModule, BrowserAnimationsModule,
     MatTableModule,MatPaginatorModule,MatSortModule,MatDialogModule,MatSelectModule,MatCheckboxModule,MatProgressSpinnerModule,
-    MatChipsModule,MatAutocompleteModule,MatDividerModule
+    MatChipsModule,MatAutocompleteModule,MatDividerModule,MatSidenavModule,MatListModule,MatToolbarModule,MatMenuModule
     
   ],
   providers: [AuthGuard,{ provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi: true}],

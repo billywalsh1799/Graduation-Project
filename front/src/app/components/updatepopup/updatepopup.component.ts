@@ -9,12 +9,17 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class UpdatepopupComponent  {
 
-  roleList=[{code:"ROLE_ADMIN",name:"Admin"},{code:"ROLE_USER",name:"User"}]
+  //roleList=[{code:"ROLE_ADMIN",name:"Admin"},{code:"ROLE_USER",name:"User"}]
+  rolesList:any=[]
+
 
   updateForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
     private dialogref: MatDialogRef<UpdatepopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+
+      this.rolesList=data.rolesList
+      console.log(data)
 
 
       this.updateForm = this.formBuilder.group({

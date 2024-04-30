@@ -1,0 +1,15 @@
+.toolbar-buttons {
+    flex-grow: 1; /* Push user circle to the right */
+  }
+  
+  .user-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .user-circle button {
+    margin-left: 10px; /* Adjust margin as needed */
+    font-size: large;
+    
+  }

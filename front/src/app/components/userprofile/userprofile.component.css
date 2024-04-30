@@ -7,23 +7,23 @@
 }
 
 mat-card {
-    max-width: 600px;
-    width: 100%;
+    width: 600px;
+    /* width: 100%; */
     padding: 20px;
-    height: 50%;
+    /* height: 50%; */
     box-sizing: border-box;
 }
 
 .user-profile-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
     margin-bottom: 20px;
     button {
-        width: 160px;
-        height: 40px;
+        width: 200px;
+        height: 50px;
         position: relative;
-        top:-10px;
+         top:2px;
         background-color: hsl(148,70%,31%);
     }
 }
@@ -42,10 +42,10 @@ mat-card-header{
 
 
 mat-card-content {
-    text-align: center;
+   /*  text-align: center; */
 }
 
-.user-profile-column{
+/* .user-profile-column{
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -55,7 +55,7 @@ mat-card-content {
         background-color: hsl(148,70%,31%);
         
     }
-}
+} */
 
 mat-label{
     color: blue;

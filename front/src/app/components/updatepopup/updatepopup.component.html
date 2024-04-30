@@ -6,8 +6,8 @@
           <mat-form-field>
               <mat-label>Role</mat-label>
               <mat-select formControlName="role">
-                  <mat-option *ngFor="let item of roleList" [value]="item.code">
-                      {{item.name}}
+                  <mat-option *ngFor="let role of rolesList" [value]="role.name">
+                      {{role.name.substring(5)}}
                   </mat-option>
               </mat-select>
           </mat-form-field>

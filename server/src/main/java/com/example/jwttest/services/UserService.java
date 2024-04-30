@@ -13,8 +13,10 @@ import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
 import com.example.jwttest.exceptionHandling.exceptions.WrongPasswordException;
 import com.example.jwttest.models.PasswordResetRequest;
 import com.example.jwttest.models.ProfileUpdateRequest;
+import com.example.jwttest.models.Role;
 import com.example.jwttest.models.User;
 import com.example.jwttest.models.UserDto;
+import com.example.jwttest.repo.RoleRepository;
 import com.example.jwttest.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepo;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserDto getUser(String email){    
@@ -49,6 +52,8 @@ public class UserService {
                     ,user.getUsername(), user.getEmail(), user.getRole(),user.isEnabled()))
                     .collect(Collectors.toList());
     }
+
+   
 
    /*  public void enableUser(Long userId) {
         User user =userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("user with id: "+userId+"not found"));                          
@@ -160,8 +165,14 @@ public class UserService {
         Map<String, List<String>> responseData = new HashMap<>();
         responseData.put("reviewers", reviewers);
         return responseData;
- 
-}
+    }
+
+    public Map<String, List<Role>> getRoles(){
+        Map<String, List<Role>> responseData = new HashMap<>();
+        List<Role> roles=roleRepository.findAll();
+        responseData.put("roles",roles );
+        return responseData;
+    }
 
        
 

@@ -1,5 +1,6 @@
 package com.example.jwttest.models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -13,11 +14,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity @Data @Builder @NoArgsConstructor @AllArgsConstructor
+@Entity @Data  @NoArgsConstructor @AllArgsConstructor
 public class Document {
 
     @Id
@@ -25,6 +25,8 @@ public class Document {
     private Long id;
 
     private String fileName;
+
+    
 
     @Lob
     private byte[] fileData;
@@ -39,6 +41,9 @@ public class Document {
     @JoinColumn(name = "creator_id") // Assuming the foreign key column name in the document table
     private User creator;
 
+    private LocalDateTime createdAt; // Add createdAt attribute
+
+
 
     public Document(String fileName,byte[] fileData,List<User> reviewers,User creator){
 
@@ -46,6 +51,7 @@ public class Document {
         this.fileData=fileData;
         this.reviewers=reviewers;
         this.creator=creator;
+        this.createdAt = LocalDateTime.now(); // Initialize createdAt with current timestamp
     }
 
 
