@@ -1,25 +1,20 @@
-
-<div class="center-dialog-content">
-     <h1 mat-dialog-title>Update User</h1>
-  <form [formGroup]="updateForm" (ngSubmit)="UpdateUser()">
-      <div mat-dialog-content>
-          <mat-form-field>
-              <mat-label>Role</mat-label>
-              <mat-select formControlName="role">
-                  <mat-option *ngFor="let role of rolesList" [value]="role.name">
-                      {{role.name.substring(5)}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-
-          <section class="example-section">
-              <mat-checkbox formControlName="isactive" class="example-margin">Is Active</mat-checkbox>
-          </section>
-
-      </div>
-      <div mat-dialog-actions class="update-actions">
-          <button type="submit" mat-raised-button color="primary" >Save</button>
-          <button mat-raised-button color="warn" mat-dialog-close>Close</button>
-      </div>
-  </form>
+<h1 mat-dialog-title>Update User</h1>
+<div mat-dialog-content class="center-dialog-content">
+    <form [formGroup]="updateForm" (ngSubmit)="UpdateUser()">
+        <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+        <mat-option *ngFor="let role of rolesList" [value]="role.name">
+        {{role.name.substring(5)}}
+        </mat-option>
+        </mat-select>
+        </mat-form-field>
+        <section class="example-section">
+        <mat-checkbox formControlName="isactive" class="example-margin">Is Active</mat-checkbox>
+        </section>
+        <div mat-dialog-actions class="update-actions">
+            <button type="submit" mat-raised-button color="primary" >Save</button>
+            <button mat-raised-button color="warn" mat-dialog-close>Close</button>
+        </div>
+    </form>
 </div>

@@ -40,10 +40,10 @@ public class DocumentController {
 
     @GetMapping("/download/{documentId}")
     public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) {
-        System.out.println("Request download ");
+        //System.out.println("Request download ");
         // Get the document from the service
         Document document = documentService.getDocumentById(documentId);
-        System.out.println("document "+document);
+        //System.out.println("document "+document);
 
         // Create ByteArrayResource from fileData
         ByteArrayResource resource = new ByteArrayResource(document.getFileData());
@@ -60,5 +60,36 @@ public class DocumentController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
     }
+    @GetMapping("/document/{id}/pdf")
+    public ResponseEntity<Resource> getDocumentPdf(@PathVariable Long id) {
+        Document document = documentService.getDocumentById(id);
+        byte[] pdfData =document.getFileData();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=document.pdf");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new ByteArrayResource(pdfData));
+    }
+
     
+
+    /* @GetMapping("/documents/{id}/{filename}/pdf")
+        public ResponseEntity<Resource> getDocumentPdf(@PathVariable Long id, @PathVariable String filename) {
+            Document document = documentService.getDocumentById(id);
+            byte[] pdfData =document.getFileData();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + filename + ".pdf");
+
+            return ResponseEntity
+                    .ok()
+                    .headers(headers)
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(new ByteArrayResource(pdfData));
+        }
+     */
 }

@@ -1,45 +1,3 @@
-table {
- /*  width: 500px; */
-  /* display: flex;
-  width: 100%; 
-  flex-direction: column; 
-  align-items: center;  */
-  /* background-color: blueviolet; */
-}
-
-
-
-.admin-page{
-  display: flex;
-  justify-content: center;               /* Horizontally center the flex items */
-  align-items: center;                /* Vertically center the flex items */
-  height: 100vh;
-  background-color: wheat;
-  
-}
-
-
-th{
- /*  width: 100px; */
- 
-}
-td{
- /*  display: flex;
-  flex-direction: row;  */
-  /* background-color: aqua; */
-  /* background-color: blueviolet; */
- /*  align-items: center;
-  justify-content: center; */
- /*  width: 20%; */
-}
-
-/* .inside-div{
-  max-width: 70%;
-  width: 100%;
-  
-  
-  
-} */
 
 
 .search-filters {
@@ -62,6 +20,7 @@ mat-card {
   display: flex;
   justify-content: center;
   align-items: center;
+ 
   
   /* background-color: blueviolet; */
   
@@ -69,3 +28,7 @@ mat-card {
 
 
 
+/* .mat-column-email {
+
+}
+ */

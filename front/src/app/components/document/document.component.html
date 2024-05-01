@@ -1,0 +1,32 @@
+<div class="document-page">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Review Document</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="document-row">
+                <button mat-button color="primary">document.pdf</button>
+                <button mat-raised-button color="primary">Validate</button>
+            </div>
+            <mat-card-title>Comments</mat-card-title>
+            <div class="document-row">
+                <form (ngSubmit)="addComment()">
+                    <mat-form-field>
+                      <input matInput placeholder="New comment" [(ngModel)]="newComment" name="comment"autocomplete="off">
+                    </mat-form-field>
+                    
+                </form>
+                  <button mat-raised-button color="primary" (click)="addComment()">Add Comment</button>
+
+            </div>
+            <div class="document-row">
+                <div class="mat-list">
+                   <p class="mat-list-item" *ngFor="let comment of comments">{{comment}}</p>
+                   
+                   
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+</div>

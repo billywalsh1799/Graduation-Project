@@ -42,6 +42,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
+import { DocumentComponent } from './components/document/document.component';
+
 
 
 @NgModule({
@@ -58,7 +60,8 @@ import {MatMenuModule} from '@angular/material/menu';
     FileuploadComponent,
     LoginComponent,
     ResetpasswordComponent,
-    ForgetpasswordComponent
+    ForgetpasswordComponent,
+    DocumentComponent
   ],
   imports: [
     BrowserModule,

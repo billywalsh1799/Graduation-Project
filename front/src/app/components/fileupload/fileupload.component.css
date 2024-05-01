@@ -2,8 +2,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: wheat;
+   /*  height: 100vh;
+    background-color: wheat; */
+    margin-top: 20px;
   }
   
   mat-card {
@@ -12,21 +13,22 @@
     /* margin: 10% auto; */
     border-radius: 8px;
     /* padding: 20px;    */
-    display: flex;
-    align-items: center;
+    /* display: flex;
+    align-items: center; */
     gap:50px;
-    width: 600px;
-    height: 500px;
+    width: 700px;
+    height: 600px;
+    padding: 40px;
     
   }
 
   mat-card-title{
-    color: #303F9F;
+    /* color: #303F9F; */
     /* margin-top:20px; */
   }
 
   mat-form-field {
-    width: 500px;
+    width: 600px;
     /* max-width: 100px; */
      /* display: block;  */
     /*  margin: auto;  */

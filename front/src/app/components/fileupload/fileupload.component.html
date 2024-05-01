@@ -1,7 +1,7 @@
 <div class="file-upload-page">
   <mat-card class="mat-elevation-z12">
       <mat-card-header>
-          <mat-card-title>Add Reviewers</mat-card-title>
+          <mat-card-title>Create Document</mat-card-title>
       </mat-card-header>
       <mat-card-content>
           <form>
@@ -12,7 +12,8 @@
             {{ selectedFile.name }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
-        <mat-divider></mat-divider>
+         <mat-divider></mat-divider>
+        
               <mat-form-field class="example-chip-list" appearance="fill">
                 <mat-label>Reviewers</mat-label>
                 <mat-chip-grid #chipGrid aria-label="Reviewer selection">
@@ -33,7 +34,7 @@
                 </mat-autocomplete>
               </mat-form-field>
               <mat-divider></mat-divider>
-              <button mat-button color="primary" (click)="createDocument()">Create Document</button>
+              <button mat-button color="primary" (click)="createDocument()">Upload</button>
             </form>
       </mat-card-content>
   </mat-card>

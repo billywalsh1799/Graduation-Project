@@ -12,8 +12,8 @@
 .update-actions{
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  /* gap: 50px; */
+/*   justify-content: space-between; */
+  gap: 50px;
 
 
   }

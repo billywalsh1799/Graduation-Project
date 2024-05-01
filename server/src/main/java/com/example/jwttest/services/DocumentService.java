@@ -2,6 +2,7 @@ package com.example.jwttest.services;
 
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class DocumentService {
         try {
             document.setFileData(file.getBytes());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            
             System.err.println("error uploading");
             e.printStackTrace();
         }
@@ -34,6 +35,7 @@ public class DocumentService {
         document.setReviewers(reviewers);
         User creator=userRepository.findByEmail(creatorEmail).orElseThrow();
         document.setCreator(creator);
+        document.setCreatedAt(LocalDateTime.now());
         return documentRepository.save(document);
     }
 

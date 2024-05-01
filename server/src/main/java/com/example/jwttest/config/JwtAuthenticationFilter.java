@@ -2,7 +2,7 @@ package com.example.jwttest.config;
 
 import java.io.IOException;
 
-import org.springframework.http.HttpStatus;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,12 +10,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.jwttest.exceptionHandling.exceptions.ErrorResponse;
+
 import com.example.jwttest.services.JpaUserDetailsService;
 import com.example.jwttest.services.JwtService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.jsonwebtoken.JwtException;
+
+import io.jsonwebtoken.ExpiredJwtException;
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -54,34 +54,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             username=jwtService.extractUsername(jwt);
             //Expiredjwtexceptoin
-        } catch (JwtException e) {
-            //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            //response.getWriter().write("JWT expired");
+        } catch (ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("JWT expired");
 
-            //switch case on exception
-
-            //ErrorResponse errorResponse=new ErrorResponse(e.getMessage(),401);
-            // Convert the JSON object to a JSON string
-            //String jsonResponse = new ObjectMapper().writeValueAsString(errorResponse);
-            // Set response content type to JSON
-            //response.setContentType("application/json");
-            // Write the JSON error response to the response body
-            //response.getWriter().write(jsonResponse);
-            //send json error rsponse
-            //ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), 401);
-            //String jsonResponse = "{\"message\":\"" + errorResponse.getMessage() + "\",\"status\":" + errorResponse.getStatus() + "}";
-            
-            //response.setContentType("application/json");
-            //response.getWriter().write(jsonResponse);
-
-            //make an if on messages or isintace
-
-            ObjectMapper mapper = new ObjectMapper();
-            ErrorResponse exceptionDto = new ErrorResponse(e.getMessage(),401);
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            httpServletResponse.setContentType("application/json");
-            httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-            httpServletResponse.getWriter().write(mapper.writeValueAsString(exceptionDto));
             return;
         }
 

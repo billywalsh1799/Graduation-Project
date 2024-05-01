@@ -1,0 +1,56 @@
+.document-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   /*  height: 100vh;
+    background-color: wheat; */
+    margin-top: 20px;
+}
+
+mat-card {
+    width: 800px;
+    min-height: 600px;
+    /* width: 100%; */
+    padding: 20px;
+    /* height: 50%; */
+    box-sizing: border-box;
+    /* display: flex; */
+}
+
+mat-card-title{
+    margin-bottom: 20px;
+}
+
+.document-row{
+    /* background-color:lightblue; */
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    mat-form-field{
+        width: 550px;
+    }
+}
+
+.mat-list {
+    /* Add your custom styles here */
+    width: 550px; /* Example: Set the list width to 100% */
+    background-color: #f0f0f0;
+    /* font-size: large; */
+    /* set a max height */
+    /* max-height: 200px; */
+   /*  overflow: scroll; */
+    
+  }
+.mat-list-item {
+    /* Add your custom styles here */
+    /* Example: Set background color for list items */
+    padding: 10px; /* Example: Add padding to list items */
+    /* font-weight: bold; */
+    color: blue;
+    font-size: 17px;
+    
+    
+    
+  }
+  
+  /* Style list item text */

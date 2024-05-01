@@ -85,6 +85,7 @@ public class AuthenticationService {
        
         // Cast Authentication to User
         SecurityUser securityUser =  (SecurityUser)authentication.getPrincipal();
+        System.out.println("security user authorities: "+securityUser.getAuthorities());
         //System.err.println("user principal: "+user.getUser());
         
         User user=securityUser.getUser();
