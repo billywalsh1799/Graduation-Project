@@ -4,6 +4,7 @@ package com.example.jwttest.services;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +32,7 @@ public class DocumentService {
             System.err.println("error uploading");
             e.printStackTrace();
         }
-        List<User> reviewers = userRepository.findAllByEmailIn(reviewerEmails);
+        Set<User> reviewers = userRepository.findAllByEmailIn(reviewerEmails);
         document.setReviewers(reviewers);
         User creator=userRepository.findByEmail(creatorEmail).orElseThrow();
         document.setCreator(creator);

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/auth.service';
-import { PasswordresetpopupComponent } from '../passwordresetpopup/passwordresetpopup.component';
+import { PasswordResetRequest } from 'src/app/services/interfaces/shared-interfaces';
+import { setCustomFormError, validatePasswordConfirmation } from 'src/app/services/methods/formUtils';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class UserprofileComponent implements OnInit {
  
 
   constructor(private formBuilder: FormBuilder ,private authService:AuthService
-    ,private dialog:MatDialog,private userService:UserService){
+    ,private userService:UserService){
 
     
     
@@ -34,6 +34,14 @@ export class UserprofileComponent implements OnInit {
       newPassword: [null, [Validators.required]],
       confirmNewPassword: [null, [Validators.required]]
       
+    });
+
+    // Subscribe to value changes of password and confirmPassword controls
+    this.passwordForm.get('newPassword')?.valueChanges.subscribe(() => {
+      validatePasswordConfirmation(this.passwordForm,"newPassword","confirmNewPassword");
+    });
+    this.passwordForm.get('confirmNewPassword')?.valueChanges.subscribe(() => {
+      validatePasswordConfirmation(this.passwordForm,"newPassword","confirmNewPassword");
     });
   }
   ngOnInit(): void {
@@ -58,10 +66,16 @@ export class UserprofileComponent implements OnInit {
       },
       error:err=>{
         console.log(err)
+        
       }
     })
   }
 
+  onTabChange(event: any) {
+    if (event === 1) { // Check if the "Security Settings" tab is selected
+      this.passwordForm.reset(); // Reset password form
+    }
+  }
 
   updateProfile(){
     if(this.userInfoForm.valid){
@@ -81,6 +95,10 @@ export class UserprofileComponent implements OnInit {
         },
         error:err=>{
           console.log(err)
+          let errorMessage=err.error.message;
+          if(errorMessage=="Username is already in use"){
+            setCustomFormError(this.userInfoForm,"username",errorMessage)
+          }
         }
       })
      
@@ -89,18 +107,32 @@ export class UserprofileComponent implements OnInit {
 
   changePassword() {
     console.log("email",this.userInfoForm.value['email'])
-    this.OpenDialog('200ms', '200ms',{email:this.userInfoForm.value.email});
-  }
-
-  OpenDialog(enteranimation: any, exitanimation: any,userInfo:any) {
-    const popup = this.dialog.open(PasswordresetpopupComponent, {
-      enterAnimationDuration: enteranimation,
-      exitAnimationDuration: exitanimation,
-      width: '400px%',
-      data:userInfo
-    });
     
   }
+  resetPassword(){
+    if(this.passwordForm.valid){
+      const {currentPassword,newPassword}=this.passwordForm.value
+      //get email from data
+      const request:PasswordResetRequest={currentPassword,newPassword,email:this.userInfoForm.value['email']}
+      console.log("request",request)
+      this.userService.resetPassword(request).subscribe({
+        next:res=>{
+          console.log("success",res)
+          //snackbar
+        },
+        error:err=>{
+          console.log("error",err)
+          //set custom error
+          let errorMessage=err.error.message;
+          setCustomFormError(this.passwordForm,"currentPassword",errorMessage)
+         
+        }
+      })
+    }
+  
+  }
+
+ 
 
   
 

@@ -81,8 +81,6 @@ export class PasswordresetpopupComponent {
          
         }
       })
-      //close after successfull pasword reset 
-      //this.dialogref.close(this.passwordForm.value);
     }
   
   }

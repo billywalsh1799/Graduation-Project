@@ -2,6 +2,7 @@ package com.example.jwttest.models;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class Document {
     @JoinTable(name = "document_reviewers",
                joinColumns = @JoinColumn(name = "document_id"),
                inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> reviewers;
+    private Set<User> reviewers;
 
     @ManyToOne
     @JoinColumn(name = "creator_id") // Assuming the foreign key column name in the document table
@@ -45,7 +46,7 @@ public class Document {
 
 
 
-    public Document(String fileName,byte[] fileData,List<User> reviewers,User creator){
+    public Document(String fileName,byte[] fileData,Set<User> reviewers,User creator){
 
         this.fileName=fileName;
         this.fileData=fileData;

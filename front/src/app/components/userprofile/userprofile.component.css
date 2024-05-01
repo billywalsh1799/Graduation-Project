@@ -4,33 +4,46 @@
     align-items: center;
     /* margin-top: 100px; */
     margin-top: 20px;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
+    /* background-color: blue; */
+    
    
     /* height: 100vh; */
    /*  background-color: wheat; */
 }
 
 mat-card {
-    width: 700px;
-    height: 600px;
+    width: 600px;
+    height: 700px;
     /* width: 100%; */
     padding: 20px;
     /* height: 50%; */
-    box-sizing: border-box;
+   /*  box-sizing: border-box; */
 }
 
 .user-profile-row {
     display: flex;
     justify-content: space-between;
     /* align-items: center; */
-    margin-bottom: 20px;
-    button {
+    margin-bottom: 30px;
+    
+   /*  button {
         width: 200px;
         height: 50px;
         position: relative;
          top:2px;
         background-color: hsl(148,70%,31%);
-    }
+    } */
+}
+
+.user-profile-column{
+    /* margin-top: 20px; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+   /*  gap: 10px; */
+    margin-top: 60px;
+    background-color: blue;
 }
 
 mat-form-field {
@@ -42,12 +55,14 @@ mat-card-header{
   /*  justify-content: center;
    
    text-align: center; */
-   margin-bottom: 5%;
+   margin-bottom:30px;
 }
+
 
 
 mat-card-content {
    /*  text-align: center; */
+   margin-top: 40px;
 }
 
 /* .user-profile-column{
