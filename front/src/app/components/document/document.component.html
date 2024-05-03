@@ -5,8 +5,8 @@
         </mat-card-header>
         <mat-card-content>
             <div class="document-row">
-                <button mat-button color="primary">document.pdf</button>
-                <button mat-raised-button color="primary">Validate</button>
+                <button mat-button color="primary"(click)="openDocument()">{{fileName}}</button>
+                <button mat-raised-button color="primary" (click)="validateDocument()">Validate</button>
             </div>
             <mat-card-title>Comments</mat-card-title>
             <div class="document-row">
@@ -19,13 +19,20 @@
                   <button mat-raised-button color="primary" (click)="addComment()">Add Comment</button>
 
             </div>
-            <div class="document-row">
+            <!-- <div class="document-row">
                 <div class="mat-list">
                    <p class="mat-list-item" *ngFor="let comment of comments">{{comment}}</p>
-                   
-                   
+                </div>
+            </div> -->
+            <div class="chat-messages box">
+                <div class="message" *ngFor="let comment of comments">
+                    <p class="meta">{{comment.author}}<span> {{comment.createdAt | date:'short'}}</span></p>
+                    <p class="text">
+                        {{comment.content}}
+                    </p>
                 </div>
             </div>
+            
         </mat-card-content>
     </mat-card>
 

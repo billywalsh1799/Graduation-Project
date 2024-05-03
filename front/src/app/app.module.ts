@@ -43,6 +43,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { DocumentComponent } from './components/document/document.component';
+import { CommentsComponent } from './components/comments/comments.component';
 
 
 
@@ -62,7 +63,8 @@ import { DocumentComponent } from './components/document/document.component';
     LoginComponent,
     ResetpasswordComponent,
     ForgetpasswordComponent,
-    DocumentComponent
+    DocumentComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,

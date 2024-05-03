@@ -28,4 +28,26 @@ export class DocumentService {
   downloadDocument(documentId: number): Observable<Blob> {
     return this.http.get(`${this.DOCUMENT_ENDPOINT}/download/${documentId}`, { responseType: 'blob' });
   }
+
+  getAllCommentsForDocument(documentId:number){
+    return this.http.get(this.DOCUMENT_ENDPOINT+"/"+documentId+"/comments")
+  }
+
+  addCommentToDocument(request:any){
+    return this.http.post(this.DOCUMENT_ENDPOINT+"/comment",request)
+
+  }
+
+  getDocument(id:number){
+    return this.http.get(this.DOCUMENT_ENDPOINT+"/document/"+id)
+  }
+
+  getDocumentPdf(id:number){
+    return this.http.get(`http://localhost:8080/api/documents/document/${id}/pdf`, { responseType: 'blob' })
+  }
+
+  validateDocument(id:number){
+    return this.http.post(`http://localhost:8080/api/documents/${id}/validate`,{})
+
+  }
 }

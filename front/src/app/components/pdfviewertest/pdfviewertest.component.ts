@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
+
 @Component({
   selector: 'app-pdfviewertest',
   templateUrl: './pdfviewertest.component.html',
@@ -10,7 +11,7 @@ export class PdfviewertestComponent {
 
   constructor(private http: HttpClient) {}
 
-   openPdf() {
+    openPdf() {
     const documentId = 9; // Replace with the actual document ID
     this.http.get(`http://localhost:8080/api/documents/document/${documentId}/pdf`, { responseType: 'blob' })
       .subscribe(response => {
@@ -19,7 +20,8 @@ export class PdfviewertestComponent {
         window.open(fileURL, '_blank');
         
       });
-  } 
+  }  
+ 
 
 
  

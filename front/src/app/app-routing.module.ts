@@ -14,6 +14,7 @@ import { ResetpasswordComponent } from './components/resetpassword/resetpassword
 import { FileuploadComponent } from './components/fileupload/fileupload.component';
 import { PdfviewertestComponent } from './components/pdfviewertest/pdfviewertest.component';
 import { DocumentComponent } from './components/document/document.component';
+import { CommentsComponent } from './components/comments/comments.component';
 
 
 /* const routes: Routes = [
@@ -33,7 +34,8 @@ const routes: Routes = [
   {path:'auth/reset-password',component:ResetpasswordComponent},
   {path:'file-upload',component:FileuploadComponent},
   {path:'pdf-viewer',component:PdfviewertestComponent},
-  {path:'document',component:DocumentComponent},
+  {path:'document/:id',component:DocumentComponent},
+  {path:'comments',component:CommentsComponent},
   {path:'unauthorized',component:UnauthorizedComponent},
   { path: '**', redirectTo: '/home' }
 ];
