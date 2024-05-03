@@ -31,7 +31,7 @@ public class DocumentService {
     private final UserRepository userRepository;
     /* private final CommentRepository commentRepository; */
 
-    public Document createDocument(MultipartFile file, List<String> reviewerEmails,String creatorEmail)  {
+    public DocumentDto createDocument(MultipartFile file, List<String> reviewerEmails,String creatorEmail)  {
         Document document = new Document();
         document.setFileName(file.getOriginalFilename());
         try {
@@ -41,12 +41,18 @@ public class DocumentService {
             System.err.println("error uploading");
             e.printStackTrace();
         }
-        Set<User> reviewers = userRepository.findAllByEmailIn(reviewerEmails);
-        document.setReviewers(reviewers);
+        //Set<User> reviewers = userRepository.findAllByEmailIn(reviewerEmails);
+        //document.setReviewers(reviewers);
         User creator=userRepository.findByEmail(creatorEmail).orElseThrow();
         document.setCreator(creator);
         document.setCreatedAt(LocalDateTime.now());
-        return documentRepository.save(document);
+        Map<String, Boolean> validationStatus = new HashMap<>();
+        for (String email : reviewerEmails) {
+            validationStatus.put(email, false);
+        }
+        document.setValidationStatus(validationStatus);
+
+        return new DocumentDto(documentRepository.save(document));
     }
 
     public Document getDocumentPdf(Long documentId) {
@@ -63,10 +69,19 @@ public class DocumentService {
 
     }
 
-    public DocumentDto validateDocument(Long id){
+  /*   public DocumentDto validateDocument(Long id){
         Document document = documentRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Document not found"));
         document.setValidated(true);
+        return new DocumentDto(documentRepository.save(document));
+    } */
+    public DocumentDto validateDocument(Long id,String reviewerEmail){
+        Document document = documentRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Document not found"));
+        // Update the validation status for the specified reviewer email
+        Map<String, Boolean> validationStatus = document.getValidationStatus();
+        validationStatus.put(reviewerEmail, true); // Set validation status to true
+        document.setValidationStatus(validationStatus);// Set the updated validation status map back to the document
         return new DocumentDto(documentRepository.save(document));
     }
 

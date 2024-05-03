@@ -2,12 +2,15 @@ package com.example.jwttest.models;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +19,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 
@@ -41,11 +45,16 @@ public class Document {
     @Lob
     private byte[] fileData;
 
-    @ManyToMany
+    /* @ManyToMany
     @JoinTable(name = "document_reviewers",
                joinColumns = @JoinColumn(name = "document_id"),
                inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> reviewers;
+    private Set<User> reviewers; */
+
+    @ElementCollection
+    @MapKeyColumn(name = "reviewer_email") // Use email as the map key
+    @Column(name = "is_validated")
+    private Map<String, Boolean> validationStatus;
 
     @ManyToOne
     @JoinColumn(name = "creator_id") // Assuming the foreign key column name in the document table
@@ -58,14 +67,16 @@ public class Document {
     private List<Comment> comments;
 
 
-    public Document(String fileName,byte[] fileData,Set<User> reviewers,User creator){
+    public Document(String fileName,byte[] fileData,Map<String, Boolean> validationStatus,User creator){
 
         this.fileName=fileName;
         this.fileData=fileData;
-        this.reviewers=reviewers;
         this.creator=creator;
         this.createdAt = LocalDateTime.now(); // Initialize createdAt with current timestamp
         this.comments = new ArrayList<>();
+        this.validationStatus=validationStatus;
+        
+       
     }
 
 

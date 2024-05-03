@@ -40,14 +40,14 @@ public class DocumentController {
 
     private final DocumentService documentService;
     @PostMapping("/create")
-    public Document createDocument(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<DocumentDto> createDocument(@RequestParam("file") MultipartFile file,
                                     @RequestParam("reviewerEmails") List<String> reviewerEmails,
                                     @RequestParam("creatorEmail") String creatorEmail)   {
-        return documentService.createDocument(file, reviewerEmails,creatorEmail);
+        return new ResponseEntity<>(documentService.createDocument(file, reviewerEmails,creatorEmail),HttpStatus.OK);
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<DocumentDto>> getMethodName() {
+    public ResponseEntity<List<DocumentDto>> getAll() {
         return new ResponseEntity<>(documentService.getAll(),HttpStatus.OK);
     }
     
@@ -109,8 +109,8 @@ public class DocumentController {
     }
     
     @PostMapping("/{id}/validate")
-    public ResponseEntity<DocumentDto> validateDocument(@PathVariable Long  id) {
-       return new ResponseEntity<>(documentService.validateDocument(id),HttpStatus.OK);
+    public ResponseEntity<DocumentDto> validateDocument(@PathVariable Long  id,@RequestBody Map<String,String> request) {
+       return new ResponseEntity<>(documentService.validateDocument(id,request.get("reviewerEmail")),HttpStatus.OK);
     }
     
     
