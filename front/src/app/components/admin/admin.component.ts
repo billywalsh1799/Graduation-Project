@@ -150,18 +150,7 @@ applyFilters() {
   });
   // Update the data source with the filtered data
   this.dataSource.data = filteredData;
-}
-
-
-
-
-
-
-
-
-
-
-
+  }
 
 }
 

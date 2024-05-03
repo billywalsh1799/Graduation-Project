@@ -1,13 +1,12 @@
 package com.example.jwttest.models;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.hibernate.annotations.Type;
+
+import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -15,19 +14,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity @Data  @NoArgsConstructor @AllArgsConstructor
+@Entity @Data  @NoArgsConstructor @AllArgsConstructor @Builder
 public class Document {
 
     @Id
@@ -77,6 +74,16 @@ public class Document {
         this.validationStatus=validationStatus;
         
        
+    }
+
+    public Document(Long id, String fileName, boolean validated, Map<String, Boolean> validationStatus, User creator, LocalDateTime createdAt, List<Comment> comments) {
+        this.id = id;
+        this.fileName = fileName;
+        this.validated = validated;
+        this.validationStatus = validationStatus;
+        this.creator = creator;
+        this.createdAt = createdAt;
+        this.comments = comments;
     }
 
 

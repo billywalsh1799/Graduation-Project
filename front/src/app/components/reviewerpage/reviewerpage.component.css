@@ -1,0 +1,20 @@
+
+  
+  mat-card {
+    /* width: 30%; */
+    /* max-height: 80%; */
+   /*  margin: 10% auto; */
+    border-radius: 8px;
+    padding: 20px;   
+    /* display: flex; */
+    /* justify-content: center;
+    align-items: center; */
+
+    
+  }
+  
+  
+
+  table {
+    width: 100%; /* Make the table fill the container */
+  }

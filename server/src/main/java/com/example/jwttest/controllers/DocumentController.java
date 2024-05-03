@@ -1,9 +1,6 @@
 package com.example.jwttest.controllers;
-
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,16 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.CommentDto;
 import com.example.jwttest.models.Document;
 import com.example.jwttest.models.DocumentDto;
 import com.example.jwttest.services.DocumentService;
-
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -113,6 +106,10 @@ public class DocumentController {
        return new ResponseEntity<>(documentService.validateDocument(id,request.get("reviewerEmail")),HttpStatus.OK);
     }
     
+    /* @GetMapping("/review/{reviewerEmail}")
+    public ResponseEntity<List<DocumentDto>> getDocumentsForReview(@PathVariable String reviewerEmail) {
+        return new ResponseEntity<>(documentService.getDocumentsForReview(reviewerEmail),HttpStatus.OK);
+    } */
     
 
     

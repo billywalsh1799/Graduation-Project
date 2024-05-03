@@ -15,6 +15,7 @@ import { FileuploadComponent } from './components/fileupload/fileupload.componen
 import { PdfviewertestComponent } from './components/pdfviewertest/pdfviewertest.component';
 import { DocumentComponent } from './components/document/document.component';
 import { CommentsComponent } from './components/comments/comments.component';
+import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
 
 
 /* const routes: Routes = [
@@ -35,7 +36,7 @@ const routes: Routes = [
   {path:'file-upload',component:FileuploadComponent},
   {path:'pdf-viewer',component:PdfviewertestComponent},
   {path:'document/:id',component:DocumentComponent},
-  {path:'comments',component:CommentsComponent},
+  {path:'reviewer-page',component:ReviewerpageComponent},
   {path:'unauthorized',component:UnauthorizedComponent},
   { path: '**', redirectTo: '/home' }
 ];

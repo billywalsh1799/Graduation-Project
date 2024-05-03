@@ -44,6 +44,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { DocumentComponent } from './components/document/document.component';
 import { CommentsComponent } from './components/comments/comments.component';
+import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
 
 
 
@@ -64,7 +65,8 @@ import { CommentsComponent } from './components/comments/comments.component';
     ResetpasswordComponent,
     ForgetpasswordComponent,
     DocumentComponent,
-    CommentsComponent
+    CommentsComponent,
+    ReviewerpageComponent
   ],
   imports: [
     BrowserModule,

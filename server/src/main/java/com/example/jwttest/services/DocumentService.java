@@ -6,19 +6,14 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.example.jwttest.models.CommentDto;
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.Document;
 import com.example.jwttest.models.DocumentDto;
 import com.example.jwttest.models.User;
-import com.example.jwttest.models.UserDto;
-import com.example.jwttest.repo.CommentRepository;
 import com.example.jwttest.repo.DocumentRepository;
 import com.example.jwttest.repo.UserRepository;
 
@@ -29,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final UserRepository userRepository;
-    /* private final CommentRepository commentRepository; */
 
     public DocumentDto createDocument(MultipartFile file, List<String> reviewerEmails,String creatorEmail)  {
         Document document = new Document();
@@ -41,8 +35,6 @@ public class DocumentService {
             System.err.println("error uploading");
             e.printStackTrace();
         }
-        //Set<User> reviewers = userRepository.findAllByEmailIn(reviewerEmails);
-        //document.setReviewers(reviewers);
         User creator=userRepository.findByEmail(creatorEmail).orElseThrow();
         document.setCreator(creator);
         document.setCreatedAt(LocalDateTime.now());
@@ -61,20 +53,11 @@ public class DocumentService {
     }
 
     public DocumentDto getDocument(Long id){
-        //Document document=documentRepository.findById(id).orElseThrow(()->new RuntimeException("document not found"));
-       /*  return new DocumentDto(document.getId(),document.getFileName(),document.getReviewers(),document.getCreator(),
-                    document.getComments(),document.getCreatedAt()); */
         return documentRepository.findById(id).map(DocumentDto::new)
         .orElseThrow(()->new RuntimeException("document not found"));
 
     }
 
-  /*   public DocumentDto validateDocument(Long id){
-        Document document = documentRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Document not found"));
-        document.setValidated(true);
-        return new DocumentDto(documentRepository.save(document));
-    } */
     public DocumentDto validateDocument(Long id,String reviewerEmail){
         Document document = documentRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Document not found"));
@@ -83,6 +66,9 @@ public class DocumentService {
         validationStatus.put(reviewerEmail, true); // Set validation status to true
         document.setValidationStatus(validationStatus);// Set the updated validation status map back to the document
         return new DocumentDto(documentRepository.save(document));
+
+        //add progress attribute starts with 0 within each validation check if its equal to the size of the hashmap
+        //if equeal setvalidation of document true
     }
 
     public List<DocumentDto> getAll(){
@@ -112,5 +98,13 @@ public class DocumentService {
         responseData.put("comments", comments);
         return responseData;
     }
+
+    /* public List<DocumentDto> getDocumentsForReview(String reviewerEmail) {
+        // Retrieve both reviewed and unreviewed documents for the reviewer
+        List<Document> documents=documentRepository.findByReviewerEmail(reviewerEmail);
+        return documents.stream()
+                    .map(DocumentDto::new)
+                    .collect(Collectors.toList());
+    } */
 
 }
