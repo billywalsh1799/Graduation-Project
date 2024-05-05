@@ -1,8 +1,10 @@
 package com.example.jwttest.models;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.annotations.Type;
 
@@ -24,7 +26,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity @Data  @NoArgsConstructor @AllArgsConstructor @Builder
+@Entity @Data  @NoArgsConstructor @AllArgsConstructor 
 public class Document {
 
     @Id
@@ -37,21 +39,6 @@ public class Document {
     @Column(nullable = false, columnDefinition = "boolean default false") 
     private boolean validated;
 
-    
-
-    @Lob
-    private byte[] fileData;
-
-    /* @ManyToMany
-    @JoinTable(name = "document_reviewers",
-               joinColumns = @JoinColumn(name = "document_id"),
-               inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> reviewers; */
-
-    @ElementCollection
-    @MapKeyColumn(name = "reviewer_email") // Use email as the map key
-    @Column(name = "is_validated")
-    private Map<String, Boolean> validationStatus;
 
     @ManyToOne
     @JoinColumn(name = "creator_id") // Assuming the foreign key column name in the document table
@@ -61,30 +48,28 @@ public class Document {
 
 
     @OneToMany(mappedBy = "documentId", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    private List<Comment> comments= new ArrayList<>();
 
 
-    public Document(String fileName,byte[] fileData,Map<String, Boolean> validationStatus,User creator){
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "document_id")
+    private Set<ReviewerValidation> reviewersValidations= new HashSet<>();
+
+
+    public Document(String fileName,User creator){
 
         this.fileName=fileName;
-        this.fileData=fileData;
         this.creator=creator;
         this.createdAt = LocalDateTime.now(); // Initialize createdAt with current timestamp
-        this.comments = new ArrayList<>();
-        this.validationStatus=validationStatus;
         
-       
     }
 
-    public Document(Long id, String fileName, boolean validated, Map<String, Boolean> validationStatus, User creator, LocalDateTime createdAt, List<Comment> comments) {
-        this.id = id;
-        this.fileName = fileName;
-        this.validated = validated;
-        this.validationStatus = validationStatus;
-        this.creator = creator;
-        this.createdAt = createdAt;
-        this.comments = comments;
+    public void addReviewerValidation(ReviewerValidation validation){
+        this.reviewersValidations.add(validation);
+
     }
+
+    
 
 
     

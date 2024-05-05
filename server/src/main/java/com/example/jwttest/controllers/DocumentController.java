@@ -47,14 +47,9 @@ public class DocumentController {
 
 
 
-    @GetMapping("/download/{documentId}")
+    /* @GetMapping("/download/{documentId}")
     public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) {
-        //System.out.println("Request download ");
-        // Get the document from the service
         Document document = documentService.getDocumentPdf(documentId);
-        //System.out.println("document "+document);
-
-        // Create ByteArrayResource from fileData
         ByteArrayResource resource = new ByteArrayResource(document.getFileData());
 
         // Set the headers for the response
@@ -68,8 +63,8 @@ public class DocumentController {
                 .contentLength(resource.contentLength())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
-    }
-    @GetMapping("/document/{id}/pdf")
+    } */
+    /* @GetMapping("/document/{id}/pdf")
     public ResponseEntity<Resource> getDocumentPdf(@PathVariable Long id) {
         Document document = documentService.getDocumentPdf(id);
         byte[] pdfData =document.getFileData();
@@ -83,7 +78,7 @@ public class DocumentController {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(new ByteArrayResource(pdfData));
-    }
+    } */
 
     @GetMapping("/document/{id}")
     public ResponseEntity<DocumentDto> getDocument(@PathVariable Long id) {

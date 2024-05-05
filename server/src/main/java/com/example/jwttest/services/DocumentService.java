@@ -6,14 +6,20 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.jwttest.models.CommentDto;
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.Document;
 import com.example.jwttest.models.DocumentDto;
+import com.example.jwttest.models.DocumentFile;
+import com.example.jwttest.models.ReviewerValidation;
 import com.example.jwttest.models.User;
+import com.example.jwttest.repo.DocumentFileRepository;
 import com.example.jwttest.repo.DocumentRepository;
 import com.example.jwttest.repo.UserRepository;
 
@@ -23,27 +29,33 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DocumentService {
     private final DocumentRepository documentRepository;
+    private final DocumentFileRepository documentFileRepository;
     private final UserRepository userRepository;
 
     public DocumentDto createDocument(MultipartFile file, List<String> reviewerEmails,String creatorEmail)  {
         Document document = new Document();
         document.setFileName(file.getOriginalFilename());
+        DocumentFile documentFile=new DocumentFile();
         try {
-            document.setFileData(file.getBytes());
+            documentFile.setFileData(file.getBytes());
         } catch (IOException e) {
             
             System.err.println("error uploading");
             e.printStackTrace();
-        }
+        } 
+
+        //save file only after docuemnt saved succesflly
+        documentFileRepository.save(documentFile);
+
+
         User creator=userRepository.findByEmail(creatorEmail).orElseThrow();
         document.setCreator(creator);
         document.setCreatedAt(LocalDateTime.now());
-        Map<String, Boolean> validationStatus = new HashMap<>();
-        for (String email : reviewerEmails) {
-            validationStatus.put(email, false);
-        }
-        document.setValidationStatus(validationStatus);
 
+        Set<User> reviewers=userRepository.findAllByEmailIn(reviewerEmails); 
+        for (User reviewer : reviewers) {
+            document.addReviewerValidation(new ReviewerValidation(reviewer));
+        }
         return new DocumentDto(documentRepository.save(document));
     }
 
@@ -62,9 +74,9 @@ public class DocumentService {
         Document document = documentRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Document not found"));
         // Update the validation status for the specified reviewer email
-        Map<String, Boolean> validationStatus = document.getValidationStatus();
-        validationStatus.put(reviewerEmail, true); // Set validation status to true
-        document.setValidationStatus(validationStatus);// Set the updated validation status map back to the document
+        //Map<String, Boolean> validationStatus = document.getValidationStatus();
+        //validationStatus.put(reviewerEmail, true); // Set validation status to true
+        //document.setValidationStatus(validationStatus);// Set the updated validation status map back to the document
         return new DocumentDto(documentRepository.save(document));
 
         //add progress attribute starts with 0 within each validation check if its equal to the size of the hashmap
