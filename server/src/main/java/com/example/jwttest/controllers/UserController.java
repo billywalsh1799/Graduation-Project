@@ -2,9 +2,9 @@ package com.example.jwttest.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jwttest.models.PasswordResetRequest;
-import com.example.jwttest.models.ProfileUpdateRequest;
-import com.example.jwttest.models.UserDto;
+import com.example.jwttest.dtos.PasswordResetRequest;
+import com.example.jwttest.dtos.ProfileUpdateRequest;
+import com.example.jwttest.dtos.UserDto;
 import com.example.jwttest.services.UserService;
 
 import lombok.RequiredArgsConstructor;

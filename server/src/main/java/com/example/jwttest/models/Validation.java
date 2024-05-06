@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity @Data  @NoArgsConstructor @AllArgsConstructor
-public class ReviewerValidation {
+public class Validation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,10 +21,14 @@ public class ReviewerValidation {
     @JoinColumn(name = "user_id")
     private User reviewer;
 
+    @ManyToOne
+    @JoinColumn(name = "document_id")
+    private Document document;
+
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean validated;
 
-    public ReviewerValidation(User reviewer){
+    public Validation(User reviewer){
         this.reviewer=reviewer;
     }
 }

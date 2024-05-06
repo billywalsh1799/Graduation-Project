@@ -4,6 +4,7 @@ package com.example.jwttest.services;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,15 +13,19 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.jwttest.models.CommentDto;
+
+import com.example.jwttest.dtos.CommentDto;
+import com.example.jwttest.dtos.CreatorDto;
+import com.example.jwttest.dtos.DocumentDto;
+import com.example.jwttest.dtos.ReviewerDto;
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.Document;
-import com.example.jwttest.models.DocumentDto;
 import com.example.jwttest.models.DocumentFile;
-import com.example.jwttest.models.ReviewerValidation;
+import com.example.jwttest.models.Validation;
 import com.example.jwttest.models.User;
 import com.example.jwttest.repo.DocumentFileRepository;
 import com.example.jwttest.repo.DocumentRepository;
+import com.example.jwttest.repo.ValidationRepository;
 import com.example.jwttest.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -30,11 +35,17 @@ import lombok.RequiredArgsConstructor;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final DocumentFileRepository documentFileRepository;
+    private final ValidationRepository validationRepository;
     private final UserRepository userRepository;
+
+    //fetch by user for reviwwer page
+    //fatch by creator for created documents
+    //when open popup fetch validation by document
 
     public DocumentDto createDocument(MultipartFile file, List<String> reviewerEmails,String creatorEmail)  {
         Document document = new Document();
         document.setFileName(file.getOriginalFilename());
+        document.setTotalReviewers(reviewerEmails.size());
         DocumentFile documentFile=new DocumentFile();
         try {
             documentFile.setFileData(file.getBytes());
@@ -52,10 +63,14 @@ public class DocumentService {
         document.setCreator(creator);
         document.setCreatedAt(LocalDateTime.now());
 
-        Set<User> reviewers=userRepository.findAllByEmailIn(reviewerEmails); 
+        //findbyids
+        Set<User> reviewers=userRepository.findAllByEmailIn(reviewerEmails);
+
+        Set<Validation> validationSet = new HashSet<>(); 
         for (User reviewer : reviewers) {
-            document.addReviewerValidation(new ReviewerValidation(reviewer));
+            validationSet.add(new Validation(reviewer));
         }
+        validationRepository.saveAll(validationSet);
         return new DocumentDto(documentRepository.save(document));
     }
 
@@ -70,17 +85,35 @@ public class DocumentService {
 
     }
 
-    public DocumentDto validateDocument(Long id,String reviewerEmail){
-        Document document = documentRepository.findById(id)
-                                .orElseThrow(() -> new RuntimeException("Document not found"));
-        // Update the validation status for the specified reviewer email
-        //Map<String, Boolean> validationStatus = document.getValidationStatus();
-        //validationStatus.put(reviewerEmail, true); // Set validation status to true
-        //document.setValidationStatus(validationStatus);// Set the updated validation status map back to the document
-        return new DocumentDto(documentRepository.save(document));
+    public void validateDocument(Long id,Long reviwerId){
+        Validation validation=validationRepository.findByReviewerIdAndDocumentId(id, reviwerId).orElseThrow();
+        validation.setValidated(true);
+        validationRepository.save(validation);
 
-        //add progress attribute starts with 0 within each validation check if its equal to the size of the hashmap
-        //if equeal setvalidation of document true
+        // Fetch the associated document
+        Document document = validation.getDocument();
+        int currentValidations = document.getTotalValidations() + 1;
+        document.setTotalValidations(currentValidations);
+        if (currentValidations == document.getTotalReviewers()) {
+            document.setValidated(true);
+        }
+        documentRepository.save(document);
+
+    }
+
+    public List<ReviewerDto> getDocumentsForReviewer(Long id){
+        List<Validation> reviewerValidations=validationRepository.findByReviewerId(id);
+        return reviewerValidations.stream()
+                    .map(ReviewerDto::new)
+                    .collect(Collectors.toList());
+    }
+
+    public List<CreatorDto> getDocumentsForCreator(Long id){
+        List<Document> creatorDocuments=documentRepository.findByCreatorId(id);
+        return creatorDocuments.stream()
+                            .map(CreatorDto::new)
+                            .collect(Collectors.toList());
+                            
     }
 
     public List<DocumentDto> getAll(){
@@ -111,12 +144,6 @@ public class DocumentService {
         return responseData;
     }
 
-    /* public List<DocumentDto> getDocumentsForReview(String reviewerEmail) {
-        // Retrieve both reviewed and unreviewed documents for the reviewer
-        List<Document> documents=documentRepository.findByReviewerEmail(reviewerEmail);
-        return documents.stream()
-                    .map(DocumentDto::new)
-                    .collect(Collectors.toList());
-    } */
+    
 
 }

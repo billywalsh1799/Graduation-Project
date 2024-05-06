@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.jwttest.dtos.CommentDto;
+import com.example.jwttest.dtos.DocumentDto;
 import com.example.jwttest.models.Comment;
-import com.example.jwttest.models.CommentDto;
 import com.example.jwttest.models.Document;
-import com.example.jwttest.models.DocumentDto;
 import com.example.jwttest.services.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -96,10 +97,10 @@ public class DocumentController {
         return new ResponseEntity<>(documentService.getAllCommentsForDocument(id),HttpStatus.OK);
     }
     
-    @PostMapping("/{id}/validate")
+    /* @PostMapping("/{id}/validate")
     public ResponseEntity<DocumentDto> validateDocument(@PathVariable Long  id,@RequestBody Map<String,String> request) {
        return new ResponseEntity<>(documentService.validateDocument(id,request.get("reviewerEmail")),HttpStatus.OK);
-    }
+    } */
     
     /* @GetMapping("/review/{reviewerEmail}")
     public ResponseEntity<List<DocumentDto>> getDocumentsForReview(@PathVariable String reviewerEmail) {

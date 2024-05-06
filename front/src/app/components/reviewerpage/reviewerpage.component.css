@@ -5,10 +5,10 @@
     /* max-height: 80%; */
    /*  margin: 10% auto; */
     border-radius: 8px;
-    padding: 20px;   
-    /* display: flex; */
-    /* justify-content: center;
-    align-items: center; */
+    /* padding: 20px;    */
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
 
     
   }

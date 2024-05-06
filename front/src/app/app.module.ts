@@ -45,6 +45,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import { DocumentComponent } from './components/document/document.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 
 
 
@@ -77,6 +78,7 @@ import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.co
     MatCardModule,MatTabsModule,MatInputModule,MatButtonModule,MatIconModule,MatSnackBarModule, BrowserAnimationsModule,
     MatTableModule,MatPaginatorModule,MatSortModule,MatDialogModule,MatSelectModule,MatCheckboxModule,MatProgressSpinnerModule,
     MatChipsModule,MatAutocompleteModule,MatDividerModule,MatSidenavModule,MatListModule,MatToolbarModule,MatMenuModule
+    ,MatProgressBarModule
     
   ],
   providers: [AuthGuard,{ provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi: true}],

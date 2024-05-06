@@ -51,26 +51,21 @@ public class Document {
     private List<Comment> comments= new ArrayList<>();
 
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "document_id")
-    private Set<ReviewerValidation> reviewersValidations= new HashSet<>();
+    // Total number of reviewers required for validation
+    private int totalReviewers=0;
+
+    // Number of reviewers who have already validated the document
+    private int totalValidations=0;
+
 
 
     public Document(String fileName,User creator){
 
         this.fileName=fileName;
         this.creator=creator;
-        this.createdAt = LocalDateTime.now(); // Initialize createdAt with current timestamp
+        this.createdAt = LocalDateTime.now(); 
         
     }
-
-    public void addReviewerValidation(ReviewerValidation validation){
-        this.reviewersValidations.add(validation);
-
-    }
-
-    
-
 
     
 }

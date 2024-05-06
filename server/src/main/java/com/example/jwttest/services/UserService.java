@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.jwttest.dtos.PasswordResetRequest;
+import com.example.jwttest.dtos.ProfileUpdateRequest;
+import com.example.jwttest.dtos.UserDto;
 import com.example.jwttest.exceptionHandling.exceptions.UserAlreadyExistsException;
 import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
 import com.example.jwttest.exceptionHandling.exceptions.WrongPasswordException;
-import com.example.jwttest.models.PasswordResetRequest;
-import com.example.jwttest.models.ProfileUpdateRequest;
 import com.example.jwttest.models.Role;
 import com.example.jwttest.models.User;
-import com.example.jwttest.models.UserDto;
 import com.example.jwttest.repo.RoleRepository;
 import com.example.jwttest.repo.UserRepository;
 import lombok.RequiredArgsConstructor;

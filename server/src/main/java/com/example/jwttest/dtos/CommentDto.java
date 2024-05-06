@@ -1,4 +1,4 @@
-package com.example.jwttest.models;
+package com.example.jwttest.dtos;
 
 import java.time.LocalDateTime;
 
