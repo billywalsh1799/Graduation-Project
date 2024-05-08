@@ -50,12 +50,16 @@ public class Document {
     @OneToMany(mappedBy = "documentId", cascade = CascadeType.ALL)
     private List<Comment> comments= new ArrayList<>();
 
+    /* @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "document_id") 
+    private List<Comments> comments = new ArrayList<>(); */
+
 
     // Total number of reviewers required for validation
-    private int totalReviewers=0;
+    private Integer totalReviewers=0;
 
     // Number of reviewers who have already validated the document
-    private int totalValidations=0;
+    private Integer totalValidations=0;
 
 
 

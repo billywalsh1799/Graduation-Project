@@ -30,6 +30,6 @@ export class HomeComponent {
 
     decodeToken(){
       let token=this.authService.DecodeToken()
-      console.log(token.role)
+      console.log(token)
     }
 }

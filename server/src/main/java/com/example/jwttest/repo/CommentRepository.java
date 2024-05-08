@@ -8,5 +8,6 @@ import com.example.jwttest.models.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
     List<Comment> findAll();
+    List<Comment> findByDocumentId(Long documentId);
     
 }

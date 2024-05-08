@@ -21,6 +21,8 @@ public class DocumentDto {
     private List<Comment> comments;
     private LocalDateTime createdAt;
     private boolean validated;
+    private Integer totalReviewers;
+    private Integer totalValidations;
 
 
     public DocumentDto(Document document) {
@@ -30,6 +32,8 @@ public class DocumentDto {
         this.comments=document.getComments();
         this.createdAt=document.getCreatedAt();
         this.validated=document.isValidated();
+        this.totalReviewers=document.getTotalReviewers();
+        this.totalValidations=document.getTotalValidations();
         
 
     }

@@ -14,8 +14,9 @@ import { ResetpasswordComponent } from './components/resetpassword/resetpassword
 import { FileuploadComponent } from './components/fileupload/fileupload.component';
 import { PdfviewertestComponent } from './components/pdfviewertest/pdfviewertest.component';
 import { DocumentComponent } from './components/document/document.component';
-import { CommentsComponent } from './components/comments/comments.component';
 import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
+import { CreatorpageComponent } from './components/creatorpage/creatorpage.component';
+
 
 
 /* const routes: Routes = [
@@ -33,12 +34,13 @@ const routes: Routes = [
   {path:'auth/confirm',component:UserconfirmationComponent},
   {path:'forget-password',component:ForgetpasswordComponent},
   {path:'auth/reset-password',component:ResetpasswordComponent},
-  {path:'file-upload',component:FileuploadComponent},
+  {path:'create-document',component:FileuploadComponent},
   {path:'pdf-viewer',component:PdfviewertestComponent},
   {path:'document/:id',component:DocumentComponent},
   {path:'reviewer-page',component:ReviewerpageComponent},
+  {path:'creator-page',component:CreatorpageComponent},
   {path:'unauthorized',component:UnauthorizedComponent},
-  { path: '**', redirectTo: '/home' }
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

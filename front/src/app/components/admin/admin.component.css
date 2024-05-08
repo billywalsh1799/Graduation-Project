@@ -2,9 +2,12 @@
 
 .search-filters {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   /* margin-bottom: 20px; */
+  .status-filter{
+    margin:0 50px;
+  }
 }
 
 /* .search-filters mat-form-field {
@@ -26,9 +29,15 @@ mat-card {
   
 }
 
-
-
-/* .mat-column-email {
+table{
+  /* background-color: blueviolet; */
+  width:calc(100vw - 100px);
+  
 
 }
- */
+
+
+.mat-column-email {
+  
+}
+

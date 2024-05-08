@@ -45,7 +45,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import { DocumentComponent } from './components/document/document.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar'; 
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { CreatorpageComponent } from './components/creatorpage/creatorpage.component';
+
 
 
 
@@ -67,7 +69,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     ForgetpasswordComponent,
     DocumentComponent,
     CommentsComponent,
-    ReviewerpageComponent
+    ReviewerpageComponent,
+    CreatorpageComponent,
   ],
   imports: [
     BrowserModule,

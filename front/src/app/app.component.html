@@ -1,15 +1,14 @@
 <mat-toolbar color="primary">
     <div class="toolbar-buttons">
-      <button mat-button routerLink="/home">Home</button>
-      <!-- <button mat-button routerLink="/profile">Profile</button> -->
+      <button mat-raised-button color="warn" routerLink="/home">Home</button>
       <button mat-button routerLink="/admin">Admin</button>
-      <button mat-button routerLink="/file-upload">CreateDocument</button>
-      <button mat-button routerLink="/document/13">Document</button>
-      <button mat-button routerLink="/reviewer-page">reviewer-page</button>
+      <button mat-button routerLink="/create-document">Create Document</button>
+      <button mat-button routerLink="/reviewer-page">Assigned Documents</button>
+      <button mat-button routerLink="/creator-page">Uploaded Documents</button>
     </div>
     <div class="user-circle">
         <button mat-mini-fab [matMenuTriggerFor]="menu" >
-            s <!-- Replace with your user icon -->
+            s 
         </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item routerLink="/profile">Profile</button>

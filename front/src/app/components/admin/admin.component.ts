@@ -45,13 +45,16 @@ export class AdminComponent implements AfterViewInit {
       //console.log("done updated now update view",updatedUserData)
       console.log("use data",updatedUserData)
       if (updatedUserData){
+        console.log("user list",this.userList)
         this.adminService.updateUser(userInfo.id,updatedUserData).subscribe({
           next:res=>{
               console.log("response",res)   
               const index = this.userList.findIndex((user:any) => user.id === userInfo.id);
               if (index !== -1) {
                 this.userList[index]= res
-                this.dataSource.data = this.userList;
+                this.applyFilters()
+
+                //this.dataSource.data = this.userList;
               }
           }
           ,error:err=>{

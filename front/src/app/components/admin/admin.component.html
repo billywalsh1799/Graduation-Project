@@ -9,7 +9,7 @@
             <input matInput (keyup)="applySearchFilter($event)" placeholder="Search...">
           </mat-form-field>
           
-          <mat-form-field appearance="fill">
+          <mat-form-field appearance="fill" class="status-filter">
             <mat-label>Filter By Status</mat-label>
             <mat-select (selectionChange)="applyStatusFilter($event)">
               <mat-option>None</mat-option>

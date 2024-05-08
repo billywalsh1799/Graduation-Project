@@ -43,11 +43,19 @@ export class DocumentService {
   }
 
   getDocumentPdf(id:number){
-    return this.http.get(`http://localhost:8080/api/documents/document/${id}/pdf`, { responseType: 'blob' })
+    return this.http.get(`http://localhost:8080/api/documents/${id}/pdf`, { responseType: 'blob' })
   }
 
   validateDocument(id:number){
     return this.http.post(`http://localhost:8080/api/documents/${id}/validate`,{})
 
+  }
+
+  getDocumentsForCreator(id:number){
+    return this.http.get(`http://localhost:8080/api/documents/creator/${id}`)
+  }
+
+  getDocumentsForReviewer(id:number){
+    return this.http.get(`http://localhost:8080/api/documents/reviewer/${id}`)
   }
 }

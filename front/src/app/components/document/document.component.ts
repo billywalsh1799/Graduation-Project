@@ -10,41 +10,21 @@ import { DocumentService } from 'src/app/services/document.service';
 })
 export class DocumentComponent implements OnInit {
   
- /*  comments:any=["Comment1","Comment2","Comment3"
-  ,"Comment3","Comment3","Comment3","Comment3","Comment3","Comment3"
-  ]
- */
+ 
 
-
+  //extreact username from jwt
   documentId:any
   fileName:String=""
   comments:any
   userName:string="malcom"
-
-
-  messages=[{sender:"sam1799",content:"grammar mistakes there",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-   ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()}
-  ,{sender:"angus078",content:"ac dc rocks",time:Date.now()} 
-
- 
-]
-
   newComment: string = '';
+  isValidated:boolean=true;
 
-  constructor(private http:HttpClient,private documentService:DocumentService,private route: ActivatedRoute){}
+  constructor(private documentService:DocumentService,private route: ActivatedRoute){}
   ngOnInit(){
     //this.documentService.
+    //create comment dto when loading comments document gets loaded too
+    //query from validation table by user and document to get the validation status too
     this.documentId = this.route.snapshot.paramMap.get('id');
     this.documentService.getDocument(this.documentId).subscribe({
       next:(res:any)=>{
@@ -84,6 +64,7 @@ export class DocumentComponent implements OnInit {
   validateDocument(){
     this.documentService.validateDocument(this.documentId).subscribe({
       next:res=>{
+        //use snackbar//validation happen only once
         console.log("validation response",res)
       },
       error:err=>{
@@ -95,7 +76,6 @@ export class DocumentComponent implements OnInit {
 
  
   openDocument() {
-    const documentId = 9; // Replace with the actual document ID
     this.documentService.getDocumentPdf(this.documentId).subscribe({
       next:response=>{
         const file = new Blob([response], { type: 'application/pdf' });

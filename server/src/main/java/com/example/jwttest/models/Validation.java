@@ -28,7 +28,8 @@ public class Validation {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean validated;
 
-    public Validation(User reviewer){
+    public Validation(User reviewer,Document document){
         this.reviewer=reviewer;
+        this.document=document;
     }
 }

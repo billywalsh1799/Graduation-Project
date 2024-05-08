@@ -11,9 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jwttest.dtos.CommentDto;
+import com.example.jwttest.dtos.CreatorDto;
 import com.example.jwttest.dtos.DocumentDto;
+import com.example.jwttest.dtos.DocumentValidationRequest;
+import com.example.jwttest.dtos.ReviewerDto;
+import com.example.jwttest.dtos.ValidationDto;
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.Document;
+import com.example.jwttest.models.DocumentFile;
+import com.example.jwttest.models.Validation;
 import com.example.jwttest.services.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -46,41 +52,6 @@ public class DocumentController {
     }
     
 
-
-
-    /* @GetMapping("/download/{documentId}")
-    public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) {
-        Document document = documentService.getDocumentPdf(documentId);
-        ByteArrayResource resource = new ByteArrayResource(document.getFileData());
-
-        // Set the headers for the response
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + document.getFileName());
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-
-        // Return ResponseEntity with ByteArrayResource and headers
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(resource.contentLength())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(resource);
-    } */
-    /* @GetMapping("/document/{id}/pdf")
-    public ResponseEntity<Resource> getDocumentPdf(@PathVariable Long id) {
-        Document document = documentService.getDocumentPdf(id);
-        byte[] pdfData =document.getFileData();
-
-        HttpHeaders headers = new HttpHeaders();
-        //headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=document.pdf");
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + document.getFileName());
-
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new ByteArrayResource(pdfData));
-    } */
-
     @GetMapping("/document/{id}")
     public ResponseEntity<DocumentDto> getDocument(@PathVariable Long id) {
         return new ResponseEntity<>(documentService.getDocument(id),HttpStatus.OK);
@@ -97,26 +68,38 @@ public class DocumentController {
         return new ResponseEntity<>(documentService.getAllCommentsForDocument(id),HttpStatus.OK);
     }
     
-    /* @PostMapping("/{id}/validate")
-    public ResponseEntity<DocumentDto> validateDocument(@PathVariable Long  id,@RequestBody Map<String,String> request) {
-       return new ResponseEntity<>(documentService.validateDocument(id,request.get("reviewerEmail")),HttpStatus.OK);
-    } */
-    
-    /* @GetMapping("/review/{reviewerEmail}")
-    public ResponseEntity<List<DocumentDto>> getDocumentsForReview(@PathVariable String reviewerEmail) {
-        return new ResponseEntity<>(documentService.getDocumentsForReview(reviewerEmail),HttpStatus.OK);
-    } */
+    @PostMapping("/{id}/validate")
+    public ResponseEntity<Validation> validateDocument(@RequestBody DocumentValidationRequest request) {
+       return new ResponseEntity<>(documentService.validateDocument(request.getDocumentId(),request.getReviewerEmail()),HttpStatus.OK);
+    }
+
+    @GetMapping("/creator/{id}")
+    public ResponseEntity<List<CreatorDto>> getDocumentsForCreator(@PathVariable Long id){
+        return new ResponseEntity<>(documentService.getDocumentsForCreator(id),HttpStatus.OK);
+
+    }
+
+    @GetMapping("/reviewer/{id}")
+    public ResponseEntity<List<ReviewerDto>> getDocumentsForReviewer(@PathVariable Long id){
+        return new ResponseEntity<>(documentService.getDocumentsForReviewer(id),HttpStatus.OK);
+
+    }
     
 
-    
+    @GetMapping("/validations/{id}")
+    public ResponseEntity<List<ValidationDto>> getValidationsForDocument(@PathVariable Long id){
+        return new ResponseEntity<>(documentService.getValidationsForDocument(id),HttpStatus.OK);
 
-    /* @GetMapping("/documents/{id}/{filename}/pdf")
-        public ResponseEntity<Resource> getDocumentPdf(@PathVariable Long id, @PathVariable String filename) {
-            Document document = documentService.getDocumentById(id);
-            byte[] pdfData =document.getFileData();
+    }
+    
+    
+    @GetMapping("/{id}/pdf")
+        public ResponseEntity<Resource> getDocumentPdf(@PathVariable Long id) {
+            DocumentFile documentFile = documentService.getDocumentFile(id);
+            byte[] pdfData =documentFile.getFileData();
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + filename + ".pdf");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + "filename" + ".pdf");
 
             return ResponseEntity
                     .ok()
@@ -124,5 +107,5 @@ public class DocumentController {
                     .contentType(MediaType.APPLICATION_PDF)
                     .body(new ByteArrayResource(pdfData));
         }
-     */
+    
 }

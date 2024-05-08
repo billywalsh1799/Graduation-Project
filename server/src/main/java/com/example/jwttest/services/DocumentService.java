@@ -18,6 +18,7 @@ import com.example.jwttest.dtos.CommentDto;
 import com.example.jwttest.dtos.CreatorDto;
 import com.example.jwttest.dtos.DocumentDto;
 import com.example.jwttest.dtos.ReviewerDto;
+import com.example.jwttest.dtos.ValidationDto;
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.Document;
 import com.example.jwttest.models.DocumentFile;
@@ -55,29 +56,36 @@ public class DocumentService {
             e.printStackTrace();
         } 
 
-        //save file only after docuemnt saved succesflly
-        documentFileRepository.save(documentFile);
+        
 
 
         User creator=userRepository.findByEmail(creatorEmail).orElseThrow();
         document.setCreator(creator);
         document.setCreatedAt(LocalDateTime.now());
 
+        documentFile.setDocument(document);
+        
+        DocumentDto documentDto=new DocumentDto(documentRepository.save(document));
+
         //findbyids
         Set<User> reviewers=userRepository.findAllByEmailIn(reviewerEmails);
 
         Set<Validation> validationSet = new HashSet<>(); 
         for (User reviewer : reviewers) {
-            validationSet.add(new Validation(reviewer));
+            validationSet.add(new Validation(reviewer,document));
         }
         validationRepository.saveAll(validationSet);
-        return new DocumentDto(documentRepository.save(document));
+        documentFileRepository.save(documentFile);
+        return documentDto ;
     }
 
-    public Document getDocumentPdf(Long documentId) {
-        Document document=documentRepository.findById(documentId).orElseThrow(()->new RuntimeException("document not found"));
-        return document;
+    public DocumentFile getDocumentFile(Long documentId) {
+        System.out.println("document id :"+documentId);
+        DocumentFile documentFile=documentFileRepository.findByDocumentId(documentId).orElseThrow(()->new RuntimeException("document file not found"));
+        return documentFile;
     }
+
+
 
     public DocumentDto getDocument(Long id){
         return documentRepository.findById(id).map(DocumentDto::new)
@@ -85,11 +93,11 @@ public class DocumentService {
 
     }
 
-    public void validateDocument(Long id,Long reviwerId){
-        Validation validation=validationRepository.findByReviewerIdAndDocumentId(id, reviwerId).orElseThrow();
-        validation.setValidated(true);
-        validationRepository.save(validation);
+    
 
+    public Validation validateDocument(Long id,String reviwerEmail){
+        Validation validation=validationRepository.findByReviewerEmailAndDocumentId(reviwerEmail,id).orElseThrow();
+        validation.setValidated(true);
         // Fetch the associated document
         Document document = validation.getDocument();
         int currentValidations = document.getTotalValidations() + 1;
@@ -98,11 +106,18 @@ public class DocumentService {
             document.setValidated(true);
         }
         documentRepository.save(document);
+        return validationRepository.save(validation);
+    }
+
+    public ReviewerDto getDocumentForReview(Long id,String reviwerEmail){
+        Validation validation=validationRepository.findByReviewerEmailAndDocumentId(reviwerEmail,id).orElseThrow();
+        return new ReviewerDto(validation);
 
     }
 
     public List<ReviewerDto> getDocumentsForReviewer(Long id){
         List<Validation> reviewerValidations=validationRepository.findByReviewerId(id);
+        //List<Validation> reviewerValidations=validationRepository.findByReviewerEmail(email);
         return reviewerValidations.stream()
                     .map(ReviewerDto::new)
                     .collect(Collectors.toList());
@@ -112,8 +127,14 @@ public class DocumentService {
         List<Document> creatorDocuments=documentRepository.findByCreatorId(id);
         return creatorDocuments.stream()
                             .map(CreatorDto::new)
-                            .collect(Collectors.toList());
-                            
+                            .collect(Collectors.toList());                      
+    }
+
+    public List<ValidationDto> getValidationsForDocument(Long id){
+        List<Validation> validations=validationRepository.findByDocumentId(id);
+        return validations.stream()
+                            .map(ValidationDto::new)
+                            .collect(Collectors.toList());   
     }
 
     public List<DocumentDto> getAll(){
@@ -135,6 +156,7 @@ public class DocumentService {
     }
 
     public Map<String, List<Comment>>  getAllCommentsForDocument(Long documentId) {
+        //fetch from validation to get validation status or check in server 
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new RuntimeException("Document not found"));
         List<Comment> comments= document.getComments();

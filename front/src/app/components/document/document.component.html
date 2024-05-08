@@ -6,7 +6,7 @@
         <mat-card-content>
             <div class="document-row">
                 <button mat-button color="primary"(click)="openDocument()">{{fileName}}</button>
-                <button mat-raised-button color="primary" (click)="validateDocument()">Validate</button>
+                <button mat-raised-button color="primary" (click)="validateDocument()" [disabled]="!isValidated">Validate</button>
             </div>
             <mat-card-title>Comments</mat-card-title>
             <div class="document-row">

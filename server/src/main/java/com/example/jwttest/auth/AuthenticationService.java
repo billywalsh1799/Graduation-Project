@@ -91,6 +91,7 @@ public class AuthenticationService {
         User user=securityUser.getUser();
         // Create extra claims with user role
         Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("userid", user.getId());
         extraClaims.put("firstname", user.getFirstname());
         extraClaims.put("lastname", user.getLastname());
         extraClaims.put("username", user.getUsername());
@@ -119,6 +120,7 @@ public class AuthenticationService {
 
         // Create extra claims with user role
         Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("userid", user.getId());
         extraClaims.put("firstname", user.getFirstname());
         extraClaims.put("lastname", user.getLastname());
         extraClaims.put("username", user.getUsername());
