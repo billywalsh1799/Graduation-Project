@@ -30,23 +30,12 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        //console.log("error",err.status,err)
-        //console.log("refresh variable",!this.refresh)
-        //console.log("error",err.error)
-        /* let errur=err.error
-        console.log("err interceptor",errur["message"]) */
-        //const errorResponse=JSON.parse(err.error)
-        //let msg:string=errorResponse.message
-        console.log("json parsed error",err)
-        //let errorResponse=JSON.parse(err.error)
-        //let errorMessage:string =err.error.message
+        console.log("server error",err)
         if (err.status === 401 && err.error=="JWT expired" && !this.refresh) {
           this.refresh = true;
-          console.log("error inside")
           return this.authService.refreshToken().pipe(
             switchMap((res: any) => {
               let newToken = res.access_token;
-              console.log("test response",res)
               this.authService.setToken(newToken);
               this.refresh = false;
               request = request.clone({

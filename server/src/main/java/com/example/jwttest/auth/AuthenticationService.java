@@ -48,34 +48,43 @@ public class AuthenticationService {
             throw new UsedEmailException("Email already in use");
         });
 
-        //password encoder
-        String encodedPassword=passwordEncoder.encode(request.getPassword());
-
-        User user=User.builder().username(request.getUsername()).firstname(request.getFirstname())
-        .lastname(request.getLastname()).email(request.getEmail()).enabled(false)
-        .password(encodedPassword).role("ROLE_USER").build();
-        
-        // Create extra claims with user role
-        Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("firstname", user.getFirstname());
-        extraClaims.put("lastname", user.getLastname());
-
-        //username is the subject
-        extraClaims.put("username",user.getUsername());
-        extraClaims.put("email",user.getEmail());
-        extraClaims.put("password", user.getPassword());
-        extraClaims.put("role", "ROLE_USER");
-        //Generate confirmation tokens
-        String token=jwtService.generateToken(extraClaims,user.getUsername());
-        
-        String link = "http://localhost:4200/auth/confirm?token=" + token;
-        emailService.send(request.getEmail(), link);
-
-
         Map<String, String> responseData = new HashMap<>();
         responseData.put("message","Registration Successful! A confirmation link has been sent to your email. Please verify your email address to activate your account");
         return responseData;
         
+    }
+
+    public Map<String,String> sendConfirmationEmail(RegisterRequest request){
+        //password encoder
+        String encodedPassword=passwordEncoder.encode(request.getPassword());
+        // Create extra claims with user role
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("firstname", request.getFirstname());
+        extraClaims.put("lastname", request.getLastname());
+
+        //username is the subject
+        extraClaims.put("username",request.getUsername());
+        extraClaims.put("email",request.getEmail());
+        extraClaims.put("password", encodedPassword);
+        extraClaims.put("role", "ROLE_USER");
+
+        //Generate confirmation token
+        String token=jwtService.generateToken(extraClaims,request.getUsername());
+        
+        String link = "http://localhost:4200/auth/confirm?token=" + token;
+        //String message="Please click on the link below to confirm your email address";
+        String message="Thank you for registering. Please click on the link below to activate your account";
+        String reciever=request.getEmail();
+        String name=request.getFirstname();
+        emailService.sendHtmlEmail(reciever, name, link, message,"Activate now");
+
+        //add email template 
+        //emailService.send(request.getEmail(),"Please click on the link below to confirm your email address:\n"+link);
+        //add email message parameter when sending
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("message", "Confirmation email sent successfully");
+        return responseData;
+
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
@@ -100,7 +109,8 @@ public class AuthenticationService {
         //Generate user tokens
         String jwtToken=jwtService.generateToken(extraClaims,user.getEmail());
         String refreshToken=jwtService.generateRefreshToken(extraClaims,user.getEmail());
-        return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
+        //return AuthenticationResponse.builder().accessToken(jwtToken).refreshToken(refreshToken).build();
+        return new AuthenticationResponse(jwtToken,refreshToken);
     }
 
     public AuthenticationResponse refreshToken(RefreshRequest request)  {
@@ -130,11 +140,7 @@ public class AuthenticationService {
         //the validity is checked during parsing
        
         String accessToken=jwtService.generateToken(extraClaims,email);
-        AuthenticationResponse authResponse=AuthenticationResponse.builder()
-        .accessToken(accessToken)
-        .refreshToken(refreshToken)
-        .build();
-        return authResponse;
+        return new AuthenticationResponse(accessToken, refreshToken);
          
         //the parsing will throw the exceptions
         //when the refresh token is expired the user is logged out
@@ -146,16 +152,12 @@ public class AuthenticationService {
         //extract user info from confirmation token save user to db
         Claims userInfo=jwtService.extractAllClaims(token);
 
-        User user=User.builder().username((String)userInfo.get("username")).firstname((String)userInfo.get("firstname"))
-        .lastname((String)userInfo.get("lastname")).email((String)userInfo.get("email")).enabled(false)
-        .password((String)userInfo.get("password")).role("ROLE_USER").build();
-
+        User user=new User(userInfo);
         //check if user is already in db
         userRepo.findByUsername(user.getUsername()).ifPresent(unconfirmedUser -> {
             throw new AccountVerificationException("User already verified account");
         });
 
-        
         userRepo.save(user);
         //tokens generated only after authentication and enabling by admin
         Map<String, String> responseData = new HashMap<>();
@@ -174,14 +176,22 @@ public class AuthenticationService {
 
     public Map<String, String> forgetPassword(String email) {
         //check user existance from email
-        userRepo.findByEmail(email).orElseThrow(()->new UserNotFoundException("User not found"));
+        User user=userRepo.findByEmail(email).orElseThrow(()->new UserNotFoundException("User not found"));
         //send reset link with jwt
         Map<String, String> responseData = new HashMap<>();
-        responseData.put("message","reset link sent successfully");
-        //Generate confirmation tokens
+        responseData.put("message","Password reset link was sent successfully.\n Please check your email");
+        //Generate confirmation tokens //with duration set access to 15 minutes
+
+        
+        String name=user.getFirstname();
+        //emailService.sendHtmlEmail(reciever, name, link, message);
+
+
         String token=jwtService.generateToken(email);
         String link = "http://localhost:4200/auth/reset-password?token="+token;
-        emailService.send(email, link);
+        String message="Please click on the link below to reset your password";
+        //emailService.send(email, "Please click on the link below to confirm your email address:\n"+link);
+        emailService.sendHtmlEmail(email, name, link, message,"Reset now");
         return responseData;
     }
 

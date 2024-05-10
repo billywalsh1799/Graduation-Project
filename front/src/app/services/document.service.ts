@@ -33,8 +33,8 @@ export class DocumentService {
     return this.http.get(this.DOCUMENT_ENDPOINT+"/"+documentId+"/comments")
   }
 
-  addCommentToDocument(request:any){
-    return this.http.post(this.DOCUMENT_ENDPOINT+"/comment",request)
+  addCommentToDocument(id:number,request:any){
+    return this.http.post(this.DOCUMENT_ENDPOINT+"/"+id+"/comment",request)
 
   }
 

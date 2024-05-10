@@ -36,6 +36,11 @@ table{
 
 }
 
+.mat-mdc-row:hover .mat-mdc-cell {
+  /* border-color: currentColor; */
+  background-color: lightblue;
+}
+
 
 .mat-column-email {
   

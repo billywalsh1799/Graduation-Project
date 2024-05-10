@@ -16,7 +16,7 @@ export class AdminComponent implements AfterViewInit {
   userList:any=[]
   rolesList:any=[]
   activeFilters:any={status:"",role:"",search:""}
-  displayedColumns: string[] = ['id','firstname','lastname','username', 'email', 'role', 'status','action'];
+  displayedColumns: string[] = ['firstname','lastname','username', 'email', 'role', 'status','action'];
   dataSource = new MatTableDataSource<any>(this.userList);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -48,7 +48,8 @@ export class AdminComponent implements AfterViewInit {
         console.log("user list",this.userList)
         this.adminService.updateUser(userInfo.id,updatedUserData).subscribe({
           next:res=>{
-              console.log("response",res)   
+              console.log("response",res)
+              //use index in ngfor to reduce time   
               const index = this.userList.findIndex((user:any) => user.id === userInfo.id);
               if (index !== -1) {
                 this.userList[index]= res

@@ -26,7 +26,7 @@ export class ReviewerpageComponent implements AfterViewInit,OnInit {
 
   documentList:any=[]
 
-  displayedColumns: string[] = ['document','validated','createdAt'];
+  displayedColumns: string[] = ['document','validated','createdAt','action'];
   dataSource = new MatTableDataSource<any>(this.documentList);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

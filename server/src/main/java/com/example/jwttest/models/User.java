@@ -1,22 +1,16 @@
 package com.example.jwttest.models;
-import java.util.HashSet;
-import java.util.Set;
-
+import io.jsonwebtoken.Claims;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity @Data @Builder @NoArgsConstructor @AllArgsConstructor @Table(name="USERS")
+@Entity @Data   @NoArgsConstructor @AllArgsConstructor @Table(name="USERS")
 
 public class User  {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +21,8 @@ public class User  {
     private String email;
     private String password;
     private String role;
+
+    //role list
     
     @Column(nullable = false, columnDefinition = "boolean default true") // Add default value
     private boolean enabled;
@@ -39,6 +35,16 @@ public class User  {
         this.password = password;
         this.role = role;
         this.enabled = enabled;
+    }
+
+    public User(Claims userInfo){
+        this.firstname=(String)userInfo.get("firstname");
+        this.lastname=(String)userInfo.get("lastname");
+        this.username=(String)userInfo.get("username");
+        this.email=(String)userInfo.get("email");
+        this.password=(String)userInfo.get("password");
+        this.role="ROLE_USER";
+
     }
 
 }

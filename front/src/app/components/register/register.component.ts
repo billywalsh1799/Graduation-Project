@@ -13,13 +13,10 @@ import { clearFormError, setCustomFormError, validatePasswordConfirmation } from
 export class RegisterComponent {
 
   signUpForm: FormGroup;
-
-  registered:boolean=false
   loading: boolean = false;
 
-  //errorMessage: string="";
 
-  constructor(private formBuilder: FormBuilder,private authService: AuthService,private router: Router,private snackBar: MatSnackBar) {
+  constructor(private formBuilder: FormBuilder,private authService: AuthService,private snackBar: MatSnackBar) {
    
     // Initialize sign up form
     this.signUpForm = this.formBuilder.group({
@@ -66,6 +63,11 @@ export class RegisterComponent {
             verticalPosition: 'top'
           });
           this.loading = false;
+          //send confirmation request
+          this.authService.sendConfirmationEmail(userInfo).subscribe({
+            next:res=>console.log("confirmation email response",res),
+            error:err=>console.error("confirmation email error",err)
+          })
         },
         error: err => {
           this.loading = false;

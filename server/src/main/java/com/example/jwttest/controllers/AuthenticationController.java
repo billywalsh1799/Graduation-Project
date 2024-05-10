@@ -33,6 +33,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(authService.register(request));
     }
 
+    @PostMapping("confirmation-email")
+    public ResponseEntity<Map<String, String>> postMethodName(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.sendConfirmationEmail(request));
+    }
+    
+
     @GetMapping("/confirm")
     public ResponseEntity<Map<String, String>> confirm(@RequestParam("token") String token) {
         return ResponseEntity.ok(authService.confirmUser(token));

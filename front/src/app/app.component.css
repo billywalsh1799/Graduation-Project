@@ -1,5 +1,8 @@
 .toolbar-buttons {
     flex-grow: 1; /* Push user circle to the right */
+   /*  background-color: aquamarine; */
+    display: flex;
+    gap: 10px;
   }
   
   .user-circle {
@@ -12,4 +15,8 @@
     margin-left: 10px; /* Adjust margin as needed */
     font-size: large;
     
+  }
+
+  .home-but{
+    background-color: white;
   }

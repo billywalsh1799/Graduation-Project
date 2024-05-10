@@ -25,10 +25,10 @@
                   </mat-chip-row>
                 </mat-chip-grid>
                 <input placeholder="New Reviewer..." #reviewerInput [formControl]="reviewerCtrl"
-                  [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                  [matChipInputFor]="chipGrid" [matAutocomplete]="auto" (keyup)="searchReviewer()"
                   />
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                  <mat-option *ngFor="let reviewer of filteredReviewers | async" [value]="reviewer">
+                  <mat-option *ngFor="let reviewer of filteredReviewers" [value]="reviewer">
                     {{reviewer}}
                   </mat-option>
                 </mat-autocomplete>

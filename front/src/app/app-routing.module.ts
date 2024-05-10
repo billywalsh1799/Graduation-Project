@@ -26,21 +26,22 @@ import { CreatorpageComponent } from './components/creatorpage/creatorpage.compo
 ]; */
 const routes: Routes = [
 
-  { path: 'home', component: HomeComponent},
-  {path:'profile',component:UserprofileComponent},
-  {path:'admin',component:AdminComponent},
-  { path: 'register', component: RegisterComponent },
+  { path: '', component: HomeComponent,canActivate: [AuthGuard],children:[
+    {path:'profile',component:UserprofileComponent},
+    {path:'admin',component:AdminComponent,canActivate:[AdminGuard]},
+    {path:'create-document',component:FileuploadComponent},
+    {path:'pdf-viewer',component:PdfviewertestComponent},
+    {path:'document/:id',component:DocumentComponent},
+    {path:'reviewer-page',component:ReviewerpageComponent},
+    {path:'creator-page',component:CreatorpageComponent},
+    {path:'unauthorized',component:UnauthorizedComponent},
+  ]},
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {path:'auth/confirm',component:UserconfirmationComponent},
   {path:'forget-password',component:ForgetpasswordComponent},
   {path:'auth/reset-password',component:ResetpasswordComponent},
-  {path:'create-document',component:FileuploadComponent},
-  {path:'pdf-viewer',component:PdfviewertestComponent},
-  {path:'document/:id',component:DocumentComponent},
-  {path:'reviewer-page',component:ReviewerpageComponent},
-  {path:'creator-page',component:CreatorpageComponent},
-  {path:'unauthorized',component:UnauthorizedComponent},
-  { path: '**', redirectTo: 'home' }
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

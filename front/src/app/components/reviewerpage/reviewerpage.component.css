@@ -20,7 +20,15 @@
   
   
 
-  table {
-    width: 100%; /* Make the table fill the container */
-    /* width: 700px; */
+
+  table{
+    /* background-color: blueviolet; */
+    width:calc(100vw - 100px);
+    
   }
+
+  .mat-mdc-row:hover .mat-mdc-cell {
+    /* border-color: currentColor; */
+    background-color: lightblue;
+  }
+  

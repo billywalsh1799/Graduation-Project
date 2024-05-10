@@ -33,6 +33,12 @@ export class AuthService {
     return decodedHeader.sub
   }
 
+  getUsername(){
+    const decodedHeader:any=jwtDecode(this.getToken())
+    return decodedHeader.username
+
+  }
+
   isTokenExpired(){
     //const decodedHeader=jwtDecode(this.getToken())
     const expiryTime=this.DecodeToken().exp*1000
@@ -50,6 +56,10 @@ export class AuthService {
   //register now returns string message to alert
   register(userData:any): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.AUTH_ENDPOINT+"register", userData);
+  }
+
+  sendConfirmationEmail(userData:any){
+    return this.http.post(this.AUTH_ENDPOINT+"confirmation-email", userData);
   }
 
   isTokenValid():Observable<string>{

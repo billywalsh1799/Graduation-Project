@@ -15,19 +15,21 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class FileuploadComponent {
   reviewerCtrl = new FormControl('');
-  filteredReviewers: Observable<string[]>;
   reviewers: string[] = [];
+
   allReviewers: string[] = [];
+  filteredReviewers:String[]=[]
   selectedFile: File | null = null;
+
 
   @ViewChild('reviewerInput') reviewerInput!: ElementRef<HTMLInputElement>;
 
   constructor(private userService: UserService,private documentService:DocumentService,private authService:AuthService) {
     this.loadAllReviewers();
-    this.filteredReviewers = this.reviewerCtrl.valueChanges.pipe(
+   /*  this.filteredReviewers = this.reviewerCtrl.valueChanges.pipe(
       startWith(null),
       map((reviewer: string | null) => (reviewer ? this._filter(reviewer) : this.allReviewers.slice())),
-    );
+    ); */
   }
 
   add(event: MatChipInputEvent): void {
@@ -58,25 +60,21 @@ export class FileuploadComponent {
     // Check if the selected reviewer is already in the list
     if (!this.reviewers.includes(selectedReviewer)) {
       this.reviewers.push(selectedReviewer);
-      this.reviewerInput.nativeElement.value = '';
-      this.reviewerCtrl.setValue(null);
-    } else {
-      this.reviewerInput.nativeElement.value = '';
-      this.reviewerCtrl.setValue(null);
-    }
+      //this.reviewerInput.nativeElement.value = '';
+    } 
+    this.reviewerInput.nativeElement.value = '';
+    this.filteredReviewers=this.allReviewers
+    this.reviewerCtrl.setValue(null);
+    
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allReviewers.filter(reviewer => reviewer.toLowerCase().includes(filterValue));
-  }
-
+  
   loadAllReviewers() {
     this.userService.getReviewers().subscribe({
       next: res => {
         console.log(res);
         this.allReviewers = res.reviewers;
+        this.filteredReviewers=res.reviewers
       },
       error: err => {
         console.log("error loading reviewers", err);
@@ -89,11 +87,15 @@ export class FileuploadComponent {
   }
 
   createDocument(): void {
+
+    console.log(this.reviewers)
     if (!this.selectedFile) {
       // Handle file not selected error
       //from error mat
       return;
     }
+
+   
     
     //extract from jwt subject
     //const creatorEmail = 'smoalla1799@gmail.com'; // Replace with actual creator's email
@@ -108,17 +110,17 @@ export class FileuploadComponent {
     //formData.append('creatorEmail', creatorEmail);
     //this.reviewers.forEach(email => formData.append('reviewerEmails', email));
     // Call DocumentService to create document
-    const creatorEmail =this.getCreator();
+   /*  const creatorEmail =this.getCreator();
     this.documentService.createDocument(this.selectedFile,this.reviewers,creatorEmail).subscribe({
       next: res => {
         console.log('Document created successfully:', res);
-        // Reset form or navigate to another page
+        
       },
       error: err => {
         console.error('Error creating document:', err);
-        // Handle error
+        
       }
-    });
+    }); */
   }
 
   getCreator(){
@@ -133,6 +135,19 @@ export class FileuploadComponent {
   clearFile(): void {
     this.selectedFile = null;
   }
+
+  searchReviewer(){
+    if(this.reviewerCtrl.value){
+      this.filterReviewers(this.reviewerCtrl.value)
+    }
+  }
+
+  filterReviewers(value: string) {
+    const filterValue = value.toLowerCase();
+    this.filteredReviewers=this.allReviewers.filter(reviewer => reviewer.toLowerCase().startsWith(filterValue));
+  }
+
+
 
   
 

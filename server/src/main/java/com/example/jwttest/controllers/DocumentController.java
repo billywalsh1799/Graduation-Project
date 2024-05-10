@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.jwttest.dtos.CommentDto;
+import com.example.jwttest.dtos.AddCommentRequest;
 import com.example.jwttest.dtos.CreatorDto;
 import com.example.jwttest.dtos.DocumentDto;
 import com.example.jwttest.dtos.DocumentValidationRequest;
 import com.example.jwttest.dtos.ReviewerDto;
 import com.example.jwttest.dtos.ValidationDto;
 import com.example.jwttest.models.Comment;
-import com.example.jwttest.models.Document;
 import com.example.jwttest.models.DocumentFile;
 import com.example.jwttest.models.Validation;
 import com.example.jwttest.services.DocumentService;
@@ -58,9 +57,9 @@ public class DocumentController {
     }
     
 
-    @PostMapping("/comment")
-    public ResponseEntity<Comment> addCommentToDocument(@RequestBody CommentDto request) {
-        return new ResponseEntity<>(documentService.addCommentToDocument(request),HttpStatus.OK);
+    @PostMapping("/{id}/comment")
+    public ResponseEntity<Comment> addCommentToDocument(@RequestBody AddCommentRequest request,@PathVariable Long  id) {
+        return new ResponseEntity<>(documentService.addCommentToDocument(request,id),HttpStatus.OK);
     }
 
     @GetMapping("/{id}/comments")

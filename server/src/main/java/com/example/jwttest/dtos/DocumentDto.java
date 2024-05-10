@@ -1,18 +1,15 @@
 package com.example.jwttest.dtos;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.Document;
 import com.example.jwttest.models.User;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 
 public class DocumentDto {
     private Long id;
