@@ -47,6 +47,7 @@ import { CommentsComponent } from './components/comments/comments.component';
 import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { CreatorpageComponent } from './components/creatorpage/creatorpage.component';
+import { FileDropComponent } from './components/file-drop/file-drop.component';
 
 
 
@@ -71,6 +72,7 @@ import { CreatorpageComponent } from './components/creatorpage/creatorpage.compo
     CommentsComponent,
     ReviewerpageComponent,
     CreatorpageComponent,
+    FileDropComponent,
   ],
   imports: [
     BrowserModule,

@@ -62,19 +62,19 @@ public class JwtService {
 
     public boolean isTokenValid(String token,UserDetails userDetails){
         final String username=extractUsername(token);
-        final String userRole=extractUserRole(token);
+        //final String userRole=extractUserRole(token);
 
-        System.out.println("user role: "+userRole);
+        //System.out.println("user role: "+userRole);
 
         // Check if username matches and token is not expired
         boolean isUsernameValid = username.equals(userDetails.getUsername());
         boolean isTokenExpired = !isTokenExpired(token);
         // Compare user roles
-        boolean areRolesMatching = userDetails.getAuthorities().stream()
+        /* boolean areRolesMatching = userDetails.getAuthorities().stream()
                                            .map(GrantedAuthority::getAuthority)
                                             .anyMatch(role -> role.equals(userRole));
-                                            
-        return isUsernameValid && isTokenExpired && areRolesMatching;
+                                             */
+        return isUsernameValid && isTokenExpired ;
     }
 
 

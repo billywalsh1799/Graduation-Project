@@ -34,8 +34,16 @@
                 </mat-autocomplete>
               </mat-form-field>
               <mat-divider></mat-divider>
-              <button mat-button color="primary" (click)="createDocument()">Upload</button>
+              <!-- <button mat-button color="primary" (click)="createDocument()">Upload</button> -->
+              <button mat-raised-button color="primary" class="register-button" type="submit" [disabled]="loading"
+              (click)="createDocument()">
+                <span *ngIf="!loading">Upload Document</span>
+                <mat-spinner *ngIf="loading" diameter="20" color="primary"></mat-spinner> <!-- Add spinner -->
+              </button>
             </form>
+           
       </mat-card-content>
+      
+
   </mat-card>
 </div>

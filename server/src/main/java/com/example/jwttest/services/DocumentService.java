@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jwttest.dtos.AddCommentRequest;
-import com.example.jwttest.dtos.CommentDto;
 import com.example.jwttest.dtos.CreatorDto;
 import com.example.jwttest.dtos.DocumentDto;
 import com.example.jwttest.dtos.ReviewerDto;
 import com.example.jwttest.dtos.ValidationDto;
+import com.example.jwttest.email.EmailService;
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.Document;
 import com.example.jwttest.models.DocumentFile;
@@ -41,6 +41,7 @@ public class DocumentService {
     private final DocumentFileRepository documentFileRepository;
     private final ValidationRepository validationRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     //fetch by user for reviwwer page
     //fatch by creator for created documents
@@ -73,6 +74,8 @@ public class DocumentService {
 
         Set<Validation> validationSet = new HashSet<>(); 
         for (User reviewer : reviewers) {
+            //send email to reviewer
+            sendEmailToReviewer(reviewer, documentDto.getId());
             validationSet.add(new Validation(reviewer,document));
         }
         validationRepository.saveAll(validationSet);
@@ -81,15 +84,13 @@ public class DocumentService {
         return documentDto ;
     }
 
-    public void sendEmailToReviewers(List<String> reviewerEmails){
-        
-        for(String reviewerEmail :reviewerEmails){
-           // String link = "http://localhost:4200/auth/reset-password?token="+token;
-            String message="Please click on the link below to reset your password";
-            //emailService.send(email, "Please click on the link below to confirm your email address:\n"+link);
-            //emailService.sendHtmlEmail(reviewerEmail, name, link, message,"Reset now");
-        }
-
+    public void sendEmailToReviewer(User reviewer,Long documentId){
+        String link = "http://localhost:4200/document/" + documentId;
+        String message="You have a new document to review";
+        String reciever=reviewer.getEmail();
+        String name=reviewer.getFirstname();
+        emailService.sendHtmlEmail(reciever, name, link, message,"Review now",
+        "","Document Review");  
     }
 
     public DocumentFile getDocumentFile(Long documentId) {

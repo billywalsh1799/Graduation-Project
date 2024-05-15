@@ -1,0 +1,26 @@
+<!-- <div class="file-drop" (drop)="onFileDrop($event)" (dragover)="onDragOver($event)">
+    <p>Drag and drop a file here</p>
+  </div>
+  <input type="file" (change)="onFileSelected($event)" accept=".jpg,.png,.pdf" />
+  
+  <mat-chip *ngIf="uploadedFile" [removable]="true" (removed)="removeFile()">
+    {{ uploadedFile.name }}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+   -->
+  <mat-chip-listbox aria-label="Fish selection" multiple>
+    <mat-chip-option>
+      <mat-chip color="primary" selected>One fish</mat-chip>
+    </mat-chip-option>
+    <mat-chip-option>
+      <mat-chip color="primary" selected>Two fish</mat-chip>
+    </mat-chip-option>
+      <mat-chip-option>
+        <mat-chip color="accent">Accent fish</mat-chip>
+    </mat-chip-option>
+    
+    
+    
+  
+  </mat-chip-listbox>
+  

@@ -1,6 +1,9 @@
 package com.example.jwttest.auth;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
@@ -12,6 +15,7 @@ import com.example.jwttest.exceptionHandling.exceptions.AccountVerificationExcep
 import com.example.jwttest.exceptionHandling.exceptions.UsedEmailException;
 import com.example.jwttest.exceptionHandling.exceptions.UserAlreadyExistsException;
 import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
+import com.example.jwttest.models.Role;
 import com.example.jwttest.models.SecurityUser;
 import com.example.jwttest.models.User;
 import com.example.jwttest.repo.UserRepository;
@@ -66,7 +70,7 @@ public class AuthenticationService {
         extraClaims.put("username",request.getUsername());
         extraClaims.put("email",request.getEmail());
         extraClaims.put("password", encodedPassword);
-        extraClaims.put("role", "ROLE_USER");
+        //extraClaims.put("role", "ROLE_USER");
 
         //Generate confirmation token
         String token=jwtService.generateToken(extraClaims,request.getUsername());
@@ -76,7 +80,8 @@ public class AuthenticationService {
         String message="Thank you for registering. Please click on the link below to activate your account";
         String reciever=request.getEmail();
         String name=request.getFirstname();
-        emailService.sendHtmlEmail(reciever, name, link, message,"Activate now");
+        emailService.sendHtmlEmail(reciever, name, link, message,"Activate now",
+        "Confirm your email","User confirmation");
 
         //add email template 
         //emailService.send(request.getEmail(),"Please click on the link below to confirm your email address:\n"+link);
@@ -104,7 +109,12 @@ public class AuthenticationService {
         extraClaims.put("firstname", user.getFirstname());
         extraClaims.put("lastname", user.getLastname());
         extraClaims.put("username", user.getUsername());
-        extraClaims.put("role", user.getRole());
+        //extraClaims.put("roles", user.getRoles());
+        List<String> roleNames = user.getRoles().stream()
+                                       .map(Role::getName) // Assuming Role class has getName() method
+                                       .collect(Collectors.toList());
+
+        extraClaims.put("roles", roleNames);
 
         //Generate user tokens
         String jwtToken=jwtService.generateToken(extraClaims,user.getEmail());
@@ -117,12 +127,12 @@ public class AuthenticationService {
         
         final String refreshToken;
         final String email;
-        final String userRole;
+        //final String userRole;
 
         refreshToken=request.getRefreshToken();
         Claims claims=jwtService.extractRefreshClaims(refreshToken);
         email=(String)claims.getSubject();
-        userRole=(String)claims.get("role");
+        //userRole=(String)claims.get("roles");
 
         //make db query in case an update happened 
 
@@ -134,7 +144,7 @@ public class AuthenticationService {
         extraClaims.put("firstname", user.getFirstname());
         extraClaims.put("lastname", user.getLastname());
         extraClaims.put("username", user.getUsername());
-        extraClaims.put("role", userRole);
+        extraClaims.put("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
 
 
         //the validity is checked during parsing
@@ -191,7 +201,8 @@ public class AuthenticationService {
         String link = "http://localhost:4200/auth/reset-password?token="+token;
         String message="Please click on the link below to reset your password";
         //emailService.send(email, "Please click on the link below to confirm your email address:\n"+link);
-        emailService.sendHtmlEmail(email, name, link, message,"Reset now");
+        emailService.sendHtmlEmail(email, name, link, message,"Reset now",
+        "Forgot your password","Password reset");
         return responseData;
     }
 

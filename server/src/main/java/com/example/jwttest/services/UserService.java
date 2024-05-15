@@ -3,6 +3,7 @@ package com.example.jwttest.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,9 +51,11 @@ public class UserService {
                     .collect(Collectors.toList());
     }
 
-    public UserDto updateUser(Long userId, String role, boolean enabled) {
+    public UserDto updateUser(Long userId, List<String> roles, boolean enabled) {
         User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
-        user.setRole(role);
+        //user.setRoles(roles);
+        List<Role> userRoles=roleRepository.findAllByNameIn(roles);
+        user.setRoles(userRoles);
         user.setEnabled(enabled);
         User updatedUser= userRepo.save(user);
         return new UserDto(updatedUser);
@@ -114,9 +117,11 @@ public class UserService {
         return responseData;
     }
 
-    public Map<String, List<Role>> getRoles(){
-        Map<String, List<Role>> responseData = new HashMap<>();
-        List<Role> roles=roleRepository.findAll();
+    public Map<String, List<String>> getRoles(){
+        Map<String, List<String>> responseData = new HashMap<>();
+        List<String> roles=roleRepository.findAll().stream()
+                                                    .map(Role::getName)
+                                                    .collect(Collectors.toList());
         responseData.put("roles",roles );
         return responseData;
     }

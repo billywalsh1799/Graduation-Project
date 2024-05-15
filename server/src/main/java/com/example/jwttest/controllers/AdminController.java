@@ -45,7 +45,7 @@ public class AdminController {
 
     @PutMapping("/user/userid/{userId}/update")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long userId,@RequestBody UpdateUserRequest request){
-        UserDto updatedUser = userService.updateUser(userId, request.getRole(),request.isEnabled());
+        UserDto updatedUser = userService.updateUser(userId, request.getRoles(),request.isEnabled());
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
                                 
     }
@@ -58,7 +58,7 @@ public class AdminController {
 
 
     @GetMapping("/user/roles")
-    public ResponseEntity<Map<String, List<Role>>> getRoles(){
+    public ResponseEntity<Map<String, List<String>>> getRoles(){
         return new ResponseEntity<>(userService.getRoles(),HttpStatus.OK);
     }
 

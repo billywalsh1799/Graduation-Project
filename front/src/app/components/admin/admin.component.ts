@@ -34,10 +34,11 @@ export class AdminComponent implements AfterViewInit {
   }
 
   OpenDialog(enteranimation: any, exitanimation: any, userInfo: any) {
+    userInfo.rolesList=[...this.rolesList]
     const popup = this.dialog.open(UpdatepopupComponent, {
       enterAnimationDuration: enteranimation,
       exitAnimationDuration: exitanimation,
-      width: '400px',
+      width: '500px',
       data:userInfo
        
     });
@@ -68,6 +69,7 @@ export class AdminComponent implements AfterViewInit {
   loadUsers(){
     this.adminService.getUsers().subscribe({
       next:res=>{
+        console.log("loaded users",res)
         this.userList=res
         this.dataSource.data = this.userList;
         this.dataSource.sort=this.sort;
@@ -90,6 +92,17 @@ export class AdminComponent implements AfterViewInit {
       }
     })
   }
+
+
+  formatRoles(roles:any) {
+    // Extract role names from the array of role objects
+    const roleNames = roles.map((role:any) => role.replace('ROLE_', '')); // Remove 'ROLE_' prefix if exists
+
+    // Join role names with commas
+    const formattedRoles = roleNames.join(',');
+
+    return formattedRoles;
+}
 
   displayRoles(){
     console.log(this.rolesList)
@@ -140,7 +153,10 @@ applyFilters() {
     const statusMatch = !this.activeFilters.status || 
                         user.enabled === (this.activeFilters.status === "Active");
     // Check if the user matches the role filter
-    const roleMatch = !this.activeFilters.role || user.role === this.activeFilters.role;
+    //const roleMatch = !this.activeFilters.role || user.role === this.activeFilters.role;
+
+    // Check if the user matches the role filter
+    const roleMatch = !this.activeFilters.role || user.roles.some((role:any) => role === this.activeFilters.role) ;
 
     // Check if any of the user's properties contain the search filter value
     const searchMatch = !this.activeFilters.search ||

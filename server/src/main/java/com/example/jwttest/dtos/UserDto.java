@@ -1,5 +1,10 @@
 package com.example.jwttest.dtos;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.example.jwttest.models.Role;
 import com.example.jwttest.models.User;
 
 import lombok.AllArgsConstructor;
@@ -15,8 +20,8 @@ public class UserDto {
     private String lastname;
     private String username;
     private String email;
-    private String role;
     private boolean enabled;
+    private List<String> roles;
 
 
     public UserDto(User user){
@@ -25,8 +30,10 @@ public class UserDto {
         this.lastname=user.getLastname();
         this.username=user.getUsername();
         this.email=user.getEmail();
-        this.role=user.getRole();
         this.enabled=user.isEnabled();
+        this.roles=user.getRoles().stream()
+                                  .map(Role::getName)
+                                  .collect(Collectors.toList());
 
     }
     

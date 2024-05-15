@@ -1,10 +1,14 @@
 package com.example.jwttest.auth;
+import java.util.List;
+
+import com.example.jwttest.models.Role;
+
 import lombok.Data;
 
 
 @Data
 public class UpdateUserRequest {
-    private String role;
+    List<String> roles;
     private boolean enabled;
     
 }

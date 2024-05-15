@@ -16,6 +16,7 @@ import { PdfviewertestComponent } from './components/pdfviewertest/pdfviewertest
 import { DocumentComponent } from './components/document/document.component';
 import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
 import { CreatorpageComponent } from './components/creatorpage/creatorpage.component';
+import { FileDropComponent } from './components/file-drop/file-drop.component';
 
 
 
@@ -37,6 +38,7 @@ const routes: Routes = [
     {path:'unauthorized',component:UnauthorizedComponent},
   ]},
   { path: 'login', component: LoginComponent },
+  { path: 'file-drop', component: FileDropComponent },
   { path: 'register', component: RegisterComponent },
   {path:'auth/confirm',component:UserconfirmationComponent},
   {path:'forget-password',component:ForgetpasswordComponent},

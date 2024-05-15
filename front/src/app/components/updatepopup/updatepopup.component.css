@@ -4,6 +4,8 @@
     align-items: center;
     justify-content: center;
     
+    
+    
    /*  width: 300px; */
     /* height: 100%; */
     /* background-color: blue; */
@@ -12,8 +14,18 @@
 .update-actions{
   display: flex;
   align-items: center;
+
+
 /*   justify-content: space-between; */
   gap: 50px;
 
 
   }
+
+  mat-form-field {
+    width: 400px
+    /* max-width: 100px; */
+     /* display: block;  */
+     /* margin: auto;  */
+     /* flex-grow: 1;  *//* Allow the form fields to grow and shrink dynamically */
+  }  

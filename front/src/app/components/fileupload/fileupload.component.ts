@@ -7,6 +7,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { UserService } from 'src/app/services/user.service';
 import { DocumentService } from 'src/app/services/document.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-fileupload',
@@ -22,9 +23,14 @@ export class FileuploadComponent {
   selectedFile: File | null = null;
 
 
+  loading: boolean = false;
+
+
   @ViewChild('reviewerInput') reviewerInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private userService: UserService,private documentService:DocumentService,private authService:AuthService) {
+  constructor(private userService: UserService,private documentService:DocumentService,private authService:AuthService,
+    private snackBar: MatSnackBar
+  ) {
     this.loadAllReviewers();
    /*  this.filteredReviewers = this.reviewerCtrl.valueChanges.pipe(
       startWith(null),
@@ -95,32 +101,24 @@ export class FileuploadComponent {
       return;
     }
 
-   
+    this.loading = true;
     
-    //extract from jwt subject
-    //const creatorEmail = 'smoalla1799@gmail.com'; // Replace with actual creator's email
-     // Replace with actual creator's email
-  
-    // Create FormData object
-    //copy this in the service to reduce code 
-    //console.log("file",this.selectedFile)
-
-    //const formData: FormData = new FormData();
-    //formData.append('file', this.selectedFile);
-    //formData.append('creatorEmail', creatorEmail);
-    //this.reviewers.forEach(email => formData.append('reviewerEmails', email));
-    // Call DocumentService to create document
-   /*  const creatorEmail =this.getCreator();
+    const creatorEmail =this.getCreator();
     this.documentService.createDocument(this.selectedFile,this.reviewers,creatorEmail).subscribe({
       next: res => {
         console.log('Document created successfully:', res);
+        this.loading = false;
+        this.snackBar.open('Document uploaded successfully:', 'Close', {
+          duration: 5000,
+          verticalPosition: 'top'
+        });
         
       },
       error: err => {
         console.error('Error creating document:', err);
         
       }
-    }); */
+    }); 
   }
 
   getCreator(){
@@ -140,6 +138,10 @@ export class FileuploadComponent {
     if(this.reviewerCtrl.value){
       this.filterReviewers(this.reviewerCtrl.value)
     }
+    else {
+      this.filteredReviewers = this.allReviewers;
+    }
+
   }
 
   filterReviewers(value: string) {

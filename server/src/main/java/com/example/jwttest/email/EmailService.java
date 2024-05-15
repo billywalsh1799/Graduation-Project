@@ -29,36 +29,34 @@ public class EmailService {
         mailSender.send(message);
     }
     @Async
-    public void sendHtmlEmail(String to, String name,String link,String message,String action) {
+    public void sendHtmlEmail(String to, String name,String link,String message,String action,String header,String subject) {
 
         //create a map for parameets
-        String email=buildEmail(name, link, message,action);
+        String email=buildEmail(name, link, message,action,header);
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper =
                     new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(email, true);
             helper.setTo(to);
-            String subject;
-            subject=(action=="Reset now")?"Password reset":"Email confirmation";
+            /* String subject;
+            subject=(action=="Reset now")?"Password reset":"Email confirmation"; */
             helper.setSubject(subject);
-            helper.setFrom("hello@amigoscode.com");
+            //helper.setFrom("hello@amigoscode.com");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             throw new IllegalStateException("failed to send email");
         }
     }
 
-    public void sendHtmlEmail(Map<String, String> data){
-        
-    }
+    
 
     /* Map<String, String> responseData = new HashMap<>();
     responseData.put("message","password was reset successfully"); */
 
-    private String buildEmail(String name, String link,String message,String action) {
-        String header;
-        header=(action=="Reset now")?"Forgot your password":"Confirm your email";
+    private String buildEmail(String name, String link,String message,String action,String header) {
+       
+        /* header=(action=="Reset now")?"Forgot your password":"Confirm your email"; */
         
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +

@@ -1,14 +1,26 @@
 <h1 mat-dialog-title>Update User</h1>
 <div mat-dialog-content class="center-dialog-content">
     <form [formGroup]="updateForm" (ngSubmit)="UpdateUser()">
-        <mat-form-field>
-        <mat-label>Role</mat-label>
-        <mat-select formControlName="role">
-        <mat-option *ngFor="let role of rolesList" [value]="role.name">
-        {{role.name.substring(5)}}
-        </mat-option>
-        </mat-select>
+        <mat-form-field class="example-chip-list" appearance="fill">
+            <mat-label>Roles</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Role selection">
+              <mat-chip-row *ngFor="let role of roles" (removed)="remove(role)">
+                {{role.substring(5)}}
+                <button matChipRemove [attr.aria-label]="'remove ' + role">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+            <input placeholder="Add Role..." #roleInput [formControl]="rolesCtrl"
+              [matChipInputFor]="chipGrid" [matAutocomplete]="auto" (keyup)="searchRole()"
+              />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let role of filteredRoles" [value]="role">
+                {{role.substring(5)}}
+              </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
+        
         <section class="example-section">
         <mat-checkbox formControlName="isactive" class="example-margin">Is Active</mat-checkbox>
         </section>
@@ -18,3 +30,14 @@
         </div>
     </form>
 </div>
+
+
+
+<!-- <mat-form-field>
+    <mat-label>Role</mat-label>
+    <mat-select formControlName="role">
+    <mat-option *ngFor="let role of rolesList" [value]="role.name">
+    {{role.name.substring(5)}}
+    </mat-option>
+    </mat-select>
+</mat-form-field> -->
