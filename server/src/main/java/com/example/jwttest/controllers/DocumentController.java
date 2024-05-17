@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.jwttest.dtos.AddCommentRequest;
 import com.example.jwttest.dtos.CreatorDto;
 import com.example.jwttest.dtos.DocumentDto;
+import com.example.jwttest.dtos.DocumentReviewDto;
+import com.example.jwttest.dtos.DocumentReviewRequest;
 import com.example.jwttest.dtos.DocumentValidationRequest;
 import com.example.jwttest.dtos.ReviewerDto;
 import com.example.jwttest.dtos.ValidationDto;
@@ -41,8 +43,11 @@ public class DocumentController {
     @PostMapping("/create")
     public ResponseEntity<DocumentDto> createDocument(@RequestParam("file") MultipartFile file,
                                     @RequestParam("reviewerEmails") List<String> reviewerEmails,
-                                    @RequestParam("creatorEmail") String creatorEmail)   {
-        return new ResponseEntity<>(documentService.createDocument(file, reviewerEmails,creatorEmail),HttpStatus.OK);
+                                    @RequestParam("creatorEmail") String creatorEmail,
+                                    @RequestParam("type") String type,
+                                    @RequestParam("note") String note
+                                    )   {
+        return new ResponseEntity<>(documentService.createDocument(file, reviewerEmails,creatorEmail,type,note),HttpStatus.OK);
     }
 
     @GetMapping("/")
@@ -55,29 +60,48 @@ public class DocumentController {
     public ResponseEntity<DocumentDto> getDocument(@PathVariable Long id) {
         return new ResponseEntity<>(documentService.getDocument(id),HttpStatus.OK);
     }
-    
 
+    @PostMapping("/document/validation-status")
+    public ResponseEntity<Map<String,Boolean>> getDocumentValidationStatus(@RequestBody DocumentReviewRequest request) {
+        return new ResponseEntity<>(documentService.getDocumentValidationStatus(request.getReviewerId(),request.getDocumentId()),HttpStatus.OK);
+    }
+
+    
     @PostMapping("/{id}/comment")
     public ResponseEntity<Comment> addCommentToDocument(@RequestBody AddCommentRequest request,@PathVariable Long  id) {
         return new ResponseEntity<>(documentService.addCommentToDocument(request,id),HttpStatus.OK);
     }
+
 
     @GetMapping("/{id}/comments")
     public ResponseEntity<Map<String, List<Comment>>> getAllCommentsForDocument(@PathVariable Long  id) {
         return new ResponseEntity<>(documentService.getAllCommentsForDocument(id),HttpStatus.OK);
     }
     
+    //validation button
     @PostMapping("/{id}/validate")
     public ResponseEntity<Validation> validateDocument(@RequestBody DocumentValidationRequest request) {
-       return new ResponseEntity<>(documentService.validateDocument(request.getDocumentId(),request.getReviewerEmail()),HttpStatus.OK);
+       return new ResponseEntity<>(documentService.validateDocument(request.getReviewerId(),request.getDocumentId()),HttpStatus.OK);
     }
 
+
+    //documentpage
+    @PostMapping("/review")
+    public ResponseEntity<DocumentReviewDto> getDocumentToReview(@RequestBody DocumentReviewRequest request) {
+       return new ResponseEntity<>(documentService.getDocumentForReview(request.getDocumentId(),request.getReviewerId()),HttpStatus.OK);
+    }
+
+
+
+    //for creator page table
     @GetMapping("/creator/{id}")
     public ResponseEntity<List<CreatorDto>> getDocumentsForCreator(@PathVariable Long id){
         return new ResponseEntity<>(documentService.getDocumentsForCreator(id),HttpStatus.OK);
 
     }
 
+
+    //for reviewer page table
     @GetMapping("/reviewer/{id}")
     public ResponseEntity<List<ReviewerDto>> getDocumentsForReviewer(@PathVariable Long id){
         return new ResponseEntity<>(documentService.getDocumentsForReviewer(id),HttpStatus.OK);
@@ -85,6 +109,7 @@ public class DocumentController {
     }
     
 
+    //for creator page popup
     @GetMapping("/validations/{id}")
     public ResponseEntity<List<ValidationDto>> getValidationsForDocument(@PathVariable Long id){
         return new ResponseEntity<>(documentService.getValidationsForDocument(id),HttpStatus.OK);

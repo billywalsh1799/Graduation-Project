@@ -75,7 +75,8 @@ mat-card-title{
 	/* overflow-x: hidden; */
    /*  background: #e0b5b5; */
     background:lightskyblue;
-    width: 600px;
+    /* width: 600px; */
+    width: 730px;
     overflow-y: auto; 
     height: 500px;
     /* padding: 25px; */
@@ -100,7 +101,8 @@ mat-card-title{
     /* background-color: #5cb85c; */
     overflow-wrap: break-word;
 	/* width: 420px; */
-    width: 500px;
+    /* width: 500px; */
+    width: 600px;
 	
 	
 }

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.jwttest.dtos.AddCommentRequest;
 import com.example.jwttest.dtos.CreatorDto;
 import com.example.jwttest.dtos.DocumentDto;
+import com.example.jwttest.dtos.DocumentReviewDto;
 import com.example.jwttest.dtos.ReviewerDto;
 import com.example.jwttest.dtos.ValidationDto;
 import com.example.jwttest.email.EmailService;
@@ -47,7 +48,7 @@ public class DocumentService {
     //fatch by creator for created documents
     //when open popup fetch validation by document
 
-    public DocumentDto createDocument(MultipartFile file, List<String> reviewerEmails,String creatorEmail)  {
+    public DocumentDto createDocument(MultipartFile file, List<String> reviewerEmails,String creatorEmail,String type,String note)  {
         Document document = new Document();
         document.setFileName(file.getOriginalFilename());
         document.setTotalReviewers(reviewerEmails.size());
@@ -64,6 +65,9 @@ public class DocumentService {
         User creator=userRepository.findByEmail(creatorEmail).orElseThrow();
         document.setCreator(creator);
         document.setCreatedAt(LocalDateTime.now());
+
+        document.setType(type);
+        document.setNote(note);
 
         documentFile.setDocument(document);
         
@@ -107,10 +111,18 @@ public class DocumentService {
 
     }
 
+    public Map<String,Boolean> getDocumentValidationStatus(Long reviewerId,Long documentId){
+        Validation validation=validationRepository.findByReviewerIdAndDocumentId(reviewerId, documentId).orElseThrow();
+        Map<String, Boolean> responseData = new HashMap<>();
+        responseData.put("hasValidated", validation.isValidated());
+        return responseData;
+
+    } 
+
     
 
-    public Validation validateDocument(Long id,String reviwerEmail){
-        Validation validation=validationRepository.findByReviewerEmailAndDocumentId(reviwerEmail,id).orElseThrow();
+    public Validation validateDocument(Long reviewerId,Long documentId){
+        Validation validation=validationRepository.findByReviewerIdAndDocumentId(reviewerId,documentId).orElseThrow();
         validation.setValidated(true);
         // Fetch the associated document
         Document document = validation.getDocument();
@@ -123,9 +135,9 @@ public class DocumentService {
         return validationRepository.save(validation);
     }
 
-    public ReviewerDto getDocumentForReview(Long id,String reviwerEmail){
-        Validation validation=validationRepository.findByReviewerEmailAndDocumentId(reviwerEmail,id).orElseThrow();
-        return new ReviewerDto(validation);
+    public DocumentReviewDto getDocumentForReview(Long documentId,Long reviwerId){
+        Validation validation=validationRepository.findByReviewerIdAndDocumentId(reviwerId, documentId).orElseThrow();
+        return new DocumentReviewDto(validation);
 
     }
 

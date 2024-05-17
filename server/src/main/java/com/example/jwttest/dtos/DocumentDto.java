@@ -14,7 +14,7 @@ import lombok.Data;
 public class DocumentDto {
     private Long id;
     private String fileName;
-    private User creator;
+    private String creator;
     private List<Comment> comments;
     private LocalDateTime createdAt;
     private boolean validated;
@@ -25,7 +25,7 @@ public class DocumentDto {
     public DocumentDto(Document document) {
         this.id = document.getId();
         this.fileName=document.getFileName();
-        this.creator=document.getCreator();
+        this.creator=document.getCreator().getUsername();
         this.comments=document.getComments();
         this.createdAt=document.getCreatedAt();
         this.validated=document.isValidated();

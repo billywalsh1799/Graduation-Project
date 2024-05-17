@@ -10,15 +10,18 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ForgetpasswordComponent {
 
   email: string = '';
+  loading: boolean = false;
 
   constructor(private authService:AuthService,private snackBar: MatSnackBar){}
 
   onSubmit() {
     // Handle form submission here
     console.log('Email:', this.email);
+    this.loading = true;
     this.authService.forgetPassword(this.email).subscribe({
       next:(res:any)=>{
         console.log("successful use snackbar",res)
+        this.loading = false;
         this.snackBar.open(res.message, 'Close', {
           duration: 5000,
           verticalPosition: 'top'

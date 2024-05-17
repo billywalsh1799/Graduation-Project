@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/services/auth.service';
 import { DocumentService } from 'src/app/services/document.service';
+import { ValidationspopupComponent } from '../validationspopup/validationspopup.component';
 
 @Component({
   selector: 'app-creatorpage',
@@ -12,23 +14,6 @@ import { DocumentService } from 'src/app/services/document.service';
 })
 export class CreatorpageComponent implements AfterViewInit,OnInit {
   
-  /* documentList:any=[
-    {document:"document.pdf",validated:"false",createdAt:"2-05-2024",progress:80},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024",progress:40},
-    
-  ] */
-
   documentList:any=[]
   displayedColumns: string[] = ['document','createdAt','progress','action'];
   dataSource = new MatTableDataSource<any>(this.documentList);
@@ -36,7 +21,7 @@ export class CreatorpageComponent implements AfterViewInit,OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private authService:AuthService,private documentService:DocumentService){
+  constructor(private authService:AuthService,private documentService:DocumentService,private dialog:MatDialog){
     
   }
 
@@ -56,6 +41,18 @@ export class CreatorpageComponent implements AfterViewInit,OnInit {
   
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  validationDetails(documentId:number){
+    //this.dialog.open(ValidationspopupComponent)
+    const popup = this.dialog.open(ValidationspopupComponent, {
+      enterAnimationDuration: "200ms",
+      exitAnimationDuration: "200ms",
+      width: '700px',
+      data:{documentId}
+       
+    });
+
   }
 
 

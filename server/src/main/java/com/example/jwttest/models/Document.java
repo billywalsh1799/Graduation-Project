@@ -26,6 +26,7 @@ public class Document {
     private String fileName;
 
 
+
     @Column(nullable = false, columnDefinition = "boolean default false") 
     private boolean validated;
 
@@ -51,6 +52,9 @@ public class Document {
     // Number of reviewers who have already validated the document
     private Integer totalValidations=0;
 
+    private String type;
+    private String note;
+
 
 
     public Document(String fileName,User creator){
@@ -58,6 +62,7 @@ public class Document {
         this.fileName=fileName;
         this.creator=creator;
         this.createdAt = LocalDateTime.now(); 
+        
         
     }
 

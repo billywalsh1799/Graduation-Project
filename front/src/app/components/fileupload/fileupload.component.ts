@@ -25,6 +25,10 @@ export class FileuploadComponent {
 
   loading: boolean = false;
 
+  type:string=""
+
+  documentTypes:string[]=["Cover letter","Resume","Bill"]
+
 
   @ViewChild('reviewerInput') reviewerInput!: ElementRef<HTMLInputElement>;
 
@@ -104,7 +108,7 @@ export class FileuploadComponent {
     this.loading = true;
     
     const creatorEmail =this.getCreator();
-    this.documentService.createDocument(this.selectedFile,this.reviewers,creatorEmail).subscribe({
+    this.documentService.createDocument(this.selectedFile,this.reviewers,creatorEmail,'type','note').subscribe({
       next: res => {
         console.log('Document created successfully:', res);
         this.loading = false;

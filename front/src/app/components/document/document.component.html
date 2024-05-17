@@ -6,7 +6,11 @@
         <mat-card-content>
             <div class="document-row">
                 <button mat-button color="primary"(click)="openDocument()">{{fileName}}</button>
-                <button mat-raised-button color="primary" (click)="validateDocument()" *ngIf="!isCreator">Validate</button>
+                <button mat-raised-button color="primary" (click)="validateDocument()" *ngIf="!isCreator && !isValidated">Validate</button>
+                <button mat-raised-button color="primary" disabled="true" *ngIf="!isCreator && isValidated">
+                    <mat-icon>verified</mat-icon>
+                    Validated
+                </button>
             </div>
             <mat-card-title>Comments</mat-card-title>
             <div class="document-row">

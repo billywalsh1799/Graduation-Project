@@ -36,7 +36,11 @@ export class AuthService {
   getUsername(){
     const decodedHeader:any=jwtDecode(this.getToken())
     return decodedHeader.username
+  }
 
+  getId(){
+    const decodedHeader:any=jwtDecode(this.getToken())
+    return decodedHeader.userid
   }
 
   isTokenExpired(){

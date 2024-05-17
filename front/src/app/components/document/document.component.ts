@@ -19,8 +19,8 @@ export class DocumentComponent implements OnInit {
   comments:any
   userName:string=""
   newComment: string = '';
-  isValidated:boolean=true;
-  isCreator:boolean=false;
+  isValidated:boolean=false;
+  isCreator:boolean=true;
 
   constructor(private documentService:DocumentService,private route: ActivatedRoute,private authService:AuthService){}
   ngOnInit(){
@@ -29,12 +29,24 @@ export class DocumentComponent implements OnInit {
     //query from validation table by user and document to get the validation status too
     this.documentId = this.route.snapshot.paramMap.get('id');
     this.userName=this.authService.getUsername()
+    let id=this.authService.getId()
+   
+    //get it from validation table
     this.documentService.getDocument(this.documentId).subscribe({
       next:(res:any)=>{
-        console.log("document response",res)
+        this.isCreator=res.creator==this.userName
+        if(res.creator!=this.userName){
+          let request={reviewerId:id,documentId:this.documentId}
+          this.documentService.getDocumentValidationStatus(request).subscribe({
+            next:(response:any)=>{
+              this.isValidated=response.hasValidated
+            },
+            error:error=>console.log("validation error",error)
+          })
+        }
         this.fileName=res.fileName
         this.comments=res.comments
-        this.isCreator=res.creator.username==this.userName
+        
       },
       error:err=>{
         console.error(err)
@@ -66,10 +78,11 @@ export class DocumentComponent implements OnInit {
   }
 
   validateDocument(){
-    this.documentService.validateDocument(this.documentId).subscribe({
-      next:res=>{
+    this.documentService.validateDocument(this.documentId,this.authService.getId()).subscribe({
+      next:(res:any)=>{
         //use snackbar//validation happen only once
         console.log("validation response",res)
+        this.isValidated=res.validated
       },
       error:err=>{
         console.error(err)

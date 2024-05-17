@@ -1,8 +1,4 @@
 package com.example.jwttest.email;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

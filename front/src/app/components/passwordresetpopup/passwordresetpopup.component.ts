@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PasswordResetRequest } from 'src/app/services/interfaces/shared-interfaces';
 import { UserService } from 'src/app/services/user.service';
 
@@ -14,7 +15,7 @@ export class PasswordresetpopupComponent {
 
   passwordForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,private dialogref: MatDialogRef<PasswordresetpopupComponent>
+  constructor(private snackBar: MatSnackBar,private formBuilder: FormBuilder,private dialogref: MatDialogRef<PasswordresetpopupComponent>
     ,@Inject(MAT_DIALOG_DATA) public data: any,
     private usrService:UserService
    ){
@@ -70,7 +71,10 @@ export class PasswordresetpopupComponent {
       this.usrService.resetPassword(request).subscribe({
         next:res=>{
           console.log("success",res)
-          //snackbar
+          this.snackBar.open(res.message, 'Close', {
+            duration: 5000,
+            verticalPosition: 'top'
+          });
         },
         error:err=>{
           console.log("error",err)

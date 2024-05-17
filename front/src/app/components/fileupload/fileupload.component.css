@@ -17,7 +17,7 @@
     align-items: center; */
     gap:50px;
     width: 700px;
-    height: 600px;
+    height: 650px;
     padding: 40px;
     
   }
@@ -50,3 +50,14 @@
  /* .example-chip-list {
     width: 100%;
   } */
+
+  .note-field{
+    textarea{
+      max-height: 150px;
+    resize: vertical; 
+    }
+  }
+
+  .file-selection{
+    margin-bottom:20px
+  }

@@ -6,13 +6,14 @@
       <mat-card-content>
           <form>
             <!-- File input -->
-          <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none;">
-          <button mat-button color="primary" (click)="fileInput.click()">Select File</button>
-          <mat-chip *ngIf="selectedFile" removable (removed)="clearFile()">
-            {{ selectedFile.name }}
-            <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
-         <mat-divider></mat-divider>
+          <div class="file-selection">
+            <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none;">
+            <button mat-button color="primary" (click)="fileInput.click()">Select File</button>
+            <mat-chip *ngIf="selectedFile" removable (removed)="clearFile()">
+              {{ selectedFile.name }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </div>
         
               <mat-form-field class="example-chip-list" appearance="fill">
                 <mat-label>Reviewers</mat-label>
@@ -34,6 +35,22 @@
                 </mat-autocomplete>
               </mat-form-field>
               <mat-divider></mat-divider>
+              <mat-form-field appearance="fill">
+                <mat-label>Select document type</mat-label>
+                <mat-select [(value)]="type">
+                  <mat-option>None</mat-option>
+                 <!--  <mat-option value="option1">Option 1</mat-option>
+                  <mat-option value="option2">Option 2</mat-option>
+                  <mat-option value="option3">Option 3</mat-option> -->
+                  <mat-option *ngFor="let type of documentTypes" [value]="type">
+                    {{type}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="note-field">
+                <mat-label>Leave a note</mat-label>
+                <textarea matInput></textarea>
+              </mat-form-field>
               <!-- <button mat-button color="primary" (click)="createDocument()">Upload</button> -->
               <button mat-raised-button color="primary" class="register-button" type="submit" [disabled]="loading"
               (click)="createDocument()">
@@ -43,7 +60,5 @@
             </form>
            
       </mat-card-content>
-      
-
   </mat-card>
 </div>

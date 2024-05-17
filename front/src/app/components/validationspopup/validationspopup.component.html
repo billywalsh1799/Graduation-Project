@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Document Validation details</h1>
+<div mat-dialog-content class="center-dialog-content">
+
+    <div *ngFor="let validation of validationDetails" class="status-row">
+        <h1>{{validation.reviewerEmail}}</h1>
+        <mat-icon *ngIf="!validation.validated">hourglass_top</mat-icon>
+        <mat-icon *ngIf="validation.validated">check_small</mat-icon>
+    </div>
+     
+  </div>
+  

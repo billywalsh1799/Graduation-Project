@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.jwttest.auth.UpdateUserRequest;
 import com.example.jwttest.dtos.UserDto;
-import com.example.jwttest.models.Role;
 import com.example.jwttest.services.UserService;
 
 import lombok.RequiredArgsConstructor;
