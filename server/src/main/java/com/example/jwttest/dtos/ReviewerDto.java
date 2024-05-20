@@ -13,14 +13,16 @@ public class ReviewerDto {
     private String fileName;
     private LocalDateTime createdAt;
     private boolean validated;
+    private String type;
     
     
     public ReviewerDto(Validation validation){
-         Document document=validation.getDocument();
+        Document document=validation.getDocument();
         this.documentId=document.getId();
         this.fileName=document.getFileName();
         this.createdAt=document.getCreatedAt();
         this.validated=validation.isValidated();
+        this.type=document.getType();
     }
     
 }

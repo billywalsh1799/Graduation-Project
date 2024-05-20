@@ -49,6 +49,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { CreatorpageComponent } from './components/creatorpage/creatorpage.component';
 import { FileDropComponent } from './components/file-drop/file-drop.component';
 import { ValidationspopupComponent } from './components/validationspopup/validationspopup.component';
+import { NotifierComponent } from './components/notifier/notifier.component';
+import { UploadedDocumentsComponent } from './components/uploaded-documents/uploaded-documents.component';
+import { ReviewerStatisticsComponent } from './components/reviewer-statistics/reviewer-statistics.component';
 
 
 
@@ -75,6 +78,9 @@ import { ValidationspopupComponent } from './components/validationspopup/validat
     CreatorpageComponent,
     FileDropComponent,
     ValidationspopupComponent,
+    NotifierComponent,
+    UploadedDocumentsComponent,
+    ReviewerStatisticsComponent,
   ],
   imports: [
     BrowserModule,

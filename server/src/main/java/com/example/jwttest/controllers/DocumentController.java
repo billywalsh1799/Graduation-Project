@@ -13,10 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.jwttest.dtos.AddCommentRequest;
 import com.example.jwttest.dtos.CreatorDto;
 import com.example.jwttest.dtos.DocumentDto;
+import com.example.jwttest.dtos.DocumentRequest;
 import com.example.jwttest.dtos.DocumentReviewDto;
 import com.example.jwttest.dtos.DocumentReviewRequest;
 import com.example.jwttest.dtos.DocumentValidationRequest;
 import com.example.jwttest.dtos.ReviewerDto;
+import com.example.jwttest.dtos.ReviewerStatisticsDto;
+import com.example.jwttest.dtos.UploadedDocumentDto;
 import com.example.jwttest.dtos.ValidationDto;
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.DocumentFile;
@@ -51,14 +54,22 @@ public class DocumentController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<DocumentDto>> getAll() {
+    public ResponseEntity<List<UploadedDocumentDto>> getAll() {
         return new ResponseEntity<>(documentService.getAll(),HttpStatus.OK);
+    }
+    @GetMapping("/uploaders")
+    public ResponseEntity<List<String>> getAllUploaders() {
+        return new ResponseEntity<>(documentService.getAllUploaders(),HttpStatus.OK);
+    }
+    @GetMapping("/reviewers")
+    public ResponseEntity<List<String>> getAllReviewers() {
+        return new ResponseEntity<>(documentService.getAllReviewers(),HttpStatus.OK);
     }
     
 
-    @GetMapping("/document/{id}")
-    public ResponseEntity<DocumentDto> getDocument(@PathVariable Long id) {
-        return new ResponseEntity<>(documentService.getDocument(id),HttpStatus.OK);
+    @PostMapping("/document")
+    public ResponseEntity<DocumentDto> getDocument(@RequestBody  DocumentRequest request) {
+        return new ResponseEntity<>(documentService.getDocument(request.getDocumentId(),request.getReviewerId()),HttpStatus.OK);
     }
 
     @PostMapping("/document/validation-status")
@@ -73,10 +84,7 @@ public class DocumentController {
     }
 
 
-    @GetMapping("/{id}/comments")
-    public ResponseEntity<Map<String, List<Comment>>> getAllCommentsForDocument(@PathVariable Long  id) {
-        return new ResponseEntity<>(documentService.getAllCommentsForDocument(id),HttpStatus.OK);
-    }
+
     
     //validation button
     @PostMapping("/{id}/validate")
@@ -109,12 +117,20 @@ public class DocumentController {
     }
     
 
-    //for creator page popup
+    /* //for creator page popup
     @GetMapping("/validations/{id}")
     public ResponseEntity<List<ValidationDto>> getValidationsForDocument(@PathVariable Long id){
         return new ResponseEntity<>(documentService.getValidationsForDocument(id),HttpStatus.OK);
 
+    } */
+
+    //for reviewer page table
+    @GetMapping("/reviewer/{id}/statistics")
+    public ResponseEntity<ReviewerStatisticsDto> getReviewerStatistics(@PathVariable Long id){
+        return new ResponseEntity<>(documentService.getReviewerStatistics(id),HttpStatus.OK);
+
     }
+
     
     
     @GetMapping("/{id}/pdf")

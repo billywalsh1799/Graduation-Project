@@ -19,6 +19,8 @@ import com.example.jwttest.dtos.CreatorDto;
 import com.example.jwttest.dtos.DocumentDto;
 import com.example.jwttest.dtos.DocumentReviewDto;
 import com.example.jwttest.dtos.ReviewerDto;
+import com.example.jwttest.dtos.ReviewerStatisticsDto;
+import com.example.jwttest.dtos.UploadedDocumentDto;
 import com.example.jwttest.dtos.ValidationDto;
 import com.example.jwttest.email.EmailService;
 import com.example.jwttest.models.Comment;
@@ -71,7 +73,7 @@ public class DocumentService {
 
         documentFile.setDocument(document);
         
-        DocumentDto documentDto=new DocumentDto(documentRepository.save(document));
+        DocumentDto documentDto=new DocumentDto(documentRepository.save(document),false);
 
         //findbyids
         Set<User> reviewers=userRepository.findAllByEmailIn(reviewerEmails);
@@ -105,10 +107,14 @@ public class DocumentService {
 
 
 
-    public DocumentDto getDocument(Long id){
-        return documentRepository.findById(id).map(DocumentDto::new)
-        .orElseThrow(()->new RuntimeException("document not found"));
-
+    public DocumentDto getDocument(Long documentId,Long reviwerId){
+        Document document=documentRepository.findById(documentId).orElseThrow(()->new RuntimeException("document file not found"));
+        boolean validation=false;
+        if(document.getCreator().getId()!=reviwerId){
+            Validation reviewerValidation=validationRepository.findByReviewerIdAndDocumentId(reviwerId, documentId).orElseThrow(()->new RuntimeException("validation not found"));
+            validation=reviewerValidation.isValidated();
+        }
+        return new DocumentDto(document,validation);
     }
 
     public Map<String,Boolean> getDocumentValidationStatus(Long reviewerId,Long documentId){
@@ -118,8 +124,6 @@ public class DocumentService {
         return responseData;
 
     } 
-
-    
 
     public Validation validateDocument(Long reviewerId,Long documentId){
         Validation validation=validationRepository.findByReviewerIdAndDocumentId(reviewerId,documentId).orElseThrow();
@@ -156,17 +160,29 @@ public class DocumentService {
                             .collect(Collectors.toList());                      
     }
 
-    public List<ValidationDto> getValidationsForDocument(Long id){
-        List<Validation> validations=validationRepository.findByDocumentId(id);
-        return validations.stream()
-                            .map(ValidationDto::new)
-                            .collect(Collectors.toList());   
-    }
 
-    public List<DocumentDto> getAll(){
+    public List<UploadedDocumentDto> getAll(){
         List<Document> documents=documentRepository.findAll();
         return documents.stream()
-                    .map(DocumentDto::new)
+                    .map(UploadedDocumentDto::new)
+                    .collect(Collectors.toList());
+    }
+
+
+    //for uploaders filter in uploaded documents page
+    public List<String> getAllUploaders(){
+        List<User> documents=documentRepository.findAllCreators();
+        return documents.stream()
+                    .map(user->user.getUsername())
+                    .collect(Collectors.toList());
+    }
+
+
+    //for reviewers filter in uploaded documents page
+    public List<String> getAllReviewers(){
+        List<User> documents=validationRepository.findAllReviewers();
+        return documents.stream()
+                    .map(user->user.getUsername())
                     .collect(Collectors.toList());
     }
 
@@ -176,17 +192,12 @@ public class DocumentService {
         return comment;
     }
 
-    public Map<String, List<Comment>>  getAllCommentsForDocument(Long documentId) {
-        //fetch from validation to get validation status or check in server 
-        Document document = documentRepository.findById(documentId)
-                .orElseThrow(() -> new RuntimeException("Document not found"));
-        List<Comment> comments= document.getComments();
-
-        Map<String, List<Comment>> responseData = new HashMap<>();
-        responseData.put("comments", comments);
-        return responseData;
+    public ReviewerStatisticsDto getReviewerStatistics(Long userId){
+        Long totalUploadedDocuments=documentRepository.countByCreatorId(userId);
+        Long totalAssignedDocuments=validationRepository.countByReviewerId(userId);
+        return new ReviewerStatisticsDto(totalAssignedDocuments,totalUploadedDocuments);
     }
 
-    
+
 
 }

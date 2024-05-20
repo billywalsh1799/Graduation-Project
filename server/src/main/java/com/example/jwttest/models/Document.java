@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,6 +45,10 @@ public class Document {
     /* @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "document_id") 
     private List<Comments> comments = new ArrayList<>(); */
+
+    @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Validation> validations = new ArrayList<>();
+
 
 
     // Total number of reviewers required for validation

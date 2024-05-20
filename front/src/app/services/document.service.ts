@@ -40,8 +40,8 @@ export class DocumentService {
 
   }
 
-  getDocument(id:number){
-    return this.http.get(this.DOCUMENT_ENDPOINT+"/document/"+id)
+  getDocument(request:any){
+    return this.http.post(this.DOCUMENT_ENDPOINT+"/document",request)
   }
 
   getDocumentValidationStatus(request:any){
@@ -69,4 +69,25 @@ export class DocumentService {
   getDocumentsForReviewer(id:number){
     return this.http.get(`http://localhost:8080/api/documents/reviewer/${id}`)
   }
+
+  getAllDocuments(){
+    return this.http.get(`http://localhost:8080/api/documents/`)
+  }
+  getAllUploaders(){
+    return this.http.get(`http://localhost:8080/api/documents/uploaders`)
+  }
+  getAllReviewers(){
+    return this.http.get(`http://localhost:8080/api/documents/reviewers`)
+  }
+
+
+  getReviewerStatistics(id:number){
+    return this.http.get(`http://localhost:8080/api/documents/reviewer/${id}/statistics`)
+  }
+
+ 
+
+
+
+
 }

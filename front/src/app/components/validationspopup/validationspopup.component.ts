@@ -15,13 +15,15 @@ export class ValidationspopupComponent implements OnInit {
     private dialogref: MatDialogRef<ValidationspopupComponent>, @Inject(MAT_DIALOG_DATA) public data: any){}
 
   ngOnInit(): void {
-    this.documentService.getDocumentValidationDetails(this.data.documentId).subscribe({
+   /*  this.documentService.getDocumentValidationDetails(this.data.documentId).subscribe({
       next:(res:any)=>{
         console.log("details res",res)
         this.validationDetails=res
       },
       error:err=>console.error(err)
-    })
+    }) */
+
+    this.validationDetails=this.data.validations
 
     
   }

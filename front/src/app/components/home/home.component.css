@@ -42,3 +42,13 @@
 .myCustomColor {
     color: #ff0000; /* Your custom color value */
   }
+
+  .custom-snackbar {
+    background-color: #ca1b1b !important; /* Replace with your desired color */
+    color: #fff; /* Optional: Set text color for better contrast */
+  }
+
+  .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    background-color: hsl(148,70%,31%) !important;
+    border-radius: 10px !important;
+}

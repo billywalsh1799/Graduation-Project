@@ -1,0 +1,33 @@
+
+<mat-card>
+    <mat-card-content>
+      <table mat-table matSort [dataSource]="dataSource">
+        <!-- Document Column -->
+        <ng-container matColumnDef="statistic">
+          <th mat-header-cell  *matHeaderCellDef>Statistics </th>
+          <td mat-cell *matCellDef="let element"> 
+            <!-- <button mat-button color="primary" [routerLink]="['/document', element.id]">{{element.fileName}}</button> -->
+            {{element.statistic}}
+         </td>
+        </ng-container>
+        <!-- Number Column -->
+        <ng-container matColumnDef="total">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Total </th>
+          <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+        </ng-container>
+        <ng-container matColumnDef="link">
+            <th mat-header-cell *matHeaderCellDef> <!-- Action --> </th>
+            <td mat-cell *matCellDef="let element"> 
+                <button mat-button color="primary" [routerLink]="getRouterLink(element.statistic)">
+                    <mat-icon>arrow_outward</mat-icon>
+                </button>
+            </td>
+          </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+
+

@@ -17,6 +17,8 @@ import { DocumentComponent } from './components/document/document.component';
 import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
 import { CreatorpageComponent } from './components/creatorpage/creatorpage.component';
 import { FileDropComponent } from './components/file-drop/file-drop.component';
+import { UploadedDocumentsComponent } from './components/uploaded-documents/uploaded-documents.component';
+import { ReviewerStatisticsComponent } from './components/reviewer-statistics/reviewer-statistics.component';
 
 
 
@@ -31,10 +33,12 @@ const routes: Routes = [
     {path:'profile',component:UserprofileComponent},
     {path:'admin',component:AdminComponent,canActivate:[AdminGuard]},
     {path:'create-document',component:FileuploadComponent},
+    {path:'reviewer-statistics',component:ReviewerStatisticsComponent},
     {path:'pdf-viewer',component:PdfviewertestComponent},
     {path:'document/:id',component:DocumentComponent},
     {path:'reviewer-page',component:ReviewerpageComponent},
     {path:'creator-page',component:CreatorpageComponent},
+    {path:'uploaded-documents',component:UploadedDocumentsComponent},
     {path:'unauthorized',component:UnauthorizedComponent},
   ]},
   { path: 'login', component: LoginComponent },

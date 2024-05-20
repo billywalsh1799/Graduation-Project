@@ -6,59 +6,55 @@
       <mat-card-content>
           <form>
             <!-- File input -->
-          <div class="file-selection">
-            <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none;">
-            <button mat-button color="primary" (click)="fileInput.click()">Select File</button>
-            <mat-chip *ngIf="selectedFile" removable (removed)="clearFile()">
-              {{ selectedFile.name }}
-              <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-          </div>
-        
-              <mat-form-field class="example-chip-list" appearance="fill">
-                <mat-label>Reviewers</mat-label>
-                <mat-chip-grid #chipGrid aria-label="Reviewer selection">
-                  <mat-chip-row *ngFor="let reviewer of reviewers" (removed)="remove(reviewer)">
-                    {{reviewer}}
-                    <button matChipRemove [attr.aria-label]="'remove ' + reviewer">
-                      <mat-icon>cancel</mat-icon>
-                    </button>
-                  </mat-chip-row>
-                </mat-chip-grid>
-                <input placeholder="New Reviewer..." #reviewerInput [formControl]="reviewerCtrl"
-                  [matChipInputFor]="chipGrid" [matAutocomplete]="auto" (keyup)="searchReviewer()"
-                  />
-                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                  <mat-option *ngFor="let reviewer of filteredReviewers" [value]="reviewer">
-                    {{reviewer}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-              <mat-divider></mat-divider>
-              <mat-form-field appearance="fill">
-                <mat-label>Select document type</mat-label>
-                <mat-select [(value)]="type">
-                  <mat-option>None</mat-option>
-                 <!--  <mat-option value="option1">Option 1</mat-option>
-                  <mat-option value="option2">Option 2</mat-option>
-                  <mat-option value="option3">Option 3</mat-option> -->
-                  <mat-option *ngFor="let type of documentTypes" [value]="type">
-                    {{type}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field class="note-field">
-                <mat-label>Leave a note</mat-label>
-                <textarea matInput></textarea>
-              </mat-form-field>
-              <!-- <button mat-button color="primary" (click)="createDocument()">Upload</button> -->
-              <button mat-raised-button color="primary" class="register-button" type="submit" [disabled]="loading"
-              (click)="createDocument()">
-                <span *ngIf="!loading">Upload Document</span>
-                <mat-spinner *ngIf="loading" diameter="20" color="primary"></mat-spinner> <!-- Add spinner -->
-              </button>
-            </form>
-           
+            <div class="file-selection">
+              <input type="file" (change)="onFileSelected($event)" #fileInput style="display: none;">
+              <button mat-button color="primary" (click)="fileInput.click()">Select File</button>
+              <mat-chip *ngIf="selectedFile" removable (removed)="clearFile()">
+                {{ selectedFile.name }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            </div>
+            <!-- Reviewers input -->
+            <mat-form-field class="example-chip-list" appearance="fill">
+              <mat-label>Reviewers</mat-label>
+              <mat-chip-grid #chipGrid aria-label="Reviewer selection">
+                <mat-chip-row *ngFor="let reviewer of reviewers" (removed)="remove(reviewer)">
+                  {{reviewer}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + reviewer">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              </mat-chip-grid>
+              <input placeholder="New Reviewer..." #reviewerInput [formControl]="reviewerCtrl"
+                [matChipInputFor]="chipGrid" [matAutocomplete]="auto" (keyup)="searchReviewer()"
+                />
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let reviewer of filteredReviewers" [value]="reviewer">
+                  {{reviewer}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-divider></mat-divider>
+            <mat-form-field appearance="fill">
+              <mat-label>Select document type</mat-label>
+              <mat-select [(value)]="type">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let type of documentTypes" [value]="type">
+                  {{type}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="note-field">
+              <mat-label>Leave a note</mat-label>
+              <textarea matInput></textarea>
+            </mat-form-field>
+            <!-- <button mat-button color="primary" (click)="createDocument()">Upload</button> -->
+            <button mat-raised-button color="primary" class="register-button" type="submit" [disabled]="loading"
+            (click)="createDocument()">
+              <span *ngIf="!loading">Upload Document</span>
+              <mat-spinner *ngIf="loading" diameter="20" color="primary"></mat-spinner> <!-- Add spinner -->
+            </button>
+          </form>
       </mat-card-content>
   </mat-card>
 </div>

@@ -11,8 +11,6 @@ import { DocumentService } from 'src/app/services/document.service';
 })
 export class DocumentComponent implements OnInit {
   
- 
-
   //extreact username from jwt
   documentId:any
   fileName:String=""
@@ -32,18 +30,11 @@ export class DocumentComponent implements OnInit {
     let id=this.authService.getId()
    
     //get it from validation table
-    this.documentService.getDocument(this.documentId).subscribe({
+    let request={documentId:this.documentId,reviewerId:id}
+    this.documentService.getDocument(request).subscribe({
       next:(res:any)=>{
         this.isCreator=res.creator==this.userName
-        if(res.creator!=this.userName){
-          let request={reviewerId:id,documentId:this.documentId}
-          this.documentService.getDocumentValidationStatus(request).subscribe({
-            next:(response:any)=>{
-              this.isValidated=response.hasValidated
-            },
-            error:error=>console.log("validation error",error)
-          })
-        }
+        this.isValidated=res.validated
         this.fileName=res.fileName
         this.comments=res.comments
         

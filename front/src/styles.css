@@ -2,3 +2,18 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;background-color: wheat; }
+
+.error.mat-snack-bar-container{
+    background: #cc0000;
+    color: white;
+}
+
+.success.mat-snack-bar-container{
+    background: #00cc00;
+    color: white;
+}
+
+/* .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+    background-color: hsl(148,70%,31%) !important;
+    border-radius: 10px !important;
+} */

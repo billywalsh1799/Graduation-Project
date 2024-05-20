@@ -15,17 +15,17 @@
           <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'fullDate'}} </td>
         </ng-container>
         <!-- validation progress Column -->
-        <ng-container matColumnDef="progress">
+        <ng-container matColumnDef="validationProgress">
           <th mat-header-cell  mat-sort-header  *matHeaderCellDef> Validation Progress </th>
           <td mat-cell *matCellDef="let element">
             <mat-progress-bar mode="determinate" [value]="element.validationProgress"></mat-progress-bar>
-            <p>{{element.validationProgress}}%</p>
+            {{element.validationProgress}}%
            </td>
         </ng-container>
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef> Action </th>
             <td mat-cell *matCellDef="let element"> 
-                <button mat-raised-button  color="primary" (click)="validationDetails(element.documentId)">
+                <button mat-raised-button  color="primary" (click)="validationDetails(element.validations)">
                   Details
                 </button>
             </td>

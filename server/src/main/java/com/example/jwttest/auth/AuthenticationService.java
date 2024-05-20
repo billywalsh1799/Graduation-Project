@@ -18,6 +18,7 @@ import com.example.jwttest.exceptionHandling.exceptions.UserNotFoundException;
 import com.example.jwttest.models.Role;
 import com.example.jwttest.models.SecurityUser;
 import com.example.jwttest.models.User;
+import com.example.jwttest.repo.RoleRepository;
 import com.example.jwttest.repo.UserRepository;
 import com.example.jwttest.services.JwtService;
 
@@ -38,7 +39,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
-
+    private final RoleRepository roleRepository;
 
     public Map<String, String> register(RegisterRequest request){
 
@@ -167,6 +168,10 @@ public class AuthenticationService {
         userRepo.findByUsername(user.getUsername()).ifPresent(unconfirmedUser -> {
             throw new AccountVerificationException("User already verified account");
         });
+
+        Role userRole=roleRepository.findByName("ROLE_USER").orElseThrow();
+        List<Role> userRoles=List.of(userRole);
+        user.setRoles(userRoles);
 
         userRepo.save(user);
         //tokens generated only after authentication and enabling by admin

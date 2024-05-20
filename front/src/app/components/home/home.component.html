@@ -7,10 +7,12 @@
 <mat-toolbar color="primary">
     <div class="toolbar-buttons">
       <button mat-flat-button routerLink="/"  [color]="!isLinkActive('/') ? 'primary' : ''">Home</button>
-      <button mat-flat-button routerLink="/admin" [color]="!isLinkActive('/admin') ? 'primary' : ''" >Admin</button>
+      <button *ngIf="adminCheck()" mat-flat-button routerLink="/admin" [color]="!isLinkActive('/admin') ? 'primary' : ''" >Admin</button>
       <button mat-flat-button routerLink="/create-document" [color]="!isLinkActive('/create-document') ? 'primary' : ''">Create Document</button>
-      <button mat-flat-button routerLink="/reviewer-page" [color]="!isLinkActive('/reviewer-page') ? 'primary' : ''">Assigned Documents</button>
-      <button mat-flat-button routerLink="/creator-page" [color]="!isLinkActive('/creator-page') ? 'primary' : ''">Uploaded Documents</button>
+      <button *ngIf="!adminCheck()" mat-flat-button routerLink="/reviewer-page" [color]="!isLinkActive('/reviewer-page') ? 'primary' : ''">Assigned Documents</button>
+      <button mat-flat-button [routerLink]="adminCheck() ? '/uploaded-documents':'/creator-page' "
+       [color]="(!isLinkActive('/creator-page') && !isLinkActive('/uploaded-documents')) ? 'primary' : ''">
+       Uploaded Documents</button>
     </div>
     <div class="user-circle">
         <button mat-mini-fab [matMenuTriggerFor]="menu" >
@@ -29,4 +31,6 @@
     <button (click)="refresh()">Test Refresh Endpoint</button>
     <button (click)="decodeToken()">Decode JWT</button>
     <button (click)="testTokenExpiration()">test Expired JWT</button>
+    <button (click)="openSnack()">test snack</button>
+    <button (click)="testNotifier()">test notifier</button>
 </div>

@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { NotifierService } from 'src/app/services/notifier.service';
 
 
 @Component({
@@ -12,11 +14,37 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   userInitials:string=""
-  constructor(private  http:HttpClient,private authService:AuthService,private router: Router){}
+  constructor(private  http:HttpClient,private authService:AuthService,private router: Router,private snackBar:MatSnackBar,
+    private notifierService:NotifierService){}
 
 
   ngOnInit(): void {
     this.userInitials=this.decodeToken().username.charAt(0)
+  }
+
+  adminCheck(){
+    return this.authService.checkAdmin()
+  }
+
+  testNotifier(){
+    this.notifierService.showNotification("error in registration","Close",'success')
+  }
+
+  openSnack(){
+    /* this.snackBar.open("response.message", 'Close', {
+      duration: 5000,
+      verticalPosition: 'top',
+      panelClass: ['custom-snackbar']
+    }); */
+   /*  const config = new MatSnackBarConfig();
+      config.panelClass = ['custom-snackbar'];
+      config.duration = 5000;
+      this.snackBar.open("message","", config); */
+      this.snackBar.open("response.message", 'Close', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: ['custom-snackbar']
+      });
   }
 
   testTokenExpiration(){

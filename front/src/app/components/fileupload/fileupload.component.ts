@@ -48,6 +48,7 @@ export class FileuploadComponent {
     // Add our reviewer
     if (value) {
       this.reviewers.push(value);
+      this.filteredReviewers = this.filteredReviewers.filter(reviewer => reviewer !== value);
     }
 
     // Clear the input value
@@ -61,7 +62,10 @@ export class FileuploadComponent {
 
     if (index >= 0) {
       this.reviewers.splice(index, 1);
+      this.filteredReviewers.push(reviewer);
     }
+
+    console.log("filtered reviewers",this.filteredReviewers)
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -70,10 +74,13 @@ export class FileuploadComponent {
     // Check if the selected reviewer is already in the list
     if (!this.reviewers.includes(selectedReviewer)) {
       this.reviewers.push(selectedReviewer);
-      //this.reviewerInput.nativeElement.value = '';
+      this.filteredReviewers = this.filteredReviewers.filter(reviewer => reviewer !== selectedReviewer);
+      console.log("filtered reviewers",this.filteredReviewers)
+      
     } 
     this.reviewerInput.nativeElement.value = '';
-    this.filteredReviewers=this.allReviewers
+    //this.filteredReviewers=this.allReviewers
+    this.filterReviewers("")
     this.reviewerCtrl.setValue(null);
     
   }
@@ -150,7 +157,8 @@ export class FileuploadComponent {
 
   filterReviewers(value: string) {
     const filterValue = value.toLowerCase();
-    this.filteredReviewers=this.allReviewers.filter(reviewer => reviewer.toLowerCase().startsWith(filterValue));
+    //this.filteredReviewers=this.allReviewers.filter(reviewer => reviewer.toLowerCase().startsWith(filterValue));
+    this.filteredReviewers=this.allReviewers.filter(reviewer => reviewer.toLowerCase().startsWith(filterValue) && !this.reviewers.includes(reviewer));
   }
 
 

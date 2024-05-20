@@ -16,8 +16,8 @@ export class UpdatepopupComponent   {
   rolesCtrl = new FormControl('');
   roles: any = [];
 
-  allRoles: any = [];
-  filteredRoles:any=[]
+  allRoles: string[] = [];
+  filteredRoles:string[]=[]
 
   updateForm: FormGroup;
 
@@ -31,7 +31,8 @@ export class UpdatepopupComponent   {
 
       this.allRoles=data.rolesList
       this.roles = [...data.roles];
-      this.filteredRoles=this.allRoles
+      //this.filteredRoles=this.allRoles
+      this.filteredRoles=this.data.rolesList.filter((role:any) => !data.roles.includes(role));
 
 
       this.updateForm = this.formBuilder.group({
@@ -54,6 +55,7 @@ export class UpdatepopupComponent   {
 
     if (index >= 0) {
       this.roles.splice(index, 1);
+      this.filteredRoles.push(role);
     } 
   }
 
@@ -63,9 +65,11 @@ export class UpdatepopupComponent   {
     // Check if the selected reviewer is already in the list
     if (!this.roles.includes(selectedRole)) {
       this.roles.push(selectedRole);
+      this.filteredRoles = this.filteredRoles.filter(role => role !== selectedRole);
     } 
     this.roleInput.nativeElement.value = '';
-    this.filteredRoles=this.allRoles
+    //this.filteredRoles=this.allRoles
+    this.filterRoles("")
     this.rolesCtrl.setValue(null); 
     
   }
@@ -83,7 +87,9 @@ export class UpdatepopupComponent   {
 
   filterRoles(value: string) {
     const filterValue = value.toLowerCase();
-    this.filteredRoles=this.allRoles.filter((role:any) => role.toLowerCase().substring(5).startsWith(filterValue));
+    //this.filteredRoles=this.allRoles.filter((role:any) => role.toLowerCase().substring(5).startsWith(filterValue));
+    this.filteredRoles=this.allRoles.filter(role => role.toLowerCase().substring(5).startsWith(filterValue) && !this.roles.includes(role));
+  
   }
  
 

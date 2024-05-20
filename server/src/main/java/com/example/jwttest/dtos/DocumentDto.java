@@ -16,21 +16,17 @@ public class DocumentDto {
     private String fileName;
     private String creator;
     private List<Comment> comments;
-    private LocalDateTime createdAt;
-    private boolean validated;
-    private Integer totalReviewers;
-    private Integer totalValidations;
+    private boolean validated=false;
 
 
-    public DocumentDto(Document document) {
+    public DocumentDto(Document document,boolean reviewerValidation) {
         this.id = document.getId();
         this.fileName=document.getFileName();
         this.creator=document.getCreator().getUsername();
         this.comments=document.getComments();
-        this.createdAt=document.getCreatedAt();
-        this.validated=document.isValidated();
-        this.totalReviewers=document.getTotalReviewers();
-        this.totalValidations=document.getTotalValidations();
+        this.validated=reviewerValidation;
+
+        
         
 
     }

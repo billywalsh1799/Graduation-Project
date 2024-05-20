@@ -43,6 +43,14 @@ export class AuthService {
     return decodedHeader.userid
   }
 
+  checkAdmin(){
+    const decodedHeader:any=jwtDecode(this.getToken())
+    let userRoles:String[] | null =decodedHeader.roles
+    
+    return userRoles?.includes("ROLE_ADMIN")
+    
+  }
+
   isTokenExpired(){
     //const decodedHeader=jwtDecode(this.getToken())
     const expiryTime=this.DecodeToken().exp*1000

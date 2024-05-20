@@ -15,8 +15,12 @@
             <mat-card-title>Comments</mat-card-title>
             <div class="document-row">
                 <form (ngSubmit)="addComment()">
-                    <mat-form-field>
+                    <!-- <mat-form-field>
                       <input matInput placeholder="New comment" [(ngModel)]="newComment" name="comment"autocomplete="off">
+                    </mat-form-field> -->
+                    <mat-form-field class="note-field">
+                        <mat-label>Leave a comment</mat-label>
+                        <textarea matInput [(ngModel)]="newComment" name="comment"></textarea>
                     </mat-form-field>
                     
                 </form>

@@ -1,0 +1,48 @@
+
+  
+  mat-card {
+    /* width: 30%; */
+    /* max-height: 80%; */
+   /*  margin: 10% auto; */
+    border-radius: 8px;
+    padding: 20px;   
+     display: flex; 
+    justify-content: center;
+    align-items: center;  
+   /*  width: 700px;
+   
+ */
+    /* width: 1200px;
+    margin-left: 400px;
+    margin-top: 100px; */
+    
+  }
+  
+  
+
+  .search-filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-bottom: 20px; */
+    .status-filter{
+      margin:0 50px;
+    }
+
+    
+  }
+  mat-form-field {
+    width: 250px; /* Adjust as needed */
+}
+ 
+
+  table{
+    /* background-color: blueviolet; */
+    width:calc(100vw - 100px);
+    
+  }
+
+  .mat-mdc-row:hover .mat-mdc-cell {
+    /* border-color: currentColor; */
+    background-color: lightblue;
+  }

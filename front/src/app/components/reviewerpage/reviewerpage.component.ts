@@ -12,21 +12,9 @@ import { DocumentService } from 'src/app/services/document.service';
 })
 export class ReviewerpageComponent implements AfterViewInit,OnInit {
 
-  /* documentList:any=[
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024"},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024"},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024"},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024"},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024"},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024"},
-    {document:"document.pdf",validated:"false",createdAt:"1-05-2024"},
-    
-    
-  ] */
-
   documentList:any=[]
 
-  displayedColumns: string[] = ['document','validated','createdAt','action'];
+  displayedColumns: string[] = ['document','type','validated','createdAt','action'];
   dataSource = new MatTableDataSource<any>(this.documentList);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

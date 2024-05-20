@@ -15,7 +15,7 @@ import { ValidationspopupComponent } from '../validationspopup/validationspopup.
 export class CreatorpageComponent implements AfterViewInit,OnInit {
   
   documentList:any=[]
-  displayedColumns: string[] = ['document','createdAt','progress','action'];
+  displayedColumns: string[] = ['document','createdAt','validationProgress','action'];
   dataSource = new MatTableDataSource<any>(this.documentList);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -43,13 +43,13 @@ export class CreatorpageComponent implements AfterViewInit,OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  validationDetails(documentId:number){
+  validationDetails(validations:any){
     //this.dialog.open(ValidationspopupComponent)
     const popup = this.dialog.open(ValidationspopupComponent, {
       enterAnimationDuration: "200ms",
       exitAnimationDuration: "200ms",
       width: '700px',
-      data:{documentId}
+      data:{validations}
        
     });
 

@@ -14,6 +14,10 @@ export class UserprofileComponent implements OnInit {
   userInfoForm: FormGroup;
   passwordForm: FormGroup;
 
+  currentHide:boolean = true;
+  newHide:boolean=true
+  confirmHide:boolean=true
+
  
 
   constructor(private formBuilder: FormBuilder ,private authService:AuthService
@@ -26,7 +30,7 @@ export class UserprofileComponent implements OnInit {
       lastname: [null, [Validators.required]],
       username: [null, [Validators.required]],
       email: [null],
-      role:[null]
+      roles:[null]
     });
 
     this.passwordForm = this.formBuilder.group({
@@ -55,13 +59,14 @@ export class UserprofileComponent implements OnInit {
 
     this.userService.getUserInfo(sub).subscribe({
       next:res=>{
-        const {firstname,lastname,username,email,role}=res
+        let {firstname,lastname,username,email,roles}=res
+        roles=this.formatRoles(roles)
         this.userInfoForm.patchValue({
           firstname,
           lastname,
           username,
           email,
-          role
+          roles
         })
       },
       error:err=>{
@@ -70,6 +75,13 @@ export class UserprofileComponent implements OnInit {
       }
     })
   }
+  formatRoles(roles:any) {
+    // Extract role names from the array of role objects
+    const roleNames = roles.map((role:any) => role.replace('ROLE_', '')); // Remove 'ROLE_' prefix if exists
+    // Join role names with commas
+    const formattedRoles = roleNames.join(',');
+    return formattedRoles;
+}
 
   onTabChange(event: any) {
     if (event === 1) { // Check if the "Security Settings" tab is selected
