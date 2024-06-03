@@ -12,13 +12,13 @@ import { LoginComponent } from './components/login/login.component';
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
 import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
 import { FileuploadComponent } from './components/fileupload/fileupload.component';
-import { PdfviewertestComponent } from './components/pdfviewertest/pdfviewertest.component';
 import { DocumentComponent } from './components/document/document.component';
 import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
 import { CreatorpageComponent } from './components/creatorpage/creatorpage.component';
-import { FileDropComponent } from './components/file-drop/file-drop.component';
 import { UploadedDocumentsComponent } from './components/uploaded-documents/uploaded-documents.component';
 import { ReviewerStatisticsComponent } from './components/reviewer-statistics/reviewer-statistics.component';
+import { ChartsTestComponent } from './components/charts-test/charts-test.component';
+import { ChartsJsComponent } from './components/charts-js/charts-js.component';
 
 
 
@@ -34,15 +34,15 @@ const routes: Routes = [
     {path:'admin',component:AdminComponent,canActivate:[AdminGuard]},
     {path:'create-document',component:FileuploadComponent},
     {path:'reviewer-statistics',component:ReviewerStatisticsComponent},
-    {path:'pdf-viewer',component:PdfviewertestComponent},
     {path:'document/:id',component:DocumentComponent},
     {path:'reviewer-page',component:ReviewerpageComponent},
     {path:'creator-page',component:CreatorpageComponent},
     {path:'uploaded-documents',component:UploadedDocumentsComponent},
+    {path:'charts',component:ChartsTestComponent},
+    {path:'chartsjs',component:ChartsJsComponent},
     {path:'unauthorized',component:UnauthorizedComponent},
   ]},
   { path: 'login', component: LoginComponent },
-  { path: 'file-drop', component: FileDropComponent },
   { path: 'register', component: RegisterComponent },
   {path:'auth/confirm',component:UserconfirmationComponent},
   {path:'forget-password',component:ForgetpasswordComponent},

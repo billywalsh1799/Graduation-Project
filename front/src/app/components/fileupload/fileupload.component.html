@@ -37,7 +37,7 @@
             <mat-divider></mat-divider>
             <mat-form-field appearance="fill">
               <mat-label>Select document type</mat-label>
-              <mat-select [(value)]="type">
+              <mat-select [(value)]="type" (selectionChange)="onDocumentTypeChange($event)">
                 <mat-option>None</mat-option>
                 <mat-option *ngFor="let type of documentTypes" [value]="type">
                   {{type}}

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.jwttest.dtos.DocumentReviewer;
 import com.example.jwttest.dtos.PasswordResetRequest;
 import com.example.jwttest.dtos.ProfileUpdateRequest;
 import com.example.jwttest.dtos.UserDto;
@@ -104,14 +105,16 @@ public class UserService {
         userRepo.deleteById(id);
     }
 
-    public Map<String, List<String>> getReviewers() {
+    public Map<String, List<DocumentReviewer>> getReviewers() {
 
-        List<User> users = userRepo.findAll();
-        List<String> reviewers= users.stream()
-                                    .map(user ->user.getEmail())
-                                    .collect(Collectors.toList());
+        List<DocumentReviewer> reviewers = userRepo.findAll().stream()
+                                                .map(DocumentReviewer::new)
+                                                .collect(Collectors.toList());
+        /* List<String> reviewers= users.stream()
+                                    .map(DocumentReviewer::new)
+                                    .collect(Collectors.toList()); */
 
-        Map<String, List<String>> responseData = new HashMap<>();
+        Map<String, List<DocumentReviewer>> responseData = new HashMap<>();
         responseData.put("reviewers", reviewers);
         return responseData;
     }

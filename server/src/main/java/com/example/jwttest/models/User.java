@@ -55,4 +55,13 @@ public class User  {
         
     }
 
+    public boolean hasRoleAdmin() {
+        for (Role role : roles) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

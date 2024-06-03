@@ -85,6 +85,17 @@ export class DocumentService {
     return this.http.get(`http://localhost:8080/api/documents/reviewer/${id}/statistics`)
   }
 
+
+  getDocumentTypeRepartition(){
+    return this.http.get(`http://localhost:8080/api/documents/types/count`)
+
+  }
+
+  getDocumentValidationProgress(){
+    return this.http.get(`http://localhost:8080/api/documents/validation-counts`)
+
+  }
+
  
 
 

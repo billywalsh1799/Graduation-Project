@@ -79,8 +79,12 @@ export class UpdatepopupComponent   {
     if(this.rolesCtrl.value){
       this.filterRoles(this.rolesCtrl.value)
     }
-    else {
+    /* else {
       this.filteredRoles = this.allRoles;
+    } */
+    else {
+      // Reset filtered reviewers to include all reviewers except the selected ones
+      this.filteredRoles = this.allRoles.filter(role => !this.roles.includes(role));
     }
     
   }

@@ -2,6 +2,7 @@ package com.example.jwttest.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jwttest.dtos.DocumentReviewer;
 import com.example.jwttest.dtos.PasswordResetRequest;
 import com.example.jwttest.dtos.ProfileUpdateRequest;
 import com.example.jwttest.dtos.UserDto;
@@ -53,7 +54,7 @@ public class UserController {
 
 
     @GetMapping("/user/reviewers")
-    public ResponseEntity<Map<String, List<String>>> getReviewers() {
+    public ResponseEntity<Map<String, List<DocumentReviewer>>> getReviewers() {
         return new ResponseEntity<>(userService.getReviewers(),HttpStatus.OK);
     }
     

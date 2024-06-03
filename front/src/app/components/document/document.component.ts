@@ -50,6 +50,7 @@ export class DocumentComponent implements OnInit {
     if(this.newComment){
       //this.comments.push(this.newComment)
       let createdAt = new Date().toISOString();
+      console.log("new comment",this.newComment)
       let comment={author:this.userName,content:this.newComment,createdAt}
       //let request={author:this.userName,content:this.newComment,createdAt}
       this.documentService.addCommentToDocument(this.documentId,comment).subscribe({

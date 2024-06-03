@@ -30,7 +30,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { UserconfirmationComponent } from './components/userconfirmation/userconfirmation.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
-import { PasswordresetpopupComponent } from './components/passwordresetpopup/passwordresetpopup.component';
 import { FileuploadComponent } from './components/fileupload/fileupload.component'; 
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -43,15 +42,19 @@ import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { DocumentComponent } from './components/document/document.component';
-import { CommentsComponent } from './components/comments/comments.component';
 import { ReviewerpageComponent } from './components/reviewerpage/reviewerpage.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { CreatorpageComponent } from './components/creatorpage/creatorpage.component';
-import { FileDropComponent } from './components/file-drop/file-drop.component';
 import { ValidationspopupComponent } from './components/validationspopup/validationspopup.component';
 import { NotifierComponent } from './components/notifier/notifier.component';
 import { UploadedDocumentsComponent } from './components/uploaded-documents/uploaded-documents.component';
 import { ReviewerStatisticsComponent } from './components/reviewer-statistics/reviewer-statistics.component';
+
+
+import { HighchartsChartModule } from 'highcharts-angular';
+import { ChartsTestComponent } from './components/charts-test/charts-test.component';
+import { ChartsJsComponent } from './components/charts-js/charts-js.component';
+
 
 
 
@@ -67,20 +70,19 @@ import { ReviewerStatisticsComponent } from './components/reviewer-statistics/re
     UpdatepopupComponent,
     UserconfirmationComponent,
     UserprofileComponent,
-    PasswordresetpopupComponent,
     FileuploadComponent,
     LoginComponent,
     ResetpasswordComponent,
     ForgetpasswordComponent,
     DocumentComponent,
-    CommentsComponent,
     ReviewerpageComponent,
     CreatorpageComponent,
-    FileDropComponent,
     ValidationspopupComponent,
     NotifierComponent,
     UploadedDocumentsComponent,
     ReviewerStatisticsComponent,
+    ChartsTestComponent,
+    ChartsJsComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,7 +93,7 @@ import { ReviewerStatisticsComponent } from './components/reviewer-statistics/re
     MatCardModule,MatTabsModule,MatInputModule,MatButtonModule,MatIconModule,MatSnackBarModule, BrowserAnimationsModule,
     MatTableModule,MatPaginatorModule,MatSortModule,MatDialogModule,MatSelectModule,MatCheckboxModule,MatProgressSpinnerModule,
     MatChipsModule,MatAutocompleteModule,MatDividerModule,MatSidenavModule,MatListModule,MatToolbarModule,MatMenuModule
-    ,MatProgressBarModule
+    ,MatProgressBarModule,HighchartsChartModule
     
   ],
   providers: [AuthGuard,{ provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi: true}],

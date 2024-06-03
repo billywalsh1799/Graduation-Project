@@ -1,11 +1,7 @@
 package com.example.jwttest.dtos;
-import java.time.LocalDateTime;
 import java.util.List;
-
-
 import com.example.jwttest.models.Comment;
 import com.example.jwttest.models.Document;
-import com.example.jwttest.models.User;
 
 import lombok.Data;
 

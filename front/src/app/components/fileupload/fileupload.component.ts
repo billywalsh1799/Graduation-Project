@@ -1,24 +1,24 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { Observable, map, startWith } from 'rxjs';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { UserService } from 'src/app/services/user.service';
 import { DocumentService } from 'src/app/services/document.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-fileupload',
   templateUrl: './fileupload.component.html',
   styleUrls: ['./fileupload.component.css']
 })
-export class FileuploadComponent {
+export class FileuploadComponent implements OnInit {
+
   reviewerCtrl = new FormControl('');
   reviewers: string[] = [];
 
   allReviewers: string[] = [];
+  reviewerRoles:any=[]
   filteredReviewers:String[]=[]
   selectedFile: File | null = null;
 
@@ -34,27 +34,17 @@ export class FileuploadComponent {
 
   constructor(private userService: UserService,private documentService:DocumentService,private authService:AuthService,
     private snackBar: MatSnackBar
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.loadAllReviewers();
-   /*  this.filteredReviewers = this.reviewerCtrl.valueChanges.pipe(
-      startWith(null),
-      map((reviewer: string | null) => (reviewer ? this._filter(reviewer) : this.allReviewers.slice())),
-    ); */
   }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our reviewer
-    if (value) {
-      this.reviewers.push(value);
-      this.filteredReviewers = this.filteredReviewers.filter(reviewer => reviewer !== value);
+  onDocumentTypeChange(event: MatSelectChange) {
+    console.log("select event",event.value)
+    if (event.value === "Resume") {
+      this.addTeamleadReviewers();
     }
-
-    // Clear the input value
-    event.chipInput!.clear();
-
-    this.reviewerCtrl.setValue(null);
   }
 
   remove(reviewer: string): void {
@@ -90,8 +80,12 @@ export class FileuploadComponent {
     this.userService.getReviewers().subscribe({
       next: res => {
         console.log(res);
-        this.allReviewers = res.reviewers;
-        this.filteredReviewers=res.reviewers
+        //this.allReviewers = res.reviewers;
+        //this.filteredReviewers=res.reviewers
+        this.reviewerRoles=res.reviewers
+        this.allReviewers=res.reviewers.map((reviewer:any)=>reviewer.email)
+        this.filteredReviewers=res.reviewers.map((reviewer:any)=>reviewer.email)
+        console.log("filtered rev",this.filteredReviewers)
       },
       error: err => {
         console.log("error loading reviewers", err);
@@ -149,8 +143,12 @@ export class FileuploadComponent {
     if(this.reviewerCtrl.value){
       this.filterReviewers(this.reviewerCtrl.value)
     }
-    else {
+    /* else {
       this.filteredReviewers = this.allReviewers;
+    } */
+    else {
+      // Reset filtered reviewers to include all reviewers except the selected ones
+      this.filteredReviewers = this.allReviewers.filter(reviewer => !this.reviewers.includes(reviewer));
     }
 
   }
@@ -158,11 +156,23 @@ export class FileuploadComponent {
   filterReviewers(value: string) {
     const filterValue = value.toLowerCase();
     //this.filteredReviewers=this.allReviewers.filter(reviewer => reviewer.toLowerCase().startsWith(filterValue));
-    this.filteredReviewers=this.allReviewers.filter(reviewer => reviewer.toLowerCase().startsWith(filterValue) && !this.reviewers.includes(reviewer));
+    this.filteredReviewers=this.allReviewers.filter((reviewer:any) => reviewer.toLowerCase().startsWith(filterValue) && !this.reviewers.includes(reviewer));
+   
   }
 
+  addTeamleadReviewers(): void {
+    const teamleadReviewers = this.reviewerRoles
+      .filter((reviewer:any) => reviewer.roles.includes("ROLE_TEAM_LEAD"))
+      .map((reviewer:any) => reviewer.email);
 
+    teamleadReviewers.forEach((reviewer:any) => {
+      if (!this.reviewers.includes(reviewer)) {
+        this.reviewers.push(reviewer);
+        this.filteredReviewers = this.filteredReviewers.filter(r => r !== reviewer);
+      }
+    });
 
-  
+    console.log("Teamlead reviewers added:", teamleadReviewers);
+  }
 
 }
